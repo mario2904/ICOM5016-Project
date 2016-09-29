@@ -5,6 +5,7 @@ import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 
 import reducers from './reducers';
 
+import Login from './components/login';
 import Home from './components/home';
 import NavBar from './components/nav-bar';
 
@@ -17,7 +18,8 @@ export default class App extends Component {
       <Provider store={store}>
         <Router history={browserHistory}>
           <Route path="/" component={NavBar}>
-            <IndexRoute component={Home} />
+            <IndexRoute component={Login} />
+            <Route path="/home" component={Home}></Route>
           </Route>
         </Router>
       </Provider>
