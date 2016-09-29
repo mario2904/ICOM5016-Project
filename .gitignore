@@ -1,4 +1,12 @@
-.DS_Store
+# Logs and databases #
+######################
+log/
 *.log
-coverage
-.idea
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
