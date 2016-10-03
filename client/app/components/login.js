@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
-import { Form, FormGroup, FormControl, Col, Checkbox, Button, ControlLabel } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel } from 'react-bootstrap';
 
 export default class Login extends Component {
   submit (event) {
@@ -13,13 +13,13 @@ export default class Login extends Component {
   }
   render () {
     return (
-      <div>
+      <Grid>
         <Form horizontal>
-          <FormGroup controlId="formHorizontalEmail">
+          <FormGroup controlId="formHorizontalEmail" >
             <Col componentClass={ControlLabel} sm={2}>
               Email
             </Col>
-            <Col sm={10}>
+            <Col sm={6}>
               <FormControl type="email" placeholder="Email" />
             </Col>
           </FormGroup>
@@ -28,8 +28,8 @@ export default class Login extends Component {
             <Col componentClass={ControlLabel} sm={2}>
               Password
             </Col>
-            <Col sm={10}>
-              <FormControl type="password" placeholder="Password" />
+            <Col sm={6}>
+              <FormControl type="password" placeholder="Password"/>
             </Col>
           </FormGroup>
 
@@ -47,7 +47,7 @@ export default class Login extends Component {
             </Col>
           </FormGroup>
         </Form>
-      </div>
+      </Grid>
     );
   }
 }

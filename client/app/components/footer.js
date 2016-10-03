@@ -5,7 +5,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 export default class Footer extends Component {
   render () {
     return (
-      <Grid>
+      <Grid fluid>
         <hr />
         <Row>
           <Col md={3}>
@@ -14,8 +14,7 @@ export default class Footer extends Component {
           <Col md={3}>
             <Link to="#">About Us</Link>
           </Col>
-          <Col md={3}></Col>
-          <Col md={3}>
+          <Col md={2} mdOffset={4}>
             <Link to="#">Privacy/Terms</Link>
           </Col>
         </Row>

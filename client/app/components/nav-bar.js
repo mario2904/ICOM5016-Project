@@ -9,11 +9,11 @@ export default class NavBar extends Component {
       <Navbar>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">E-Spotter</a>
+            <a href="/home">E-Spotter</a>
           </Navbar.Brand>
         </Navbar.Header>
         <Nav>
-          <NavItem eventKey={1} href="#">Associations</NavItem>
+          <NavItem eventKey={1} href="/associations">Associations</NavItem>
           <NavItem eventKey={2} href="#">Events</NavItem>
         </Nav>
         <Nav pullRight>

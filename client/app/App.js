@@ -7,7 +7,8 @@ import reducers from './reducers';
 
 import Login from './components/login';
 import Home from './components/home';
-import NavBar from './components/nav-bar';
+import Associations from './components/associations';
+import Frame from './components/frame';
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -17,9 +18,10 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <Router history={browserHistory}>
-          <Route path="/" component={NavBar}>
+          <Route path="/" component={Frame}>
             <IndexRoute component={Login} />
             <Route path="/home" component={Home}></Route>
+            <Route path="/associations" component={Associations}></Route>
           </Route>
         </Router>
       </Provider>
