@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 export default class AssociationsSearchBar extends Component {
   render () {
     return (
       <Form style={style} inline>
+        {/*Quick Fix. Try to find a better way to centralize inline form*/}
         <div style={{textAlign: "center"}}>
           <FormGroup controlId="formInlineName">
             <ControlLabel>Name</ControlLabel>
