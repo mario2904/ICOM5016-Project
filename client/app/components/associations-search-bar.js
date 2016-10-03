@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
+import { Grid, Row, Col, Form, FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
 
 export default class AssociationsSearchBar extends Component {
   render () {
     return (
-      <div>
-        <Form inline>
+      <Form style={style} inline>
+        <div style={{textAlign: "center"}}>
           <FormGroup controlId="formInlineName">
             <ControlLabel>Name</ControlLabel>
             {' '}
@@ -42,8 +42,13 @@ export default class AssociationsSearchBar extends Component {
               <option value="other">...</option>
             </FormControl>
           </FormGroup>
-        </Form>
-      </div>
+        </div>
+
+      </Form>
     );
   }
 }
+
+const style = {
+    padding: "50px"
+};
