@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Col, Clearfix, Thumbnail } from 'react-bootstrap';
+import { Col, Thumbnail } from 'react-bootstrap';
 
 export default class AssociationsListItem extends Component {
   render () {
@@ -14,7 +14,7 @@ export default class AssociationsListItem extends Component {
     );
   }
 }
-// For testing...If error
+// For testing...If error. Props not passed
 AssociationsListItem.defaultProps = {
   association: {
     initials: 'NPI',
@@ -22,7 +22,7 @@ AssociationsListItem.defaultProps = {
     img: 'http://www.freeiconspng.com/uploads/error-icon-4.png' // Error Icon
   }
 };
-
+// Fixes Oversizing of the Thumbnail if the name is too long.
 const nameStyle = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',

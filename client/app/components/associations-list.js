@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PageHeader, Grid, Row, Clearfix } from 'react-bootstrap';
+import { Grid, Row } from 'react-bootstrap';
 
 import AssociationsListItem from './associations-list-item';
 
@@ -12,7 +12,9 @@ export default class AssociationsList extends Component {
   render () {
     return (
       <Grid>
-        {this.renderAssociationsListItems()}
+        <Row>
+          {this.renderAssociationsListItems()}
+        </Row>
       </Grid>
     );
   }

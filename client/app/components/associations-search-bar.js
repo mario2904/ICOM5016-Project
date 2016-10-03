@@ -49,7 +49,7 @@ export default class AssociationsSearchBar extends Component {
     );
   }
 }
-
+// Add padding to searchbar
 const style = {
     padding: "50px"
 };
