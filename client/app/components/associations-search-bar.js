@@ -44,7 +44,6 @@ export default class AssociationsSearchBar extends Component {
             </FormControl>
           </FormGroup>
         </div>
-
       </Form>
     );
   }
