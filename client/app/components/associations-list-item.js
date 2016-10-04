@@ -23,14 +23,7 @@ export default class AssociationsListItem extends Component {
     );
   }
 }
-// For testing...If error. Props not passed
-AssociationsListItem.defaultProps = {
-  association: {
-    initials: 'NPI',
-    name: 'No Porps passed!',
-    img: 'http://www.freeiconspng.com/uploads/error-icon-4.png' // Error Icon
-  }
-};
+
 // Fixes Oversizing of the Thumbnail if the name is too long.
 const nameStyle = {
   whiteSpace: 'nowrap',
