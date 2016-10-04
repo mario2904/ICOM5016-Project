@@ -68,7 +68,7 @@ Associations.defaultProps = {
     {
       initials: 'IG',
       name: 'IncludeGirls - UPRM',
-      img: 'https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/13975419_1146447655422895_4142955561913595977_o.png'
+      img: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/11130142_1642967139265898_9055604660996095507_n.jpg?oh=60ac8b1ff83a95dd75e545261fd93219&oe=586CFBF1'
     },
     {
       initials: 'HackUPRM',
