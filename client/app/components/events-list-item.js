@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Col, Thumbnail } from 'react-bootstrap';
-import style from '../styles';
 
 export default class EventsListItem extends Component {
   render () {

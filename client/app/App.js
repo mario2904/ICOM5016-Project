@@ -8,6 +8,7 @@ import reducers from './reducers';
 import Login from './components/login';
 import Home from './components/home';
 import Associations from './components/associations';
+import Events from './components/events';
 import Frame from './components/frame';
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
@@ -21,6 +22,7 @@ export default class App extends Component {
           <Route path="/" component={Frame}>
             <IndexRoute component={Login} />
             <Route path="/home" component={Home}></Route>
+            <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
           </Route>
         </Router>
