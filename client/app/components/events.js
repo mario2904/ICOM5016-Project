@@ -6,17 +6,12 @@ import EventsListItem from './events-list-item';
 import GridList from './grid-list';
 
 export default class Events extends Component {
-  renderEventsListItems (events) {
-    return events.map((event) => {
-      return <EventsListItem key={event.eventId} event={event} />;
-    });
-  }
   render () {
     return (
       <div>
         <PageHeader>Search any Event on Campus</PageHeader>
         <EventsSearchBar />
-        <GridList items={this.props.events} renderListItems={this.renderEventsListItems}/>
+        <GridList items={this.props.events} ListItem={EventsListItem}/>
       </div>
     );
   }
@@ -34,7 +29,7 @@ Events.defaultProps = {
       endHour: "5:00 pm",
       location: "Roberto Clemente",
       img: "http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png",
-      eventId: "1",
+      id: "1",
       interested: 200
     },
     {
@@ -46,7 +41,7 @@ Events.defaultProps = {
       endHour: "11:00 am",
       location: "Universidad de Puerto Rico, Recinto Mayaguez",
       img: "https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/14590297_542744765930783_7339776675739874149_n.jpg?oh=8ad85c8fcb55d4fe6404c3aaf64ce685&oe=58A83C20",
-      eventId: "2",
+      id: "2",
       interested: 20
     },
     {
@@ -58,7 +53,7 @@ Events.defaultProps = {
       endHour: "8:30 pm",
       location: "Cold Stone Creamery de Mayaguez",
       img: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14242492_1122310254512514_1702488471920293701_o.jpg",
-      eventId: "3",
+      id: "3",
       interested: 50
     },
     {
@@ -70,7 +65,7 @@ Events.defaultProps = {
       endHour: "9:00 pm",
       location: "University of Puerto Rico, Mayaguez Campus - S-104A",
       img: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14543654_1328305037188137_8919927744200733943_o.png",
-      eventId: "4",
+      id: "4",
       interested: 35
     },
     {
@@ -82,7 +77,7 @@ Events.defaultProps = {
       endHour: "9:00 pm",
       location: "University of Puerto Rico, Mayaguez Campus - S-228",
       img: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14500634_881246661977335_7362168074202245899_o.jpg",
-      eventId: "5",
+      id: "5",
       interested: 65
     }
   ]

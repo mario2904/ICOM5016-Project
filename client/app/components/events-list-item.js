@@ -3,7 +3,7 @@ import { Col, Thumbnail } from 'react-bootstrap';
 
 export default class EventsListItem extends Component {
   render () {
-    const { name, association, startDate, endDate, startHour, endHour, location, img, eventId, interested } = this.props.event;
+    const { name, association, startDate, endDate, startHour, endHour, location, img, id, interested } = this.props.item;
     return (
       <Col sm={6} md={3}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
