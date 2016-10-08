@@ -11,6 +11,15 @@ export default class Login extends Component {
     // If successful, go to home page
     browserHistory.push('/home');
   }
+
+  signup (event) {
+    event.preventDefault();
+    // Do the sign-in validation here...
+
+    // If successful, go to home page
+    browserHistory.push('/userregister');
+  }
+
   render () {
     return (
       <Grid>
@@ -44,9 +53,13 @@ export default class Login extends Component {
               <Button type="submit" bsStyle="danger" onClick={this.submit}>
                 Sign in
               </Button>
+              <Button type="submit" bsStyle="danger" onClick={this.signup}>
+                Sign up
+              </Button>
             </Col>
           </FormGroup>
         </Form>
+      
       </Grid>
     );
   }
