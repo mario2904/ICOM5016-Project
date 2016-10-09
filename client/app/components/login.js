@@ -20,6 +20,7 @@ export default class Login extends Component {
     browserHistory.push('/userregister');
   }
 
+
   render () {
     return (
       <Grid>
@@ -53,13 +54,11 @@ export default class Login extends Component {
               <Button type="submit" bsStyle="danger" onClick={this.submit}>
                 Sign in
               </Button>
-              <Button type="submit" bsStyle="danger" onClick={this.signup}>
-                Sign up
-              </Button>
+
             </Col>
           </FormGroup>
         </Form>
-      
+      <p>If you are a student, <a href="#" onClick={this.signup} > sign up now!</a></p>
       </Grid>
     );
   }
