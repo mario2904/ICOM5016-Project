@@ -11,6 +11,9 @@ import Associations from './components/associations';
 import Events from './components/events';
 import Frame from './components/frame';
 import Profile from './components/profile';
+import UserReg from './components/usersignup';
+
+
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -26,6 +29,8 @@ export default class App extends Component {
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
             <Route path="/profile" component={Profile}></Route>
+            <Route path="/userregister" component={UserReg}></Route>
+
           </Route>
         </Router>
       </Provider>
