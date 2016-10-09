@@ -20,6 +20,14 @@ export default class Login extends Component {
     browserHistory.push('/userregister');
   }
 
+  signupAssociation (event) {
+    event.preventDefault();
+    // Do the sign-in validation here...
+
+    // If successful, go to home page
+    browserHistory.push('/assoregister');
+  }
+
 
   render () {
     return (
@@ -58,7 +66,10 @@ export default class Login extends Component {
             </Col>
           </FormGroup>
         </Form>
-      <p>If you are a student, <a href="#" onClick={this.signup} > sign up now!</a></p>
+      <p>{"If you're a student and don't have an account,"} <a href="#" onClick={this.signup} > sign up now!</a></p>
+      <p>{"If you're an association and don't have an account,"} <a href="#" onClick={this.signupAssociation} > sign up now!</a></p>
+
+
       </Grid>
     );
   }
