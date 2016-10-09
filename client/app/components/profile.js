@@ -24,6 +24,7 @@ export default class Profile extends Component{
           <Col xs={12}>
             <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
               <Tab eventKey={1} title="About" style={contentStyle}>
+                <p><strong>Email</strong>: graciany.lebron@upr.edu</p>
                 <p><strong>Gender</strong>: Male</p>
                 <p><strong>Hometown</strong>: Bayamón </p>
                 <p><strong>College</strong>: University of Puerto Rico Mayagüez Campus</p>
