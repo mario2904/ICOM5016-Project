@@ -17,7 +17,7 @@ export default class NavBar extends Component {
         <Nav pullRight>
           <NavItem eventKey={1} href="#">Notifications</NavItem>
           <NavDropdown eventKey={2} title="Account" id="basic-nav-dropdown">
-            <MenuItem eventKey={2.1}>Profile</MenuItem>
+            <MenuItem eventKey={2.1} href="/profile">Profile</MenuItem>
             <MenuItem eventKey={2.2}>Settings</MenuItem>
             <MenuItem eventKey={2.3}>Log Out</MenuItem>
           </NavDropdown>
