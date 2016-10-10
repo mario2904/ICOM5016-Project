@@ -1,5 +1,6 @@
 // This module provides strict checking for all attributes
-// necessary to create a new class of associations or student.
+// that gets passed to the req.body from the post requests
+
 const _ = require('lodash');
 
 exports.login = function (obj) {
@@ -32,7 +33,8 @@ exports.student = function (obj) {
 exports.event = function (obj) {
   console.log('Association: ',obj);
   return (  _.has(obj,'name')
-        &&  _.has(obj, 'association')
+        &&  _.has(obj, 'associationId')
+        &&  _.has(obj, 'associationName')
         &&  _.has(obj, 'startDate')
         &&  _.has(obj, 'endDate')
         &&  _.has(obj, 'startHour')

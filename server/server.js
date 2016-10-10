@@ -139,7 +139,8 @@ app.post('/create-student', (req, res) => {
 // POST - Create Event
 // body:
 //    name: string
-//    association: string
+//    associationId: string
+//    associationName: string
 //    startDate: string
 //    endDate: string
 //    startHour: string
@@ -154,13 +155,13 @@ app.post('/create-event', (req, res) => {
   else if (!validate.event(req.body))
     return res.status(400).send('Error: Missing fields for event.');
   // Destructure body params
-  const { name, association, startDate, endDate, startHour, endHour, location, image } = req.body;
+  const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image } = req.body;
 
   // Create new event
   // Generate event id
   const id = uuid.v4();
   // Create new Student object model
-  const newEvent = new Event(id, name, association, startDate, endDate, startHour, endHour, location, img);
+  const newEvent = new Event(id, name, associationId, associationName, startDate, endDate, startHour, endHour, location, image);
   // TODO: Store it in the db ...
   // Store in Testing db
   db.event[id] = newEvent;
