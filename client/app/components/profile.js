@@ -6,17 +6,20 @@ import GridList from "./grid-list";
 import AssociationsListItem from './associations-list-item';
 import EventsListItem from './events-list-item'
 import ProfileForm from './profile-form'
+
 export default class Profile extends Component{
   render(){
     return (
       <Grid>
         <Row>
-          <Col xs={4}>
+
+          <Col lg={4} xs={5}>
             <Image style={imgStyle} src="http://orig01.deviantart.net/a3f5/f/2013/082/c/e/riku___kh_hd_1_5_remix_by_uxianxiii-d5yyrvu.jpg"
-            width="200px" responsive rounded/>
+             responsive thumbnail/>
           </Col>
-          <Col xs={8}>
-            <h1><strong> Graciany Lebrón Rodríguez</strong></h1>
+
+          <Col lg={8} xs={7}>
+            <h1 style={txt}><strong> Graciany Lebrón Rodríguez</strong></h1>
           </Col>
         </Row>
 
@@ -24,19 +27,13 @@ export default class Profile extends Component{
           <Col xs={12}>
             <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
               <Tab eventKey={1} title="About" style={contentStyle}>
-                <p><strong>Email</strong>: graciany.lebron@upr.edu</p>
-                <p><strong>Gender</strong>: Male</p>
-                <p><strong>Hometown</strong>: Bayamón </p>
-                <p><strong>College</strong>: University of Puerto Rico Mayagüez Campus</p>
-                <p><strong>Major</strong>: ICOM </p>
+                <p><strong>Email</strong>: {this.props.profile.email}</p>
+                <p><strong>Gender</strong>: {this.props.profile.gender}</p>
+                <p><strong>Hometown</strong>: {this.props.profile.hometown} </p>
+                <p><strong>College</strong>: {this.props.profile.college}</p>
+                <p><strong>Major</strong>: {this.props.profile.major}</p>
 
-                <p><strong>Bio</strong>: Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                culpa qui officia deserunt mollit anim id est laborum</p>
+                <p><strong>Bio</strong>: {this.props.profile.bio}</p>
 
               </Tab>
               <Tab eventKey={2} title="My Associations" style={contentStyle}>
@@ -54,9 +51,14 @@ export default class Profile extends Component{
   }
 }
 
+const txt={
+  fontSize:"40px"
+}
+
 const imgStyle = {
-  backgroundColor: "blue",
+
   margin: "0px 0px 30px 0px"
+
 }
 const contentStyle = {
   margin: "30px 0px 0px 0px"
@@ -68,6 +70,22 @@ const tabStyle = {
 }
 
 Profile.defaultProps = {
+  profile: {
+    email: "graciany.lebron@upr.edu",
+    gender: "Male",
+    hometown: "Bayamón",
+    college: "University of Puerto Rico Mayagüez Campus",
+    major: "ICOM",
+    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do \
+    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad \
+    minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip \
+    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate\
+    velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat \
+   cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id \
+   est laborum"
+
+  },
+
   associations: [
     {
       initials: 'WIE',

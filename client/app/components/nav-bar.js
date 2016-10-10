@@ -20,6 +20,7 @@ export default class NavBar extends Component {
             <MenuItem eventKey={2.1} href="/profile">Profile</MenuItem>
             <MenuItem eventKey={2.2}>Settings</MenuItem>
             <MenuItem eventKey={2.3}>Log Out</MenuItem>
+            <MenuItem eventKey={2.4} href="/profile/associations/:associationID">Association Profile</MenuItem>
           </NavDropdown>
         </Nav>
       </Navbar>
