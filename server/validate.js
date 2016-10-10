@@ -2,6 +2,12 @@
 // necessary to create a new class of associations or student.
 const _ = require('lodash');
 
+exports.login = function (obj) {
+  return (  _.has(obj, 'email')
+        &&  _.has(obj, 'password')
+  );
+}
+
 exports.association = function (obj) {
   console.log('Association: ',obj);
   return (  _.has(obj,'name')
@@ -23,8 +29,15 @@ exports.student = function (obj) {
   );
 }
 
-exports.login = function (obj) {
-  return (  _.has(obj, 'email')
-        &&  _.has(obj, 'password')
+exports.event = function (obj) {
+  console.log('Association: ',obj);
+  return (  _.has(obj,'name')
+        &&  _.has(obj, 'association')
+        &&  _.has(obj, 'startDate')
+        &&  _.has(obj, 'endDate')
+        &&  _.has(obj, 'startHour')
+        &&  _.has(obj, 'endHour')
+        &&  _.has(obj, 'location')
+        &&  _.has(obj, 'img')
   );
-}
+};

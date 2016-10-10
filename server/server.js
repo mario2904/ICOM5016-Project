@@ -1,19 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
+const multer  = require('multer');
 
-// UUID generator
-const uuid = require('node-uuid');
+const app = express();
 
 // Models
 const Student = require('./student');
 const Association = require('./association');
+const Event = require('./event');
+
+// Utils
+const uuid = require('node-uuid');
 const validate = require('./validate');
+const filter = require('./filter');
+
+// File Uploaders
+const imgUpload =  multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
 
 // DB Testing
 const db = {};
 db.student = {};
 db.association = {};
+db.event = {};
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -126,6 +134,62 @@ app.post('/create-student', (req, res) => {
   console.log('Success: Create Student');
   console.log('Student ID:', id);
   res.sendStatus(200);
+});
+
+// POST - Create Event
+// body:
+//    name: string
+//    association: string
+//    startDate: string
+//    endDate: string
+//    startHour: string
+//    endHour: string
+//    location: string
+//    image: string
+app.post('/create-event', (req, res) => {
+  console.log(req.body);
+  if (!req.body)
+    return res.sendStatus(400);
+  // Check if has valid params in the body or the request
+  else if (!validate.event(req.body))
+    return res.status(400).send('Error: Missing fields for event.');
+  // Destructure body params
+  const { name, association, startDate, endDate, startHour, endHour, location, image } = req.body;
+
+  // Create new event
+  // Generate event id
+  const id = uuid.v4();
+  // Create new Student object model
+  const newEvent = new Event(id, name, association, startDate, endDate, startHour, endHour, location, img);
+  // TODO: Store it in the db ...
+  // Store in Testing db
+  db.event[id] = newEvent;
+  // Send OK status
+  console.log('Success: Create Event');
+  console.log('Event ID:', id);
+  res.sendStatus(200);
+});
+
+// POST - Upload Image (SINGLE)
+// file:
+//    image: <image>
+// In case you need to handle a text-only multipart form, you can
+// use any of the multer methods (.single(), .array(), fields()).
+app.post('/upload-image', (req, res) => {
+  imgUpload(req, res, function (err) {
+    if (err) {
+      // An error occurred when uploading
+      return res.status(400).send(err.message);
+    }
+    // Everything went fine
+    // Get path to uploaded file (drop the 'public/')
+    const path = req.file.path.slice(req.file.path.indexOf('/'));
+    const response = {image: path};
+    // Send path to uploaded file
+    console.log('Success: Image Upload');
+    console.log('Image Path:', req.file.path);
+    res.json(response);
+  });
 });
 
 app.listen(app.get('port'), function() {
