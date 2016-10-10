@@ -88,6 +88,13 @@ app.post('/create-association', (req, res) => {
   // TODO: check the db and see if it it can create new association account
   // ... (Check if e-mail is already registered)
   //
+  // Checking if there's already an association account with same email in the Testing db
+  for (let key in db.association) {
+    if ( db.association[key].email === email) {
+      return res.status(400).send('Error: There is already an association with the same e-mail account');
+    }
+  }
+
   // Create new association account
   // Generate association id
   const id = uuid.v4();
@@ -122,6 +129,13 @@ app.post('/create-student', (req, res) => {
   // TODO: check the db and see if it it can create new student account
   // ... (Check if e-mail is already registered)
   //
+  // Checking if there's already a student account with same email in the Testing db
+  for (let key in db.student) {
+    if ( db.student[key].email === email) {
+      return res.status(400).send('Error: There is already a student with the same e-mail account');
+    }
+  }
+
   // Create new student account
   // Generate student id
   const id = uuid.v4();
@@ -191,6 +205,39 @@ app.post('/upload-image', (req, res) => {
     console.log('Image Path:', req.file.path);
     res.json(response);
   });
+});
+
+// GET - Get Student Info
+// params:
+//    id: uuid
+// response:
+//    firstName: string
+//    lastName: string
+//    department: string
+//    profileImage: string
+//    bio: string
+app.get('/student/:id', (req, res) => {
+  console.log(req.params);
+  // Destructure params
+  const { id } = req.params;
+  // TODO: Check if it is in the db...
+  //
+  // Check if it is in the Testing db
+  const student = db.student[id];
+  if (student === undefined)
+    return res.status(400).send('Error: Student not found in the DB.');
+  // Destructure student information
+  const { firstName, lastName, department, profileImage, bio } = student;
+  const response = {
+    firstName,
+    lastName,
+    department,
+    profileImage,
+    bio
+  };
+  // Send Student Information
+  console.log('Success: Get Student Information');
+  res.json(response);
 });
 
 app.listen(app.get('port'), function() {

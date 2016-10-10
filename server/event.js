@@ -1,5 +1,5 @@
 module.export = class Event {
-  constructor (id, name, name, associationId, associationName, startDate, endDate, startHour, endHour, location, image) {
+  constructor (id, name, associationId, associationName, startDate, endDate, startHour, endHour, location, image) {
     this.name = name;
     this.associationId = associationId;
     this.associationName = associationName;

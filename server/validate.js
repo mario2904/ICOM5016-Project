@@ -10,7 +10,6 @@ exports.login = function (obj) {
 }
 
 exports.association = function (obj) {
-  console.log('Association: ',obj);
   return (  _.has(obj,'name')
         &&  _.has(obj, 'initials')
         &&  _.has(obj, 'location')
@@ -21,7 +20,6 @@ exports.association = function (obj) {
 };
 
 exports.student = function (obj) {
-  console.log('Student: ', obj);
   return (  _.has(obj, 'firstName')
         &&  _.has(obj, 'lastName')
         &&  _.has(obj, 'email')
@@ -31,7 +29,6 @@ exports.student = function (obj) {
 }
 
 exports.event = function (obj) {
-  console.log('Association: ',obj);
   return (  _.has(obj,'name')
         &&  _.has(obj, 'associationId')
         &&  _.has(obj, 'associationName')
