@@ -227,12 +227,14 @@ app.get('/student/:id', (req, res) => {
   if (student === undefined)
     return res.status(400).send('Error: Student not found in the DB.');
   // Destructure student information
-  const { firstName, lastName, department, profileImage, bio } = student;
+  const { firstName, lastName, department, profileImage, interestedEvents, subscribedAssociations, bio } = student;
   const response = {
     firstName,
     lastName,
     department,
     profileImage,
+    interestedEvents,
+    subscribedAssociations,
     bio
   };
   // Send Student Information
