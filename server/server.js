@@ -330,6 +330,54 @@ app.get('/association/:id', (req, res) => {
   res.json(response)
 });
 
+// GET - Event Information
+// params:
+//    id: uuid
+// response:
+//    name: string
+//    associationId: uuid
+//    associationName: string
+//    startDate: date
+//    endDate: date
+//    startHour: time
+//    endHour: time
+//    location: string
+//    image: string
+//    description: string
+app.get('/event/:id', (req, res) => {
+  console.log(req.params);
+  // Destructure params
+  const { id } = req.params;
+  // TODO: Check if it is in the db...
+  //
+  // Check if it is in the Testing db
+  const event = db.event[id];
+  if (event === undefined)
+    return res.status(400).send('Error: Event not found in the DB.');
+  // Destructure event information
+  const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description } = event;
+  // TODO: Get extra information from the db
+  //
+  // Get extra information from the Testing db (other tables)
+  // The list of students interested of going.
+  
+  const response = {
+    name,
+    associationId,
+    associationName,
+    startDate,
+    endDate,
+    startHour,
+    endHour,
+    location,
+    image,
+    description
+  }
+  // Send Event Information
+  console.log('Success: Get Event Information');
+  res.json(response);
+});
+
 app.listen(app.get('port'), function() {
   console.log('listening on port', app.get('port'), "...");
 });
