@@ -22,8 +22,12 @@ exports.association = function (obj) {
 exports.student = function (obj) {
   return (  _.has(obj, 'firstName')
         &&  _.has(obj, 'lastName')
+        &&  _.has(obj, 'age')
+        &&  _.has(obj, 'gender')
+        &&  _.has(obj, 'hometown')
+        &&  _.has(obj, 'college')
         &&  _.has(obj, 'email')
-        &&  _.has(obj, 'department')
+        &&  _.has(obj, 'major')
         &&  _.has(obj, 'password')
   );
 }
@@ -37,7 +41,7 @@ exports.event = function (obj) {
         &&  _.has(obj, 'startHour')
         &&  _.has(obj, 'endHour')
         &&  _.has(obj, 'location')
-        &&  _.has(obj, 'imgage')
+        &&  _.has(obj, 'image')
         &&  _.has(obj, 'description')
   );
 };

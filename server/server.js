@@ -1,12 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer  = require('multer');
+const cors = require('cors');
 
 const app = express();
 
 // Models
-const Student = require('./student');
 const Association = require('./association');
+const Student = require('./student');
 const Event = require('./event');
 
 // Utils
@@ -15,7 +16,7 @@ const validate = require('./validate');
 const filter = require('./filter');
 
 // File Uploaders
-const imgUpload =  multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
+const imgUpload = multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
 
 // DB Testing ------------------------------------------------------------------------
 const db = {};
@@ -26,18 +27,21 @@ db.event = {};                    // Maps event id to Event Object Model
 db.sponsors = {};                 // Maps sponsor id to Sponsor Object Model
 // One - to - Many
 db.interestedEvents = {};         // Maps student id to list of event id's
-db.subscribedAssociations = {};   // Maps student id to list of association id's
+db.followedAssociations = {};     // Maps student id to list of association id's
 
 db.associationSponsors = {};      // Maps association id to list of sponsors
 db.activeEvents = {};             // Maps association id to list of their active events
 db.pastEvents = {};               // Maps association id to list of their past events
-db.subscribers = {};              // Maps association id to list of their subscribers
+db.followers = {};                // Maps association id to list of their followers
 // -----------------------------------------------------------------------------------
 
-// parse application/x-www-form-urlencoded
+// Allow Cross-Origin Resource Sharing (CORS)
+app.use(cors());
+
+// Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/json
+// Parse application/json
 app.use(bodyParser.json())
 
 // Setup port
@@ -124,7 +128,11 @@ app.post('/create-association', (req, res) => {
 // body:
 //    firstName: string
 //    lastName: string
-//    department: string
+//    age: number
+//    gender: string
+//    hometown: string
+//    college: string
+//    major: string
 //    email: string
 //    password: string
 app.post('/create-student', (req, res) => {
@@ -136,7 +144,7 @@ app.post('/create-student', (req, res) => {
   else if (!validate.student(req.body))
     return res.status(400).send('Error: Missing fields for student.');
   // Destructure body params
-  const { firstName, lastName, department, email, password } = req.body;
+  const { firstName, lastName, age, gender, hometown, college, major, email, password } = req.body;
   // TODO: check the db and see if it it can create new student account
   // ... (Check if e-mail is already registered)
   //
@@ -151,7 +159,7 @@ app.post('/create-student', (req, res) => {
   // Generate student id
   const id = uuid.v4();
   // Create new Student object model
-  const newStudent = new Student(id, firstName, lastName, email, department, password);
+  const newStudent = new Student(id, firstName, lastName, age, gender, hometown, college, major, email, password);
   // TODO: Store it in the db ...
   // Store in Testing db
   db.student[id] = newStudent;
@@ -228,9 +236,9 @@ app.post('/upload-image', (req, res) => {
 // response:
 //    firstName: string
 //    lastName: string
-//    department: string
+//    major: string
 //    interestedEvents: [] uuid
-//    subscribedAssociations: [] uuid
+//    followedAssociations: [] uuid
 //    profileImage: string
 //    bio: string
 app.get('/student/:id', (req, res) => {
@@ -244,20 +252,24 @@ app.get('/student/:id', (req, res) => {
   if (student === undefined)
     return res.status(400).send('Error: Student not found in the DB.');
   // Destructure student information
-  const { firstName, lastName, department, profileImage, bio } = student;
+  const { firstName, lastName, age, gender, hometown, college, major, profileImage, bio } = student;
   // TODO: Get extra information from the db
   //
   // Get extra information from the Testing db
   const interestedEvents = db.interestedEvents[id] || [];
-  const subscribedAssociations = db.subscribedAssociations[id] || [];
+  const followedAssociations = db.followedAssociations[id] || [];
   const response = {
     firstName,
     lastName,
-    department,
-    interestedEvents,
-    subscribedAssociations,
+    age,
+    gender,
+    hometown,
+    college,
+    major,
     profileImage,
-    bio
+    bio,
+    interestedEvents,
+    followedAssociations
   };
   // Send Student Information
   console.log('Success: Get Student Information');

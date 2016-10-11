@@ -1,11 +1,15 @@
 module.exports = class Student {
 
-  constructor (id, firstName, lastName, email, department, password) {
+  constructor (id, firstName, lastName, age, gender, hometown, college, major, email, password) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.age = age;
+    this.gender = gender;
+    this.hometown = hometown;
+    this.college = college;
     this.email = email;
-    this.department = department;
+    this.major = major;
     this.password = password;
     // Defaults
     this.profileImage = "/images/defaults/default-profile.jpg";
