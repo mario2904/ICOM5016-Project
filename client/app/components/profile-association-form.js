@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Radio} from 'react-bootstrap';
-
-export default class ProfileForm extends Component {
+import ProfileAssociationModal from "./profile-association-modal";
+export default class ProfileAssociationForm extends Component {
   submit (event) {
     event.preventDefault();
     // Do the sign-in validation here...
@@ -13,12 +13,10 @@ export default class ProfileForm extends Component {
     return (
       <Grid>
         <Form horizontal>
-
-
-          <FormGroup controlId="formHorizontalEmail" >
+          <FormGroup controlId="formHorizontalLocation" >
             <Col sm={6}>
-              <ControlLabel>Hometown</ControlLabel>
-              <FormControl type="Hometown" placeholder="Hometown" />
+              <ControlLabel>Location</ControlLabel>
+              <FormControl type="Location" placeholder="Location" />
             </Col>
           </FormGroup>
 
@@ -29,40 +27,37 @@ export default class ProfileForm extends Component {
             </Col>
           </FormGroup>
 
-          <FormGroup controlId="formHorizontalMajor">
+          <FormGroup controlId="formHorizontalPageLink">
             <Col sm={6}>
-            <ControlLabel>Major</ControlLabel>
-              <FormControl type="major" placeholder="Major"/>
+            <ControlLabel>Official Page Link</ControlLabel>
+              <FormControl type="pagelink" placeholder="Page Link"/>
             </Col>
           </FormGroup>
 
-          <FormGroup controlId="formHorizontalCollege">
-            <Col sm={6}>
-            <ControlLabel>College</ControlLabel>
-              <FormControl type="college" placeholder="College"/>
+        <FormGroup controlId="formControlsSelectMultiple">
+           <Col sm={6}>
+           <ControlLabel>Sponsors</ControlLabel>
+             <FormControl componentClass="select" multiple>
+               <option value="select">select (multiple)</option>
+               <option value="other">...</option>
+             </FormControl>
+               <Radio>Add</Radio>
+               <Radio>Remove</Radio>
             </Col>
           </FormGroup>
 
-          <FormGroup>
+          <FormGroup controlId="formHorizontalPassword">
             <Col sm={6}>
-            <ControlLabel>Gender</ControlLabel>
-              <div class="radio">
-                <p><input type="radio" name="optradio"/> Male</p>
-              </div>
-            <div class="radio">
-                <p><input type="radio" name="optradio"/> Female</p>
-          </div>
-             <div class="radio">
-                <p><input type="radio" name="optradio"/> Other</p>
-             </div>
+            <ControlLabel>Sponsors</ControlLabel>
+              <ProfileAssociationModal></ProfileAssociationModal>
             </Col>
           </FormGroup>
 
           <FormGroup controlId="formControlsTextarea">
             <Col sm={6}>
-            <ControlLabel>Bio</ControlLabel>
+            <ControlLabel>Description</ControlLabel>
             <FormControl componentClass="textarea" placeholder="textarea"
-            type="Biography" placeholder="Biography" />
+            type="Description" placeholder="Description"/>
             </Col>
           </FormGroup>
 

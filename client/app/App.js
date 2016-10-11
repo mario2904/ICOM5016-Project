@@ -13,8 +13,7 @@ import Frame from './components/frame';
 import Profile from './components/profile';
 import UserReg from './components/usersignup';
 import AssoReg from './components/associations-signup'
-
-
+import ProfileAssociation from './components/profile-association';
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -33,6 +32,7 @@ export default class App extends Component {
             <Route path="/userregister" component={UserReg}></Route>
             <Route path="/assoregister" component={AssoReg}></Route>
 
+           <Route path="/profile/associations/:associationID" component={ProfileAssociation}></Route>
           </Route>
         </Router>
       </Provider>
