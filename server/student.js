@@ -8,8 +8,6 @@ module.exports = class Student {
     this.department = department;
     this.password = password;
     // Defaults
-    this.interestedEvents = [];       // List of event id's that student is interested in
-    this.subscribedAssociations = []; // List of associations id's that student is subscribed to
     this.profileImage = "/images/defaults/default-profile.jpg";
     this.bio = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
     do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad \

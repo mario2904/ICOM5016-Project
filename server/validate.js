@@ -37,6 +37,7 @@ exports.event = function (obj) {
         &&  _.has(obj, 'startHour')
         &&  _.has(obj, 'endHour')
         &&  _.has(obj, 'location')
-        &&  _.has(obj, 'img')
+        &&  _.has(obj, 'imgage')
+        &&  _.has(obj, 'description')
   );
 };

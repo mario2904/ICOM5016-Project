@@ -17,11 +17,22 @@ const filter = require('./filter');
 // File Uploaders
 const imgUpload =  multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
 
-// DB Testing
+// DB Testing ------------------------------------------------------------------------
 const db = {};
-db.student = {};
-db.association = {};
-db.event = {};
+// One - to - One
+db.student = {};                  // Maps student id to Student Object Model
+db.association = {};              // Maps association id to Association Object Model
+db.event = {};                    // Maps event id to Event Object Model
+db.sponsors = {};                 // Maps sponsor id to Sponsor Object Model
+// One - to - Many
+db.interestedEvents = {};         // Maps student id to list of event id's
+db.subscribedAssociations = {};   // Maps student id to list of association id's
+
+db.associationSponsors = {};      // Maps association id to list of sponsors
+db.activeEvents = {};             // Maps association id to list of their active events
+db.pastEvents = {};               // Maps association id to list of their past events
+db.subscribers = {};              // Maps association id to list of their subscribers
+// -----------------------------------------------------------------------------------
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -155,12 +166,13 @@ app.post('/create-student', (req, res) => {
 //    name: string
 //    associationId: string
 //    associationName: string
-//    startDate: string
-//    endDate: string
+//    startDate: date
+//    endDate: date
 //    startHour: string
 //    endHour: string
 //    location: string
 //    image: string
+//    description: string
 app.post('/create-event', (req, res) => {
   console.log(req.body);
   if (!req.body)
@@ -169,16 +181,19 @@ app.post('/create-event', (req, res) => {
   else if (!validate.event(req.body))
     return res.status(400).send('Error: Missing fields for event.');
   // Destructure body params
-  const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image } = req.body;
+  const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description } = req.body;
 
   // Create new event
   // Generate event id
   const id = uuid.v4();
   // Create new Student object model
-  const newEvent = new Event(id, name, associationId, associationName, startDate, endDate, startHour, endHour, location, image);
+  const newEvent = new Event(id, name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description);
   // TODO: Store it in the db ...
+  //
   // Store in Testing db
   db.event[id] = newEvent;
+  // Update activeEvents list for that association
+  db.activeEvents[associationId] = [id].concat(db.activeEvents[associationId] || []);
   // Send OK status
   console.log('Success: Create Event');
   console.log('Event ID:', id);
@@ -214,6 +229,8 @@ app.post('/upload-image', (req, res) => {
 //    firstName: string
 //    lastName: string
 //    department: string
+//    interestedEvents: [] uuid
+//    subscribedAssociations: [] uuid
 //    profileImage: string
 //    bio: string
 app.get('/student/:id', (req, res) => {
@@ -227,14 +244,19 @@ app.get('/student/:id', (req, res) => {
   if (student === undefined)
     return res.status(400).send('Error: Student not found in the DB.');
   // Destructure student information
-  const { firstName, lastName, department, profileImage, interestedEvents, subscribedAssociations, bio } = student;
+  const { firstName, lastName, department, profileImage, bio } = student;
+  // TODO: Get extra information from the db
+  //
+  // Get extra information from the Testing db
+  const interestedEvents = db.interestedEvents[id] || [];
+  const subscribedAssociations = db.subscribedAssociations[id] || [];
   const response = {
     firstName,
     lastName,
     department,
-    profileImage,
     interestedEvents,
     subscribedAssociations,
+    profileImage,
     bio
   };
   // Send Student Information
