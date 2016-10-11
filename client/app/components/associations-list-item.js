@@ -4,7 +4,7 @@ import { Col, Thumbnail } from 'react-bootstrap';
 export default class AssociationsListItem extends Component {
   render () {
     return (
-      <Col sm={5} md={3}>
+      <Col sm={6} md={3}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
         {/* object-fit will accept: fill, contain, cover, none, scale-down */}
         <style type="text/css">{`

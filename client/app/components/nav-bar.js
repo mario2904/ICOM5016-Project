@@ -9,7 +9,9 @@ export default class NavBar extends Component {
           <Navbar.Brand>
             <a href="/home">E-Spotter</a>
           </Navbar.Brand>
+          <Navbar.Toggle/>
         </Navbar.Header>
+        <Navbar.Collapse>
         <Nav>
           <NavItem eventKey={1} href="/associations">Associations</NavItem>
           <NavItem eventKey={2} href="/events">Events</NavItem>
@@ -23,6 +25,7 @@ export default class NavBar extends Component {
             <MenuItem eventKey={2.4} href="/profile/associations/:associationID">Association Profile</MenuItem>
           </NavDropdown>
         </Nav>
+      </Navbar.Collapse>
       </Navbar>
     );
   }

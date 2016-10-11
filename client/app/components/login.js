@@ -23,8 +23,9 @@ export default class Login extends Component {
 
   render () {
     return (
-      <Grid>
+      <Grid >
         <Form horizontal>
+          <h1 style={{textAlign:"left"}}><strong>Sign In</strong></h1>
           <FormGroup controlId="formHorizontalEmail" >
             <Col componentClass={ControlLabel} sm={2}>
               Email

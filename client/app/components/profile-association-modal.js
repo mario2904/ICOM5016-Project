@@ -3,7 +3,7 @@ import { Modal,Button,Popover, Tooltip, OverlayTrigger} from 'react-bootstrap';
 
 
 
-export default class ModalOverlay extends Component{
+export default class ProfileAssociationModal extends Component{
   constructor (){
     super();
     this.state = {showModal: false};

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Radio} from 'react-bootstrap';
-
+import ProfileAssociationModal from "./profile-association-modal";
 export default class ProfileAssociationForm extends Component {
   submit (event) {
     event.preventDefault();
@@ -48,8 +48,8 @@ export default class ProfileAssociationForm extends Component {
 
           <FormGroup controlId="formHorizontalPassword">
             <Col sm={6}>
-            <ControlLabel>Sponsor</ControlLabel>
-              <FormControl type="Sponsor" placeholder="Sponsor Name"/>
+            <ControlLabel>Sponsors</ControlLabel>
+              <ProfileAssociationModal></ProfileAssociationModal>
             </Col>
           </FormGroup>
 

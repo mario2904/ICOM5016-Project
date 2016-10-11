@@ -46,9 +46,15 @@ export default class ProfileForm extends Component {
           <FormGroup>
             <Col sm={6}>
             <ControlLabel>Gender</ControlLabel>
-              <Radio>Male</Radio>
-              <Radio>Female</Radio>
-              <Radio>Other</Radio>
+              <div class="radio">
+                <p><input type="radio" name="optradio"/> Male</p>
+              </div>
+            <div class="radio">
+                <p><input type="radio" name="optradio"/> Female</p>
+          </div>
+             <div class="radio">
+                <p><input type="radio" name="optradio"/> Other</p>
+             </div>
             </Col>
           </FormGroup>
 
