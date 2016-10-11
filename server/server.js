@@ -255,9 +255,10 @@ app.get('/student/:id', (req, res) => {
   const { firstName, lastName, age, gender, hometown, college, major, profileImage, bio } = student;
   // TODO: Get extra information from the db
   //
-  // Get extra information from the Testing db
+  // Get extra information from the Testing db (other tables)
   const interestedEvents = db.interestedEvents[id] || [];
   const followedAssociations = db.followedAssociations[id] || [];
+
   const response = {
     firstName,
     lastName,
@@ -274,6 +275,59 @@ app.get('/student/:id', (req, res) => {
   // Send Student Information
   console.log('Success: Get Student Information');
   res.json(response);
+});
+
+// GET - Association Information
+// params:
+//    id: uuid
+// response
+//    name: string
+//    initials: string
+//    location: string
+//    link: string
+//    email: string
+//    profileImage: string
+//    bio: string
+//    sponsors: [] uuid
+//    activeEvents: [] uuid
+//    pastEvents: [] uuid
+//    followers: [] uuid
+app.get('/association/:id', (req, res) => {
+  console.log(req.params);
+  // Destructure params
+  const { id } = req.params;
+  // TODO: Check if it is in the db...
+  //
+  // Check if it is in the Testing db
+  const association = db.association[id];
+  if (association === undefined)
+    return res.status(400).send('Error: Association not found in the DB.');
+  // Destructure association information
+  const { name, initials, location, link, email, profileImage, bio } = association;
+  // TODO: Get extra information from the db
+  //
+  // Get extra information from the Testing db (other tables)
+  const sponsors = db.associationSponsors[id] || [];
+  const activeEvents = db.activeEvents[id] || [];
+  const pastEvents = db.pastEvents[id] || [];
+  const followers = db.followers[id] || [];
+
+  const response = {
+    name,
+    initials,
+    location,
+    link,
+    email,
+    profileImage,
+    bio,
+    sponsors,
+    activeEvents,
+    pastEvents,
+    followers
+  }
+  // Send Association Information
+  console.log('Success: Get Association Information');
+  res.json(response)
 });
 
 app.listen(app.get('port'), function() {
