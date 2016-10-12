@@ -21,8 +21,9 @@ export default class NavBar extends Component {
           <NavDropdown eventKey={2} title="Account" id="basic-nav-dropdown">
             <MenuItem eventKey={2.1} href="/profile">Profile</MenuItem>
             <MenuItem eventKey={2.2}>Settings</MenuItem>
-            <MenuItem eventKey={2.3}>Log Out</MenuItem>
+            <MenuItem eventKey={2.3} href="/">Log Out</MenuItem>
             <MenuItem eventKey={2.4} href="/profile/associations/:associationID">Association Profile</MenuItem>
+            <MenuItem eventKey={2.5} href="/create-edit-event/:eventID">{"Create/Edit Event"}</MenuItem>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>

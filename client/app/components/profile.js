@@ -14,12 +14,12 @@ export default class Profile extends Component{
         <Row>
 
           <Col lg={4} xs={5}>
-            <Image style={imgStyle} src="http://orig01.deviantart.net/a3f5/f/2013/082/c/e/riku___kh_hd_1_5_remix_by_uxianxiii-d5yyrvu.jpg"
+            <Image style={imgStyle} src={this.props.profile.pic}
              responsive thumbnail/>
           </Col>
 
           <Col lg={8} xs={7}>
-            <h1 style={txt}><strong> Graciany Lebrón Rodríguez</strong></h1>
+            <h1 style={txt}><strong> {this.props.profile.name}</strong></h1>
           </Col>
         </Row>
 
@@ -71,6 +71,7 @@ const tabStyle = {
 
 Profile.defaultProps = {
   profile: {
+    name: "Graciany A. Lebron Rodriguez",
     email: "graciany.lebron@upr.edu",
     gender: "Male",
     hometown: "Bayamón",
@@ -82,7 +83,8 @@ Profile.defaultProps = {
     ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate\
     velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat \
    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id \
-   est laborum"
+   est laborum",
+   pic: "http://orig01.deviantart.net/a3f5/f/2013/082/c/e/riku___kh_hd_1_5_remix_by_uxianxiii-d5yyrvu.jpg"
 
   },
 
