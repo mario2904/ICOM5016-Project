@@ -45,15 +45,15 @@ export default class ProfileForm extends Component {
 
           <FormGroup>
             <Col sm={6}>
-            <ControlLabel>Gender</ControlLabel>
-              <div class="radio">
-                <p><input type="radio" name="optradio"/> Male</p>
+            <ControlLabel style={{display:"block", textAlign:"left", margin: "10px 0px 0px 0px"}}>Gender: </ControlLabel>
+              <div style={radio1}>
+                <p><input id="one" type="radio" name="optradio"/> Male</p>
               </div>
-            <div class="radio">
-                <p><input type="radio" name="optradio"/> Female</p>
+            <div style={radioStyle}>
+                <p><input id="two" type="radio" name="optradio"/> Female</p>
           </div>
-             <div class="radio">
-                <p><input type="radio" name="optradio"/> Other</p>
+             <div style={radioStyle}>
+                <p><input id="three" type="radio" name="optradio"/> Other</p>
              </div>
             </Col>
           </FormGroup>
@@ -77,4 +77,15 @@ export default class ProfileForm extends Component {
       </Grid>
     );
   }
+}
+
+const radioStyle={
+  display: "inline-block",
+  padding: "0px 0px 0px 15px",
+  margin: "10px 0px 0px 0px"
+}
+
+const radio1={
+  display: "inline-block",
+margin: "10px 0px 0px 0px"
 }

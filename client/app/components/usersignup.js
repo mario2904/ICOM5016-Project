@@ -51,10 +51,46 @@ export default class Usignup extends Component {
           </Col>
         </FormGroup>
 
+        <FormGroup controlId="formHorizontalBirthday" >
+          <Col sm={6}>
+            <ControlLabel>{"Birthday"}</ControlLabel>
+            <FormControl type="date" />
+          </Col>
+        </FormGroup>
+
+        <FormGroup>
+          <Col sm={6}>
+          <ControlLabel style={{display:"block", textAlign:"left", margin: "10px 0px 0px 0px"}}>Gender: </ControlLabel>
+            <div style={radio1}>
+              <p ><input id="one" type="radio" name="optradio"/> Male</p>
+            </div>
+          <div  style={radioStyle}>
+              <p><input id="two" type="radio" name="optradio"/> Female</p>
+        </div>
+           <div style={radioStyle}>
+              <p ><input id="three" type="radio" name="optradio"/> Other</p>
+           </div>
+          </Col>
+        </FormGroup>
+
+        <FormGroup controlId="formHorizontalHometown" >
+          <Col sm={6}>
+            <ControlLabel>{"Hometown"}</ControlLabel>
+            <FormControl type="text" placeholder="Hometown"/>
+          </Col>
+        </FormGroup>
+
+        <FormGroup controlId="formHorizontalCollege" >
+          <Col sm={6}>
+            <ControlLabel>{"College"}</ControlLabel>
+            <FormControl type="text" placeholder="College"/>
+          </Col>
+        </FormGroup>
+
         <FormGroup controlId="formControlsSelect">
           <Col sm={6}>
-            <ControlLabel>Department</ControlLabel>
-            <FormControl componentClass="select" placeholder="Select Department">
+            <ControlLabel>Major</ControlLabel>
+            <FormControl componentClass="select" placeholder="Select Major">
               <option value="select">Select</option>
               <option value="ICOM">ICOM</option>
               <option value="INEL">INEL</option>
@@ -76,12 +112,20 @@ export default class Usignup extends Component {
           </Col>
         </FormGroup>
 
-
-
         </Form>
-
 
       </Grid>
     );
   }
+}
+
+const radioStyle={
+  display: "inline-block",
+  padding: "0px 0px 0px 15px",
+  margin: "10px 0px 0px 0px"
+}
+
+const radio1={
+  display: "inline-block",
+  margin: "10px 0px 0px 0px"
 }

@@ -53,8 +53,6 @@ export default class Asignup extends Component {
           </Col>
         </FormGroup>
 
-
-
         <FormGroup controlId="formControlsSelect">
           <Col sm={6}>
             <ControlLabel>Main Office Location</ControlLabel>
@@ -70,10 +68,10 @@ export default class Asignup extends Component {
           </Col>
         </FormGroup>
 
-        <FormGroup controlId="formHorizontalAinitials" >
+        <FormGroup controlId="formHorizontalLink" >
           <Col sm={6}>
             <ControlLabel>Association Link</ControlLabel>
-            <FormControl type="text" placeholder={"Association's Link"} />
+            <FormControl type="url" placeholder={"Association's Link"} />
           </Col>
         </FormGroup>
 

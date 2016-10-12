@@ -11,7 +11,7 @@ export default class Home extends Component {
       <div>
 
           <Image responsive style={picStyle} src="http://nceft.org/wp-content/uploads/2014/12/calendar-graphic-wide.jpg"/>
-          <h3 style={{textAlign: "center"}}>Interested Events</h3>
+          <h3 style={{textAlign: "center", fontSize:"4em"}}><strong>Interested Events</strong></h3>
           <EventsSearchBar />
           <GridList items={this.props.interestedEvents} ListItem={EventsListItem}/>
       </div>
