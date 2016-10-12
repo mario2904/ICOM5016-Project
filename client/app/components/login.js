@@ -2,13 +2,37 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
 import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Row } from 'react-bootstrap';
+import axios from 'axios';
 
 export default class Login extends Component {
+  constructor () {
+    super();
+    this.state = {
+      email: '',
+      password: ''
+    }
+    this.submit = this.submit.bind(this);
+  }
   submit (event) {
     event.preventDefault();
     // Do the sign-in validation here...
-    // If successful, go to home page
-    browserHistory.push('/home');
+    axios.post('/api/login', {
+      email: this.state.email,
+      password: this.state.password,
+      account: 'student'
+    })
+    .then(function (response) {
+      // If successful, go to home page
+      console.log('Success');
+      console.log(response);
+      browserHistory.push('/home');
+    })
+    .catch(function (error) {
+      // Else do nothing
+      console.log('Error');
+      console.log(error);
+    });
+
   }
   signup (event) {
     event.preventDefault();
@@ -30,7 +54,7 @@ export default class Login extends Component {
               Email
             </Col>
             <Col sm={6}>
-              <FormControl type="email" placeholder="Email" />
+              <FormControl type="email" placeholder="Email" value={this.state.email} onChange={(e) => {this.setState({email: e.target.value})}}/>
             </Col>
           </FormGroup>
           <FormGroup controlId="formHorizontalPassword">
@@ -38,7 +62,7 @@ export default class Login extends Component {
               Password
             </Col>
             <Col sm={6}>
-              <FormControl type="password" placeholder="Password"/>
+              <FormControl type="password" placeholder="Password" value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}}/>
             </Col>
           </FormGroup>
           <FormGroup>
