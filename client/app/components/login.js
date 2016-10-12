@@ -7,27 +7,18 @@ export default class Login extends Component {
   submit (event) {
     event.preventDefault();
     // Do the sign-in validation here...
-
     // If successful, go to home page
     browserHistory.push('/home');
   }
-
   signup (event) {
     event.preventDefault();
-    // Do the sign-in validation here...
-
-    // If successful, go to home page
-    browserHistory.push('/userregister');
+  //Event Manager to switch to Student Sign up
+    browserHistory.push('/signup-student');
   }
-
   signupAssociation (event) {
-    event.preventDefault();
-    // Do the sign-in validation here...
-
-    // If successful, go to home page
-    browserHistory.push('/assoregister');
+    //Event Manager to switch to Association Sign up
+    browserHistory.push('/signup-association');
   }
-
 
   render () {
     return (
@@ -42,7 +33,6 @@ export default class Login extends Component {
               <FormControl type="email" placeholder="Email" />
             </Col>
           </FormGroup>
-
           <FormGroup controlId="formHorizontalPassword">
             <Col componentClass={ControlLabel} sm={2}>
               Password
@@ -51,26 +41,21 @@ export default class Login extends Component {
               <FormControl type="password" placeholder="Password"/>
             </Col>
           </FormGroup>
-
           <FormGroup>
             <Col smOffset={2} sm={10}>
               <Checkbox>Remember me</Checkbox>
             </Col>
           </FormGroup>
-
           <FormGroup>
             <Col smOffset={2} sm={10}>
               <Button type="submit" bsStyle="danger" onClick={this.submit}>
                 Sign in
               </Button>
-
             </Col>
           </FormGroup>
         </Form>
-      <p>{"If you're a student and don't have an account,"} <a href="#" onClick={this.signup} > sign up now!</a></p>
-      <p>{"If you're an association and don't have an account,"} <a href="#" onClick={this.signupAssociation} > sign up now!</a></p>
-
-
+        <p>{"If you're a student and don't have an account,"} <a href="#" onClick={this.signup} > sign up now!</a></p>
+        <p>{"If you're an association and don't have an account,"} <a href="#" onClick={this.signupAssociation} > sign up now!</a></p>
       </Grid>
     );
   }

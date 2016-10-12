@@ -13,7 +13,11 @@ import Frame from './components/frame';
 import Profile from './components/profile';
 import UserReg from './components/usersignup';
 import AssoReg from './components/associations-signup'
+
 import ProfileAssociation from './components/profile-association';
+
+import Etest from './components/events-individual'
+
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -29,8 +33,9 @@ export default class App extends Component {
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
             <Route path="/profile" component={Profile}></Route>
-            <Route path="/userregister" component={UserReg}></Route>
-            <Route path="/assoregister" component={AssoReg}></Route>
+            <Route path="/signup-student" component={UserReg}></Route>
+            <Route path="/signup-association" component={AssoReg}></Route>
+            <Route path="/events/:eventID" component ={Etest}></Route>
 
            <Route path="/profile/associations/:associationID" component={ProfileAssociation}></Route>
           </Route>
