@@ -23,7 +23,6 @@ exports.fillDummyData = function (db) {
   for (let event of events) {
     for (let association of associations) {
       if (event.associationName === association.name) {
-        console.log('MEH');
         const { name, associationName, startDate, endDate, startHour, endHour, location, image, description } = event;
         const id = uuid.v4();
         //console.log(association.id);
@@ -36,6 +35,16 @@ exports.fillDummyData = function (db) {
 }
 
 const associations = [
+  {
+    name: 'Neuro-RUM / Club Literario en Neurociencias',
+    initials: 'Neuro-RUM',
+    location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
+    link: 'http://neurorum.wordpress.com/',
+    email: 'neuro_rum@uprm.edu',
+    password: 'password',
+    image: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751'
+
+  },
   {
     name: 'IEEE Women in Engineering - UPRM',
     initials: 'WIE',
@@ -82,7 +91,7 @@ const associations = [
     image: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/183118_193619493990036_1420352_n.jpg?oh=798eff36e082d94c33e887b37af9ca14&oe=58A3C9B9'
   },
   {
-    name: 'Society of Hispanic Professional Engineers',
+    name: 'Society of Hispanic Professional Engineers - UPRM',
     initials: 'SHPE',
     location: 'University of Puerto Rico, Mayagüez Campus, Stefani Building, S-101',
     link: 'http://shpeuprm.tumblr.com/',
@@ -233,23 +242,12 @@ const events = [
     startHour: "9:00 am",
     endHour: "5:00 pm",
     location: "Roberto Clemente",
-    image: "http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  },
-  {
-    name: "Recogido de Alimentos",
-    associationName: "Organización Estudiantil de Protección de Animales",
-    startDate: "Oct. 13, 2016",
-    endDate: "Oct. 13, 2016",
-    startHour: "8:00 am",
-    endHour: "11:00 am",
-    location: "Universidad de Puerto Rico, Recinto Mayaguez",
-    image: "https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/14590297_542744765930783_7339776675739874149_n.jpg?oh=8ad85c8fcb55d4fe6404c3aaf64ce685&oe=58A83C20",
-    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    image: "http://hack.pr/wp-content/uploads/2015/08/FacebookLOW.png",
+    description: "HackPR 2016 is the perfect meeting place for the hacker and technology innovation community in Puerto Rico. Join us as a student or professional hacker to win more than 5k in prizes or as a  visitors to participate in our job fair, exhibitors area, workshops and final hacks (projects) presentation at the end of the event."
   },
   {
     name: "Fundraiser Neuro-RUM",
-    associationName: "Neuro-RUM",
+    associationName: "Neuro-RUM / Club Literario en Neurociencias",
     startDate: "Sept. 28, 2016",
     endDate: "Sept. 28, 2016",
     startHour: "3:30 pm",
@@ -279,5 +277,27 @@ const events = [
     location: "University of Puerto Rico, Mayaguez Campus - S-228",
     image: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14500634_881246661977335_7362168074202245899_o.jpg",
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-  }
+  },
+  {
+    name: "¿Quieres Ganar un Hackathon?",
+    associationName: "Idea Platform",
+    startDate: "Oct. 11, 2016",
+    endDate: "Oct. 11, 2016",
+    startHour: "10:30 am",
+    endHour: "3:00 pm",
+    location: "University of Puerto Rico, Mayaguez Campus, Student Center, 1st Floor",
+    image: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14701042_887235714711763_1763279942730887759_o.jpg",
+    description: "¿VAZ PARA EL HACKATHON ESTE FIN DE SEMANA?' ¿Quieres aprender a como ganar uno? No te pierdas esta gran oportunidad única, mañana a las 10:30am en el #StartingPoint"
+  },
+  {
+    name: "Development Programs Assembly",
+    associationName: "Society of Hispanic Professional Engineers - UPRM",
+    startDate: "Oct. 27, 2016",
+    endDate: "Oct. 27, 2016",
+    startHour: "10:30 am",
+    endHour: "12:00 pm",
+    location: "University of Puerto Rico, Mayaguez Campus, Department of Electrical and Computer Engineering",
+    image: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14615698_1275776692452541_7398254866605758402_o.jpg",
+    description: "The Society of Hispanic Professional Engineers (SHPE) invites you to our Development Programs Assembly! Learn about our different professional growth programs: The Career Prep Program, the InternSHPE Program, and Technical Program. All offer great and unique opportunities to become a better leader, professional, and student. Do not miss this opportunity!"
+  },
 ];
