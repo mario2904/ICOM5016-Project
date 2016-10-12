@@ -38,6 +38,7 @@ export default class App extends Component {
             <Route path="/signup-association" component={AssoReg}></Route>
             <Route path="/events/:eventID" component ={Etest}></Route>
            <Route path="/profile/associations/:associationID" component={ProfileAssociation}></Route>
+           <Route path="/create-event" component={CreateEventForm}></Route>
           </Route>
         </Router>
       </Provider>
