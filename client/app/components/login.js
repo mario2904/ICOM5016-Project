@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
-import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Row } from 'react-bootstrap';
 
 export default class Login extends Component {
   submit (event) {
@@ -51,11 +51,12 @@ export default class Login extends Component {
               <Button type="submit" bsStyle="danger" onClick={this.submit}>
                 Sign in
               </Button>
+              <Row><p> </p></Row>
+              <p>{"If you're a student and don't have an account,"} <a href="#" onClick={this.signup} > sign up now!</a></p>
+              <p>{"If you're an association and don't have an account,"} <a href="#" onClick={this.signupAssociation} > sign up now!</a></p>
             </Col>
           </FormGroup>
         </Form>
-        <p>{"If you're a student and don't have an account,"} <a href="#" onClick={this.signup} > sign up now!</a></p>
-        <p>{"If you're an association and don't have an account,"} <a href="#" onClick={this.signupAssociation} > sign up now!</a></p>
       </Grid>
     );
   }
