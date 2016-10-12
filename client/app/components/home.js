@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, PageHeader, Jumbotron } from 'react-bootstrap';
+import { Button, PageHeader, Jumbotron, Image} from 'react-bootstrap';
 
 import EventsSearchBar from './events-search-bar';
 import GridList from './grid-list';
@@ -9,12 +9,8 @@ export default class Home extends Component {
   render () {
     return (
       <div>
-        <PageHeader>Welcome to E-Spotter!</PageHeader>
-          <Jumbotron>
-            <h1>Hello, world!</h1>
-            <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            <p><Button bsStyle="primary">Learn more</Button></p>
-          </Jumbotron>
+
+          <Image responsive style={picStyle} src="http://nceft.org/wp-content/uploads/2014/12/calendar-graphic-wide.jpg"/>
           <h3 style={{textAlign: "center"}}>Interested Events</h3>
           <EventsSearchBar />
           <GridList items={this.props.interestedEvents} ListItem={EventsListItem}/>
@@ -88,3 +84,22 @@ Home.defaultProps = {
     }
   ]
 };
+
+const homeStyle={
+  objectFit: "fill",
+  width: "auto",
+  height: "500px",
+  maxHeight: "500px",
+  margin: "-25px 0px 0px 0px"
+}
+
+ const picStyle={
+  width: "100%",
+  maxHeight:"400px",
+  height: "100%",
+  margin: "-25px 0px 0px 0px",
+  padding: "0px 0px 0px 0px",
+  display:"inline-block" /*Inline block is life*/
+
+
+}
