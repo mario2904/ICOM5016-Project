@@ -35,6 +35,11 @@ db.pastEvents = {};               // Maps association id to list of their past e
 db.followers = {};                // Maps association id to list of their followers
 // -----------------------------------------------------------------------------------
 
+// Testing
+const test = require('./test');
+// Fill testing db with dummy data
+test.fillDummyData(db);
+
 // Allow Cross-Origin Resource Sharing (CORS)
 app.use(cors());
 
@@ -70,9 +75,12 @@ app.post('/login', (req, res) => {
   // TODO: Check if it matches one record in the db
   //
   // Check the db Testing and see if it mathces ...
-  for (let key in db[account]) {
-    if ( db[account][key].email === email && db[account][key].password === password) {
-      id = key;
+  for (var key in db[account]) {
+    if (db[account].hasOwnProperty(key)) {
+      // Need to match both email and password
+      if ( db[account][key].email === email && db[account][key].password === password) {
+        id = key;
+      }
     }
   }
   // Return error if there was no match in the db
@@ -104,12 +112,13 @@ app.post('/create-association', (req, res) => {
   // ... (Check if e-mail is already registered)
   //
   // Checking if there's already an association account with same email in the Testing db
-  for (let key in db.association) {
-    if ( db.association[key].email === email) {
-      return res.status(400).send('Error: There is already an association with the same e-mail account');
+  for (var key in db.association) {
+    if (db.association.hasOwnProperty(key)) {
+      if ( db.association[key].email === email) {
+        return res.status(400).send('Error: There is already an association with the same e-mail account');
+      }
     }
   }
-
   // Create new association account
   // Generate association id
   const id = uuid.v4();
@@ -140,7 +149,6 @@ app.post('/create-student', (req, res) => {
   if (!req.body)
     return res.sendStatus(400);
   // Check if has valid params in the body or the request
-
   else if (!validate.student(req.body))
     return res.status(400).send('Error: Missing fields for student.');
   // Destructure body params
@@ -149,9 +157,11 @@ app.post('/create-student', (req, res) => {
   // ... (Check if e-mail is already registered)
   //
   // Checking if there's already a student account with same email in the Testing db
-  for (let key in db.student) {
-    if ( db.student[key].email === email) {
-      return res.status(400).send('Error: There is already a student with the same e-mail account');
+  for (var key in db.student) {
+    if (db.student.hasOwnProperty(key)) {
+      if ( db.student[key].email === email) {
+        return res.status(400).send('Error: There is already a student with the same e-mail account');
+      }
     }
   }
 
@@ -229,6 +239,51 @@ app.post('/upload-image', (req, res) => {
     res.json(response);
   });
 });
+
+// GET - Get All Students Info
+// response:
+//    [] student:
+//        firstName: string
+//        lastName: string
+//        major: string
+//        interestedEvents: [] uuid
+//        followedAssociations: [] uuid
+//        profileImage: string
+//        bio: string
+app.get('/student/all', (req, res) => {
+  const response = [];
+  for (let id in db.student) {
+    if (db.student.hasOwnProperty(id)) {
+      // Destructure student information
+      const { firstName, lastName, age, gender, hometown, college, major, profileImage, bio } = db.student[id];
+      // TODO: Get extra information from the db
+      //
+      // Get extra information from the Testing db (other tables)
+      const interestedEvents = db.interestedEvents[id] || [];
+      const followedAssociations = db.followedAssociations[id] || [];
+      const singleStudent = {
+        firstName,
+        lastName,
+        age,
+        gender,
+        hometown,
+        college,
+        major,
+        profileImage,
+        bio,
+        interestedEvents,
+        followedAssociations
+      };
+      // Add single user to the response
+      response.push(singleStudent);
+    }
+  }
+  // Send All Students Information
+  console.log('Success: Get All Students Information');
+  res.json({students: response});
+});
+
+
 
 // GET - Get Student Info
 // params:
@@ -360,7 +415,7 @@ app.get('/event/:id', (req, res) => {
   //
   // Get extra information from the Testing db (other tables)
   // The list of students interested of going.
-  
+
   const response = {
     name,
     associationId,

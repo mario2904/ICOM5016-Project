@@ -1,4 +1,5 @@
-module.export = class Event {
+module.exports = class Event {
+
   constructor (id, name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description) {
     this.id = id;
     this.name = name;
