@@ -284,7 +284,6 @@ app.get('/student/all', (req, res) => {
 });
 
 
-
 // GET - Get Student Info
 // params:
 //    id: uuid
@@ -330,6 +329,56 @@ app.get('/student/:id', (req, res) => {
   // Send Student Information
   console.log('Success: Get Student Information');
   res.json(response);
+});
+
+// GET - All Associations Information
+// response:
+//    [] association
+//        name: string
+//        initials: string
+//        location: string
+//        link: string
+//        email: string
+//        profileImage: string
+//        bio: string
+//        sponsors: [] uuid
+//        activeEvents: [] uuid
+//        pastEvents: [] uuid
+//        followers: [] uuid
+app.get('/association/all', (req, res) => {
+  const response = [];
+  for (var id in db.association) {
+    if (db.association.hasOwnProperty(id)) {
+      // Destructure association information
+      const { name, initials, location, link, email, profileImage, bio } = db.association[id];
+      // TODO: Get extra information from the db
+      //
+      // Get extra information from the Testing db (other tables)
+      const sponsors = db.associationSponsors[id] || [];
+      const activeEvents = db.activeEvents[id] || [];
+      const pastEvents = db.pastEvents[id] || [];
+      const followers = db.followers[id] || [];
+
+      const singleAssociation = {
+        name,
+        initials,
+        location,
+        link,
+        email,
+        profileImage,
+        bio,
+        sponsors,
+        activeEvents,
+        pastEvents,
+        followers
+      }
+      response.push(singleAssociation);
+    }
+  }
+
+  // Send All Associations Information
+  console.log('Success: Get All Associations Information');
+  res.json({associations: response})
 });
 
 // GET - Association Information
@@ -383,6 +432,52 @@ app.get('/association/:id', (req, res) => {
   // Send Association Information
   console.log('Success: Get Association Information');
   res.json(response)
+});
+
+// GET - Event Information
+// response:
+//    [] event
+//        name: string
+//        associationId: uuid
+//        associationName: string
+//        startDate: date
+//        endDate: date
+//        startHour: time
+//        endHour: time
+//        location: string
+//        image: string
+//        description: string
+app.get('/event/all', (req, res) => {
+  const response = [];
+  for (var id in db.event) {
+    if (db.event.hasOwnProperty(id)) {
+      // Destructure event information
+      const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description } = db.event[id];
+      // TODO: Get extra information from the db
+      //
+      // Get extra information from the Testing db (other tables)
+      // The list of students interested of going.
+
+      const singleEvent = {
+        name,
+        associationId,
+        associationName,
+        startDate,
+        endDate,
+        startHour,
+        endHour,
+        location,
+        image,
+        description
+      }
+
+      response.push(singleEvent);
+    }
+  }
+
+  // Send Event Information
+  console.log('Success: Get Event Information');
+  res.json({events: response});
 });
 
 // GET - Event Information
