@@ -13,6 +13,7 @@ import Frame from './components/frame';
 import Profile from './components/profile';
 import UserReg from './components/usersignup';
 import AssoReg from './components/associations-signup'
+import Etest from './components/events-individual'
 
 
 
@@ -30,8 +31,9 @@ export default class App extends Component {
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
             <Route path="/profile" component={Profile}></Route>
-            <Route path="/userregister" component={UserReg}></Route>
-            <Route path="/assoregister" component={AssoReg}></Route>
+            <Route path="/userregister" component={UserReg}></Route>//CAMBIAAAAAAAAAAAAAARRRRRRRR
+            <Route path="/assoregister" component={AssoReg}></Route>//CAMBIAAAAAAAAAAAAAARRRRRRRR
+            <Route path="/eventsTest" component ={Etest}></Route>
 
           </Route>
         </Router>

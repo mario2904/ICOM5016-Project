@@ -14,17 +14,12 @@ export default class Login extends Component {
 
   signup (event) {
     event.preventDefault();
-    // Do the sign-in validation here...
 
-    // If successful, go to home page
     browserHistory.push('/userregister');
   }
 
   signupAssociation (event) {
-    event.preventDefault();
-    // Do the sign-in validation here...
-
-    // If successful, go to home page
+    
     browserHistory.push('/assoregister');
   }
 
