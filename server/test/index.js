@@ -1,0 +1,36 @@
+// Models
+const { Association, Student, Event } = require('../model');
+
+// Dummy Data
+const { associations, students, events } = require('./dummy-data');
+
+// Utils
+const uuid = require('node-uuid');
+
+exports.fillDummyData = function (db) {
+  // Create Associations
+  for (let association of associations) {
+    const { name, initials, location, link, email, password, image } = association;
+    const id = uuid.v4();
+    db.association[id] = new Association(id, name, initials, location, link, email, password, image);
+  }
+  // Create Students
+  for (let student of students) {
+    const { firstName, lastName, age, gender, hometown, college, major, email, password } = student;
+    const id = uuid.v4();
+    db.student[id] = new Student(id, firstName, lastName, age, gender, hometown, college, major, email, password);
+  }
+  // Create events
+  for (let event of events) {
+    for (let association of associations) {
+      if (event.associationName === association.name) {
+        const { name, associationName, startDate, endDate, startHour, endHour, location, image, description } = event;
+        const id = uuid.v4();
+        //console.log(association.id);
+        db.event[id] = new Event(id, name, association.id, associationName, startDate, endDate, startHour, endHour, location, image, description);
+        // Update activeEvents list for that association
+        db.activeEvents[association.id] = [id].concat(db.activeEvents[association.id] || []);
+      }
+    }
+  }
+}

@@ -6,14 +6,12 @@ const cors = require('cors');
 const app = express();
 
 // Models
-const Association = require('./association');
-const Student = require('./student');
-const Event = require('./event');
+const { Association, Student, Event } = require('./model');
 
 // Utils
 const uuid = require('node-uuid');
-const validate = require('./validate');
-const filter = require('./filter');
+const validate = require('./utils/validate');
+const filter = require('./utils/filter');
 
 // File Uploaders
 const imgUpload = multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
