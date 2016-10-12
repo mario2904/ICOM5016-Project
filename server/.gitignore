@@ -1,7 +1,0 @@
-node_modules
-.DS_Store
-dist
-public/images/tmp/*
-*.log
-coverage
-.idea

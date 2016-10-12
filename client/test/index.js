@@ -24,10 +24,10 @@ exports.fillDummyData = function (db) {
   for (let event of events) {
     for (let association of associations) {
       if (event.associationName === association.name) {
-        const { name, associationName, startDate, endDate, startHour, endHour, location, image, description } = event;
+        const { name, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = event;
         const id = uuid.v4();
         //console.log(association.id);
-        db.event[id] = new Event(id, name, association.id, associationName, startDate, endDate, startHour, endHour, location, image, description);
+        db.event[id] = new Event(id, name, association.id, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink);
         // Update activeEvents list for that association
         db.activeEvents[association.id] = [id].concat(db.activeEvents[association.id] || []);
       }

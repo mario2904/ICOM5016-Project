@@ -21,9 +21,6 @@ const uuid = require('node-uuid');
 const validate = require('./utils/validate');
 const filter = require('./utils/filter');
 
-// API Routes
-const apiRoutes = require('./api');
-
 // File Uploaders
 const imgUpload = multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
 
@@ -46,9 +43,8 @@ app.use(bodyParser.json())
 
 // Setup path to static files
 app.use(express.static(__dirname + '/public'));
-console.log("Hi");
 
-// Handle api calls ------------------------------------------------------------
+// Handle REST API calls -------------------------------------------------------
 
 
 // POST - Login
@@ -58,7 +54,7 @@ console.log("Hi");
 //    account: string (association | student)
 // response:
 //    id: uuid
-app.post('/login', (req, res) => {
+app.post('/api/login', (req, res) => {
   console.log(req.body);
   if (!req.body)
     return res.sendStatus(400);
@@ -95,7 +91,7 @@ app.post('/login', (req, res) => {
 //    link: string
 //    email: string
 //    password: string
-app.post('/create-association', (req, res) => {
+app.post('/api/create-association', (req, res) => {
   console.log(req.body);
   if (!req.body)
     return res.sendStatus(400);
@@ -140,7 +136,7 @@ app.post('/create-association', (req, res) => {
 //    major: string
 //    email: string
 //    password: string
-app.post('/create-student', (req, res) => {
+app.post('/api/create-student', (req, res) => {
   console.log(req.body);
   if (!req.body)
     return res.sendStatus(400);
@@ -182,12 +178,13 @@ app.post('/create-student', (req, res) => {
 //    associationName: string
 //    startDate: date
 //    endDate: date
-//    startHour: string
-//    endHour: string
+//    startTime: string
+//    endTime: string
 //    location: string
 //    image: string
 //    description: string
-app.post('/create-event', (req, res) => {
+//    registrationLink: string
+app.post('/api/create-event', (req, res) => {
   console.log(req.body);
   if (!req.body)
     return res.sendStatus(400);
@@ -195,13 +192,13 @@ app.post('/create-event', (req, res) => {
   else if (!validate.event(req.body))
     return res.status(400).send('Error: Missing fields for event.');
   // Destructure body params
-  const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description } = req.body;
+  const { name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = req.body;
 
   // Create new event
   // Generate event id
   const id = uuid.v4();
   // Create new Student object model
-  const newEvent = new Event(id, name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description);
+  const newEvent = new Event(id, name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink);
   // TODO: Store it in the db ...
   //
   // Store in Testing db
@@ -219,7 +216,7 @@ app.post('/create-event', (req, res) => {
 //    image: <image>
 // In case you need to handle a text-only multipart form, you can
 // use any of the multer methods (.single(), .array(), fields()).
-app.post('/upload-image', (req, res) => {
+app.post('/api/upload-image', (req, res) => {
   imgUpload(req, res, function (err) {
     if (err) {
       // An error occurred when uploading
@@ -246,7 +243,7 @@ app.post('/upload-image', (req, res) => {
 //        followedAssociations: [] uuid
 //        profileImage: string
 //        bio: string
-app.get('/student/all', (req, res) => {
+app.get('/api/student/all', (req, res) => {
   const response = [];
   for (let id in db.student) {
     if (db.student.hasOwnProperty(id)) {
@@ -290,7 +287,7 @@ app.get('/student/all', (req, res) => {
 //    followedAssociations: [] uuid
 //    profileImage: string
 //    bio: string
-app.get('/student/:id', (req, res) => {
+app.get('/api/student/:id', (req, res) => {
   console.log(req.params);
   // Destructure params
   const { id } = req.params;
@@ -340,7 +337,7 @@ app.get('/student/:id', (req, res) => {
 //        activeEvents: [] uuid
 //        pastEvents: [] uuid
 //        followers: [] uuid
-app.get('/association/all', (req, res) => {
+app.get('/api/association/all', (req, res) => {
   const response = [];
   for (var id in db.association) {
     if (db.association.hasOwnProperty(id)) {
@@ -391,7 +388,7 @@ app.get('/association/all', (req, res) => {
 //    activeEvents: [] uuid
 //    pastEvents: [] uuid
 //    followers: [] uuid
-app.get('/association/:id', (req, res) => {
+app.get('/api/association/:id', (req, res) => {
   console.log(req.params);
   // Destructure params
   const { id } = req.params;
@@ -437,17 +434,18 @@ app.get('/association/:id', (req, res) => {
 //        associationName: string
 //        startDate: date
 //        endDate: date
-//        startHour: time
-//        endHour: time
+//        startTime: time
+//        endTime: time
 //        location: string
 //        image: string
 //        description: string
-app.get('/event/all', (req, res) => {
+//        registrationLink: string
+app.get('/api/event/all', (req, res) => {
   const response = [];
   for (var id in db.event) {
     if (db.event.hasOwnProperty(id)) {
       // Destructure event information
-      const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description } = db.event[id];
+      const { name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = db.event[id];
       // TODO: Get extra information from the db
       //
       // Get extra information from the Testing db (other tables)
@@ -459,11 +457,12 @@ app.get('/event/all', (req, res) => {
         associationName,
         startDate,
         endDate,
-        startHour,
-        endHour,
+        startTime,
+        endTime,
         location,
         image,
-        description
+        description,
+        registrationLink
       }
 
       response.push(singleEvent);
@@ -484,12 +483,13 @@ app.get('/event/all', (req, res) => {
 //    associationName: string
 //    startDate: date
 //    endDate: date
-//    startHour: time
-//    endHour: time
+//    startTime: time
+//    endTime: time
 //    location: string
 //    image: string
 //    description: string
-app.get('/event/:id', (req, res) => {
+//    registrationLink: string
+app.get('/api/event/:id', (req, res) => {
   console.log(req.params);
   // Destructure params
   const { id } = req.params;
@@ -500,7 +500,7 @@ app.get('/event/:id', (req, res) => {
   if (event === undefined)
     return res.status(400).send('Error: Event not found in the DB.');
   // Destructure event information
-  const { name, associationId, associationName, startDate, endDate, startHour, endHour, location, image, description } = event;
+  const { name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = event;
   // TODO: Get extra information from the db
   //
   // Get extra information from the Testing db (other tables)
@@ -512,11 +512,12 @@ app.get('/event/:id', (req, res) => {
     associationName,
     startDate,
     endDate,
-    startHour,
-    endHour,
+    startTime,
+    endTime,
     location,
     image,
-    description
+    description,
+    registrationLink
   }
   // Send Event Information
   console.log('Success: Get Event Information');

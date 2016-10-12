@@ -38,10 +38,11 @@ exports.event = function (obj) {
         &&  _.has(obj, 'associationName')
         &&  _.has(obj, 'startDate')
         &&  _.has(obj, 'endDate')
-        &&  _.has(obj, 'startHour')
-        &&  _.has(obj, 'endHour')
+        &&  _.has(obj, 'startTime')
+        &&  _.has(obj, 'endTime')
         &&  _.has(obj, 'location')
         &&  _.has(obj, 'image')
         &&  _.has(obj, 'description')
+        &&  _.has(obj, 'registrationLink')
   );
 };
