@@ -1,13 +1,19 @@
 // Models
-const { Association, Student, Event } = require('../model');
+const { Association, Student, Event, Sponsor } = require('../model');
 
 // Dummy Data
-const { associations, students, events } = require('./dummy-data');
+const { associations, students, events, sponsors } = require('./dummy-data');
 
 // Utils
 const uuid = require('node-uuid');
 
 exports.fillDummyData = function (db) {
+  // Initialize Sponsors Information
+  for (let sponsor of sponsors) {
+    const { name, image } = sponsor;
+    const id = uuid.v4();
+    db.sponsors[id] = new Sponsor(id, name, image);
+  }
   // Create Associations
   for (let association of associations) {
     const { name, initials, location, link, email, password, image } = association;
@@ -20,6 +26,12 @@ exports.fillDummyData = function (db) {
     db.associationSponsors[id] = [];
     // Initialize association's followers list
     db.followers[id] = [];
+    // Fill in same dummy sponsors for all associations
+    for (var key in db.sponsors) {
+      if (db.sponsors.hasOwnProperty(key)) {
+        db.associationSponsors[id].push(key);
+      }
+    }
   }
   // Create Students
   for (let student of students) {
