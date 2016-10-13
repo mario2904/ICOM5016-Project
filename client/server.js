@@ -119,6 +119,13 @@ app.post('/api/create-association', (req, res) => {
   // TODO: Store it in the db ...
   // Store in Testing db
   db.association[id] = newAssociation;
+  // Initialize association's active and past events Lists
+  db.activeEvents[id] = [];
+  db.pastEvents[id] = [];
+  // Initialize association's Sponsors Lists
+  db.associationSponsors[id] = [];
+  // Initialize association's followers list
+  db.followers[id] = [];
   // Send OK status
   console.log('Success: Create Association');
   console.log('Association ID:', id);
@@ -165,6 +172,10 @@ app.post('/api/create-student', (req, res) => {
   // TODO: Store it in the db ...
   // Store in Testing db
   db.student[id] = newStudent;
+  // Initialize student's interestedEvents list
+  db.interestedEvents[id] = [];
+  // Initialize student's followed associations list
+  db.followedAssociations[id] = [];
   // Send OK status
   console.log('Success: Create Student');
   console.log('Student ID:', id);
@@ -304,8 +315,8 @@ app.get('/api/student/:id', (req, res) => {
   // TODO: Get extra information from the db
   //
   // Get extra information from the Testing db (other tables)
-  const interestedEvents = db.interestedEvents[id] || [];
-  const followedAssociations = db.followedAssociations[id] || [];
+  const interestedEvents = db.interestedEvents[id];
+  const followedAssociations = db.followedAssociations[id];
 
   const response = {
     firstName,
@@ -349,10 +360,10 @@ app.get('/api/association/all', (req, res) => {
       // TODO: Get extra information from the db
       //
       // Get extra information from the Testing db (other tables)
-      const sponsors = db.associationSponsors[id] || [];
-      const activeEvents = db.activeEvents[id] || [];
-      const pastEvents = db.pastEvents[id] || [];
-      const followers = db.followers[id] || [];
+      const sponsors = db.associationSponsors[id];
+      const activeEvents = db.activeEvents[id];
+      const pastEvents = db.pastEvents[id];
+      const followers = db.followers[id];
 
       const singleAssociation = {
         id,
@@ -407,10 +418,10 @@ app.get('/api/association/:id', (req, res) => {
   // TODO: Get extra information from the db
   //
   // Get extra information from the Testing db (other tables)
-  const sponsors = db.associationSponsors[id] || [];
-  const activeEvents = db.activeEvents[id] || [];
-  const pastEvents = db.pastEvents[id] || [];
-  const followers = db.followers[id] || [];
+  const sponsors = db.associationSponsors[id];
+  const activeEvents = db.activeEvents[id];
+  const pastEvents = db.pastEvents[id];
+  const followers = db.followers[id];
 
   const response = {
     name,

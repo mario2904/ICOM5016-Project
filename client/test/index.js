@@ -13,23 +13,37 @@ exports.fillDummyData = function (db) {
     const { name, initials, location, link, email, password, image } = association;
     const id = uuid.v4();
     db.association[id] = new Association(id, name, initials, location, link, email, password, image);
+    // Initialize association's active and past events Lists
+    db.activeEvents[id] = [];
+    db.pastEvents[id] = [];
+    // Initialize association's Sponsors Lists
+    db.associationSponsors[id] = [];
+    // Initialize association's followers list
+    db.followers[id] = [];
   }
   // Create Students
   for (let student of students) {
     const { firstName, lastName, age, gender, hometown, college, major, email, password } = student;
     const id = uuid.v4();
     db.student[id] = new Student(id, firstName, lastName, age, gender, hometown, college, major, email, password);
+    // Initialize student's interestedEvents list
+    db.interestedEvents[id] = [];
+    // Initialize student's followed associations list
+    db.followedAssociations[id] = [];
   }
   // Create events
   for (let event of events) {
-    for (let association of associations) {
-      if (event.associationName === association.name) {
-        const { name, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = event;
-        const id = uuid.v4();
-        //console.log(association.id);
-        db.event[id] = new Event(id, name, association.id, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink);
-        // Update activeEvents list for that association
-        db.activeEvents[association.id] = [id].concat(db.activeEvents[association.id] || []);
+    for (var key in db.association) {
+      if (db.association.hasOwnProperty(key)) {
+
+        let association = db.association[key];
+        if (event.associationName === association.name) {
+          const { name, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = event;
+          const id = uuid.v4();
+          db.event[id] = new Event(id, name, association.id, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink);
+          // Update active Lists
+          db.activeEvents[association.id].push(id);
+        }
       }
     }
   }
