@@ -15,7 +15,7 @@ export default class ProfileAssociation extends Component{
         <Row>
 
           <Col lg={4} xs={5}>
-            <Image style={imgStyle} src="https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/11075167_628822830553054_4682981240345315035_n.png?oh=8c50c6447d46bf9d6a4d61f8974cf279&oe=58A3632B"
+            <Image style={imgStyle} src= {this.props.profile.profileImage}
              responsive thumbnail/>
           </Col>
 
@@ -72,16 +72,19 @@ const tabStyle = {
 
 ProfileAssociation.defaultProps = {
   profile: {
+    name:"Idea Platform",
+    initials:"IP",
+    profileImage: "https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/11075167_628822830553054_4682981240345315035_n.png?oh=8c50c6447d46bf9d6a4d61f8974cf279&oe=58A3632B",
     email: "idea.platform@uprm.edu",
     location: "UPRM, Centro de Estudiante Primer Piso",
     link: "http://ideaplatform.org/",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do \
+    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do \
     eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad \
     minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip \
     ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate\
     velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat \
-   cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id \
-   est laborum"
+    cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id \
+    est laborum"
 
   },
 

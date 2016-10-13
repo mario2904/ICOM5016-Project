@@ -6,18 +6,18 @@ export default class AssociationsSearchBar extends Component {
     return (
       <Form style={style} inline>
         {/*Quick Fix. Try to find a better way to centralize inline form*/}
-        <div style={{textAlign: "center"}}>
-          <FormGroup controlId="formInlineName">
-            <ControlLabel>Name</ControlLabel>
+        <div style={{textAlign:"center"}}>
+          <FormGroup style={searchStyle} controlId="formInlineName">
+            <ControlLabel style={txtStyle}>Name</ControlLabel>
             {' '}
             <FormControl type="text" placeholder="i.e. SHPE" />
           </FormGroup>
+
           {' '}
-          <FormGroup controlId="formInlineFilter">
-            <ControlLabel>Filter</ControlLabel>
+          <FormGroup style={searchStyle} controlId="formInlineFilter">
+            <ControlLabel style={txtStyle}>Order By</ControlLabel>
             {' '}
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">select</option>
+            <FormControl componentClass="select" placeholder="Most Active">
               <option value="most-active">Most Active</option>
               <option value="ascending">A - Z</option>
               <option value="descending">Z - A</option>
@@ -25,24 +25,7 @@ export default class AssociationsSearchBar extends Component {
               <option value="oldest">Oldest</option>
             </FormControl>
           </FormGroup>
-          {' '}
-          <FormGroup controlId="formInlineFaculty">
-            <ControlLabel>Faculty</ControlLabel>
-            {' '}
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">select</option>
-              <option value="other">...</option>
-            </FormControl>
-          </FormGroup>
-          {' '}
-          <FormGroup controlId="formInlineDepartment">
-            <ControlLabel>Department</ControlLabel>
-            {' '}
-            <FormControl componentClass="select" placeholder="select">
-              <option value="select">select</option>
-              <option value="other">...</option>
-            </FormControl>
-          </FormGroup>
+
         </div>
       </Form>
     );
@@ -52,3 +35,11 @@ export default class AssociationsSearchBar extends Component {
 const style = {
     padding: "50px"
 };
+
+const searchStyle={
+  margin: "0px 30px 0px 0px"
+}
+
+const txtStyle={
+  padding: "0px 10px 0px 0px"
+}
