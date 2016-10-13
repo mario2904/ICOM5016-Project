@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem} from 'react-bootstrap';
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
+import axios from 'axios';
 
 export default class IndividualEvent extends Component {
   renderUpdateItems () {
@@ -14,22 +15,42 @@ export default class IndividualEvent extends Component {
       return <ReviewUpdateItem name={review1.reviewName} key={i} review={review1.reviewBody}/>;
     });
   }
+
+  constructor () {
+    super();
+    this.state = {eventInfo: []};
+  }
+  componentWillMount() {
+    const tick = this;
+    // Get Events Data to render
+    axios.get('/api/event/'+this.props.params.eventID)
+    .then(function (response) {
+      console.log(response);
+      tick.setState({eventInfo: response.data})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+
   render(){
+    console.log(this.props.params.eventID);
     return (
       <Grid>
         <div>
-          <Panel header={this.props.eventData.associationName} bsStyle="primary">
+          <Panel header={this.state.eventInfo.associationName} bsStyle="primary">
             <div>
               <Panel>
                 <div>
-                  <img style={photoBanner} src={this.props.eventData.image} />
+                  <img style={photoBanner} src={this.state.eventInfo.image} />
                 </div>
               </Panel>
             </div>
             <div>
               <Row>
                 <Col xs={6} >
-                  <p style={eventNameSize}> <strong>{this.props.eventData.name}</strong>  </p>
+                  <p style={eventNameSize}> <strong>{this.state.eventInfo.name}</strong>  </p>
                 </Col>
                 <Col xsOffset={10}>
                   <Button type="submit" bsStyle="danger" onClick={this.submit}>
@@ -46,11 +67,11 @@ export default class IndividualEvent extends Component {
               <Panel>
                 <Row>
                   <ul>
-                    <p><strong>Event Date</strong>:{this.props.eventData.startDate} - {this.props.eventData.endDate}</p>
-                    <p><strong>Event Time</strong>:{this.props.eventData.startTime} - {this.props.eventData.endTime}</p>
-                    <p><strong>Location</strong>: {this.props.eventData.location}</p>
-                    <p><strong>Registration Link: </strong> <a href={this.props.eventData.registrationLink}>{"Link"}</a></p>
-                    <p><strong>Event Info:</strong>:{this.props.eventData.description} </p>
+                    <p><strong>Event Date</strong>:{this.state.eventInfo.startDate} - {this.state.eventInfo.endDate}</p>
+                    <p><strong>Event Time</strong>:{this.state.eventInfo.startTime} - {this.state.eventInfo.endTime}</p>
+                    <p><strong>Location</strong>: {this.state.eventInfo.location}</p>
+                    <p><strong>Registration Link: </strong> <a href={this.state.eventInfo.registrationLink}>{"Link"}</a></p>
+                    <p><strong>Event Info:</strong>:{this.state.eventInfo.description} </p>
                   </ul>
                 </Row>
               </Panel>
