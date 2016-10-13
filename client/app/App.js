@@ -12,7 +12,12 @@ import Events from './components/events';
 import Frame from './components/frame';
 import Profile from './components/profile';
 import UserReg from './components/usersignup';
-import AssoReg from './components/associations-signup'
+import AssoReg from './components/associations-signup';
+
+import Administrator from './components/administrator';
+import AdministratorTableAssociations from './components/administrator-table-associations';
+import AdministratorTableStudents from './components/administrator-table-students';
+import AdministratorTableEvents from './components/administrator-table-events';
 
 import ProfileAssociation from './components/profile-association';
 import CreateEventForm from './components/create-event-form';
@@ -42,6 +47,10 @@ export default class App extends Component {
             <Route path="/associations/:associationID" component={ProfileAssociation}></Route>
             <Route path="/create-event" component={CreateEventForm}></Route>
             <Route path="/settings" component={Settings}></Route>
+            <Route path="/administrator" component={Administrator}></Route>
+            <Route path="/administrator/associations" component={AdministratorTableAssociations}></Route>
+            <Route path="/administrator/students" component={AdministratorTableStudents}></Route>
+            <Route path="/administrator/events" component={AdministratorTableEvents}></Route>
           </Route>
         </Router>
       </Provider>
