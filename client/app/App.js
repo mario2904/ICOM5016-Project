@@ -19,6 +19,8 @@ import CreateEventForm from './components/create-event-form';
 
 import Etest from './components/events-individual'
 
+import Settings from './components/settings'
+
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 const store = createStoreWithMiddleware(reducers);
@@ -37,8 +39,9 @@ export default class App extends Component {
             <Route path="/signup-student" component={UserReg}></Route>
             <Route path="/signup-association" component={AssoReg}></Route>
             <Route path="/events/:eventID" component ={Etest}></Route>
-           <Route path="/profile/associations/:associationID" component={ProfileAssociation}></Route>
-           <Route path="/create-event" component={CreateEventForm}></Route>
+            <Route path="/profile/associations/:associationID" component={ProfileAssociation}></Route>
+            <Route path="/create-event" component={CreateEventForm}></Route>
+            <Route path="/settings" component={Settings}></Route>
           </Route>
         </Router>
       </Provider>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Radio} from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Radio, Panel} from 'react-bootstrap';
 
 export default class CreateEventForm extends Component {
   submit (event) {
@@ -7,12 +7,12 @@ export default class CreateEventForm extends Component {
     // Do the sign-in validation here...
 
     // If successful, go to prof page
-    browserHistory.push('/profile');
+    browserHistory.push('/home');
   }
   render () {
     return (
-      <Grid style ={{margin:"none"}}>
-      <h1><strong>Create/Edit Event</strong></h1>
+      <Grid>
+        <Panel header={title} bsStyle="success" style={{backgroundColor:"rgb(247, 247, 247)"}}>
         <Form horizontal>
           <FormGroup controlId="formHorizontalEventName" >
             <Col sm={6}>
@@ -38,7 +38,19 @@ export default class CreateEventForm extends Component {
           <FormGroup controlId="formHorizontalLabel">
             <Col sm={6}>
             <ControlLabel>Category Labels</ControlLabel>
-              <FormControl componentClass="select"/>
+              <FormControl componentClass="select" placeholder="Categories">
+                <option value="select">Select</option>
+                <option value="Food">Food</option>
+                <option value="Music">Music</option>
+                <option value="Fundraiser">Fundraiser</option>
+                <option value="Arts">Arts</option>
+                <option value="Social">Social</option>
+                <option value="Educational">Educational</option>
+                <option value="Networking">Networking</option>
+                <option value="Sport">Sport</option>
+                <option value="Competition">Competition</option>
+                <option value="Other">Other</option>
+              </FormControl>
             </Col>
           </FormGroup>
 
@@ -87,6 +99,7 @@ export default class CreateEventForm extends Component {
             </Col>
           </FormGroup>
         </Form>
+      </Panel>
       </Grid>
     );
   }
@@ -102,3 +115,7 @@ const radio1={
   display: "inline-block",
 margin: "10px 0px 0px 0px"
 }
+
+const title=(
+  <h1><strong>Create Event</strong></h1>
+);
