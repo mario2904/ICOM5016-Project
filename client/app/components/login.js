@@ -54,7 +54,12 @@ export default class Login extends Component {
               Email
             </Col>
             <Col sm={6}>
-              <FormControl type="email" placeholder="Email" value={this.state.email} onChange={(e) => {this.setState({email: e.target.value})}}/>
+              <FormControl
+                type="email"
+                placeholder="Email"
+                value={this.state.email}
+                onChange={(e) => {this.setState({email: e.target.value})}}
+                />
             </Col>
           </FormGroup>
           <FormGroup controlId="formHorizontalPassword">
@@ -62,7 +67,12 @@ export default class Login extends Component {
               Password
             </Col>
             <Col sm={6}>
-              <FormControl type="password" placeholder="Password" value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}}/>
+              <FormControl
+                type="password"
+                placeholder="Password"
+                value={this.state.password}
+                onChange={(e) => {this.setState({password: e.target.value})}}
+                />
             </Col>
           </FormGroup>
           <FormGroup>
