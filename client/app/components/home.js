@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
 import { Button, PageHeader, Jumbotron, Image} from 'react-bootstrap';
+import axios from 'axios';
 
 import EventsSearchBar from './events-search-bar';
 import GridList from './grid-list';
 import EventsListItem from './events-list-item';
 
 export default class Home extends Component {
+  constructor () {
+    super();
+    this.state = {events: []};
+  }
+  componentWillMount() {
+    const tick = this;
+    // Get Events Data to render
+    axios.get('/api/event/all')
+    .then(function (response) {
+      console.log(response);
+      tick.setState({events: response.data.events})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
   render () {
     return (
       <div>
@@ -13,7 +30,7 @@ export default class Home extends Component {
           <Image responsive style={picStyle} src="http://nceft.org/wp-content/uploads/2014/12/calendar-graphic-wide.jpg"/>
           <h3 style={{textAlign: "center", fontSize:"4em"}}><strong>Interested Events</strong></h3>
           <EventsSearchBar />
-          <GridList items={this.props.interestedEvents} ListItem={EventsListItem}/>
+          <GridList items={this.state.events} ListItem={EventsListItem}/>
       </div>
     );
   }

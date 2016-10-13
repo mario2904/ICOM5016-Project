@@ -1,17 +1,34 @@
 import React, { Component } from 'react';
 import { PageHeader } from 'react-bootstrap';
+import axios from 'axios';
 
 import AssociationsSearchBar from './associations-search-bar';
 import AssociationsListItem from './associations-list-item';
 import GridList from './grid-list';
 
 export default class Associations extends Component {
+  constructor () {
+    super();
+    this.state = {associations: []};
+  }
+  componentWillMount() {
+    const tick = this;
+    // Get Events Data to render
+    axios.get('/api/association/all')
+    .then(function (response) {
+      console.log(response);
+      tick.setState({associations: response.data.associations})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
   render () {
     return (
       <div>
         <PageHeader>Associations</PageHeader>
         <AssociationsSearchBar />
-        <GridList items={this.props.associations} ListItem={AssociationsListItem}/>
+        <GridList items={this.state.associations} ListItem={AssociationsListItem}/>
       </div>
     );
   }

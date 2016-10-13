@@ -3,6 +3,7 @@ import { Col, Thumbnail } from 'react-bootstrap';
 
 export default class AssociationsListItem extends Component {
   render () {
+    const { id, name, initials, profileImage } = this.props.item;
     return (
       <Col sm={6} md={3}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
@@ -14,10 +15,10 @@ export default class AssociationsListItem extends Component {
             object-fit: fill;
         }
         `}</style>
-        <Thumbnail src={this.props.item.img} alt="242x200">
+      <Thumbnail href={"/associations/" + id} src={profileImage} alt="242x200">
           <hr/>
-          <h3>{this.props.item.initials}</h3>
-          <h5 style={nameStyle} >{this.props.item.name}</h5>
+          <h3>{initials}</h3>
+          <h5 style={nameStyle} >{name}</h5>
         </Thumbnail>
       </Col>
     );

@@ -1,17 +1,34 @@
 import React, { Component } from 'react';
 import { PageHeader } from 'react-bootstrap';
+import axios from 'axios';
 
 import EventsSearchBar from './events-search-bar';
 import EventsListItem from './events-list-item';
 import GridList from './grid-list';
 
 export default class Events extends Component {
+  constructor () {
+    super();
+    this.state = {events: []};
+  }
+  componentWillMount () {
+    const tick = this;
+    // Get Events Data to render
+    axios.get('/api/event/all')
+    .then(function (response) {
+      console.log(response);
+      tick.setState({events: response.data.events})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
   render () {
     return (
       <div>
         <PageHeader>Search any Event on Campus</PageHeader>
         <EventsSearchBar />
-        <GridList items={this.props.events} ListItem={EventsListItem}/>
+        <GridList items={this.state.events} ListItem={EventsListItem}/>
       </div>
     );
   }

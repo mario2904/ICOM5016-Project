@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Col, Thumbnail } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 export default class EventsListItem extends Component {
   render () {
-    const { name, association, startDate, endDate, startHour, endHour, location, img, id, interested } = this.props.item;
+    const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
       <Col sm={6} md={3}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
@@ -15,14 +16,13 @@ export default class EventsListItem extends Component {
             object-fit: fill;
         }
         `}</style>
-        <Thumbnail src={img} alt="242x200">
+      <Thumbnail href={"/events/" + id} src={image} alt={name}>
           <hr/>
           <p style={nameStyle} >{name}</p>
-          <h4 style={nameStyle}>{association}</h4>
+          <h4 style={nameStyle}>{associationName}</h4>
           <h6>{startDate} {startDate === endDate ? null: ' - ' + endDate}</h6>
-          <h6>{startHour + ' - ' + endHour}</h6>
+          <h6>{startTime + ' - ' + endTime}</h6>
           <h6 style={nameStyle} >{location}</h6>
-          <h6>People interested: {interested}</h6>
         </Thumbnail>
       </Col>
     );

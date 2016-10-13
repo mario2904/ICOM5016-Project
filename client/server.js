@@ -236,6 +236,7 @@ app.post('/api/upload-image', (req, res) => {
 // GET - Get All Students Info
 // response:
 //    [] student:
+//        id: uuid
 //        firstName: string
 //        lastName: string
 //        major: string
@@ -255,6 +256,7 @@ app.get('/api/student/all', (req, res) => {
       const interestedEvents = db.interestedEvents[id] || [];
       const followedAssociations = db.followedAssociations[id] || [];
       const singleStudent = {
+        id,
         firstName,
         lastName,
         age,
@@ -326,6 +328,7 @@ app.get('/api/student/:id', (req, res) => {
 // GET - All Associations Information
 // response:
 //    [] association
+//        id: uuid
 //        name: string
 //        initials: string
 //        location: string
@@ -352,6 +355,7 @@ app.get('/api/association/all', (req, res) => {
       const followers = db.followers[id] || [];
 
       const singleAssociation = {
+        id,
         name,
         initials,
         location,
@@ -429,6 +433,7 @@ app.get('/api/association/:id', (req, res) => {
 // GET - Event Information
 // response:
 //    [] event
+//        id: uuid
 //        name: string
 //        associationId: uuid
 //        associationName: string
@@ -452,6 +457,7 @@ app.get('/api/event/all', (req, res) => {
       // The list of students interested of going.
 
       const singleEvent = {
+        id,
         name,
         associationId,
         associationName,
