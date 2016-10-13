@@ -69,7 +69,9 @@ export default class ProfileAssociation extends Component{
         <Row>
 
           <Col lg={4} xs={5}>
+
             <Image style={imgStyle} src={this.state.associationInfo.profileImage} responsive thumbnail/>
+
           </Col>
 
           <Col lg={8} xs={7}>
@@ -124,6 +126,7 @@ const tabStyle = {
 }
 
 ProfileAssociation.defaultProps = {
+
   events: [
     {
       name: "How to's Obtaining a Summer Research Experience within a Top University",

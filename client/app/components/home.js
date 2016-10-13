@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, PageHeader, Jumbotron, Image} from 'react-bootstrap';
 import axios from 'axios';
 
-import EventsSearchBar from './events-search-bar';
+import HomeSearchBar from './home-search-bar';
 import GridList from './grid-list';
 import EventsListItem from './events-list-item';
 
@@ -29,7 +29,7 @@ export default class Home extends Component {
 
           <Image responsive style={picStyle} src="http://nceft.org/wp-content/uploads/2014/12/calendar-graphic-wide.jpg"/>
           <h3 style={{textAlign: "center", fontSize:"4em"}}><strong>Interested Events</strong></h3>
-          <EventsSearchBar />
+          <HomeSearchBar />
           <GridList items={this.state.events} ListItem={EventsListItem}/>
       </div>
     );

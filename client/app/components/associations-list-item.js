@@ -15,9 +15,10 @@ export default class AssociationsListItem extends Component {
             object-fit: fill;
         }
         `}</style>
-      <Thumbnail href={"/associations/" + id} src={profileImage} alt="242x200">
+      <Thumbnail href={"/associations/" + id} src={profileImage} alt="242x200"
+        style= {{backgroundColor:"rgb(247, 247, 247)"}}>
           <hr/>
-          <h3>{initials}</h3>
+          <h3><strong>{initials}</strong></h3>
           <h5 style={nameStyle} >{name}</h5>
         </Thumbnail>
       </Col>

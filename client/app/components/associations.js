@@ -26,7 +26,7 @@ export default class Associations extends Component {
   render () {
     return (
       <div>
-        <PageHeader>Associations</PageHeader>
+        <PageHeader style={{textAlign:"center"}}><strong>Associations</strong></PageHeader>
         <AssociationsSearchBar />
         <GridList items={this.state.associations} ListItem={AssociationsListItem}/>
       </div>

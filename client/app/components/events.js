@@ -26,7 +26,7 @@ export default class Events extends Component {
   render () {
     return (
       <div>
-        <PageHeader>Search any Event on Campus</PageHeader>
+        <PageHeader style={{textAlign:"center"}}><strong>Search any Event on Campus</strong></PageHeader>
         <EventsSearchBar />
         <GridList items={this.state.events} ListItem={EventsListItem}/>
       </div>

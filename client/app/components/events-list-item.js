@@ -16,10 +16,11 @@ export default class EventsListItem extends Component {
             object-fit: fill;
         }
         `}</style>
-      <Thumbnail href={"/events/" + id} src={image} alt={name}>
+      <Thumbnail href={"/events/" + id} src={image} alt={name}
+        style= {{backgroundColor:"rgb(247, 247, 247)"}}>
           <hr/>
-          <p style={nameStyle} >{name}</p>
-          <h4 style={nameStyle}>{associationName}</h4>
+          <h3 style={nameStyle} ><strong>{name}</strong></h3>
+          <h4 style={nameStyle}><em>{associationName}</em></h4>
           <h6>{startDate} {startDate === endDate ? null: ' - ' + endDate}</h6>
           <h6>{startTime + ' - ' + endTime}</h6>
           <h6 style={nameStyle} >{location}</h6>
