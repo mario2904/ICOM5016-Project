@@ -541,6 +541,35 @@ app.get('/api/event/:id', (req, res) => {
   res.json(response);
 });
 
+app.get('/api/sponsors/:id', (req, res) => {
+  console.log(req.params);
+  // Destructure params
+  const { id } = req.params;
+  // TODO: Check if it is in the db...
+  //
+  // Check if it is in the Testing db
+  const sponsors = db.sponsors[id];
+  if (sponsors === undefined)
+    return res.status(400).send('Error: Sponsor not found in the DB.');
+  // Destructure event information
+  const { name, image } = sponsors;
+  // TODO: Get extra information from the db
+  //
+  // Get extra information from the Testing db (other tables)
+  // The list of students interested of going.
+
+  const response = {
+    name,
+    id,
+    image
+  }
+  // Send Event Information
+  console.log('Success: Get Sponsor Information');
+  res.json(response);
+});
+
+
+
 
 // -----------------------------------------------------------------------------
 // Webpack configurations ...

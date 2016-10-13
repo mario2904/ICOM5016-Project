@@ -36,7 +36,7 @@ export default class ProfileAssociationModal extends Component{
         <Button
           bsStyle="primary"
           onClick={this.open}
-          bsSize="medium"
+        
         >
           Edit
         </Button>

@@ -3,7 +3,7 @@ import { Col, Thumbnail } from 'react-bootstrap';
 
 export default class SponsorsListItem extends Component {
   render () {
-    const { name, img, id} = this.props.item;
+    const { name, image, id} = this.props.item;
     return (
       <Col sm={6} md={3}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
@@ -15,7 +15,7 @@ export default class SponsorsListItem extends Component {
             object-fit: fill;
         }
         `}</style>
-        <Thumbnail src={img} alt="242x200">
+      <Thumbnail src={image} alt="242x200">
           <hr/>
           <p style={nameStyle}>{name}</p>
         </Thumbnail>
