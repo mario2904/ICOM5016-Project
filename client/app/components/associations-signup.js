@@ -60,7 +60,12 @@ export default class Asignup extends Component {
         <FormGroup controlId="formHorizontalAname" >
           <Col sm={6}>
             <ControlLabel>Association Name</ControlLabel>
-            <FormControl type="text" placeholder="Association Name" value={this.state.name} onChange={(e) => {this.setState({name: e.target.value})}} />
+            <FormControl
+              type="text"
+              placeholder="Association Name"
+              value={this.state.name}
+              onChange={(e) => {this.setState({name: e.target.value})}}
+            />
           </Col>
         </FormGroup>
 
@@ -68,35 +73,58 @@ export default class Asignup extends Component {
         <FormGroup controlId="formHorizontalAinitials" >
           <Col sm={6}>
             <ControlLabel>{"Association's Initials"}</ControlLabel>
-            <FormControl type="text" placeholder={"Association's Initials"} value={this.state.initials} onChange={(e) => {this.setState({initials: e.target.value})}}/>
+            <FormControl
+              type="text"
+              placeholder={"Association's Initials"}
+              value={this.state.initials}
+              onChange={(e) => {this.setState({initials: e.target.value})}}
+            />
           </Col>
         </FormGroup>
 
         <FormGroup controlId="formHorizontalEmail" >
           <Col sm={6}>
             <ControlLabel>Email</ControlLabel>
-            <FormControl type="email" placeholder="Email" value={this.state.email} onChange={(e) => {this.setState({email: e.target.value})}}/>
+            <FormControl
+              type="email"
+              placeholder="Email"
+              value={this.state.email}
+              onChange={(e) => {this.setState({email: e.target.value})}}
+            />
           </Col>
         </FormGroup>
 
         <FormGroup controlId="formHorizontalPassword" >
           <Col sm={6}>
             <ControlLabel>Password (Must be 8 characters or longer)</ControlLabel>
-            <FormControl type="password" placeholder="Enter Password" value={this.state.password} onChange={(e) => {this.setState({password: e.target.value})}}/>
+            <FormControl
+              type="password"
+              placeholder="Enter Password"
+              value={this.state.password}
+              onChange={(e) => {this.setState({password: e.target.value})}}
+            />
           </Col>
         </FormGroup>
 
         <FormGroup controlId="formHorizontalPassword" >
           <Col sm={6}>
             <ControlLabel>Re-enter Password</ControlLabel>
-            <FormControl type="password" placeholder="Re-enter Password" value={this.state.passwdChk} onChange={(e) => {this.setState({passwdChk: e.target.value})}} />
+            <FormControl
+              type="password"
+              placeholder="Re-enter Password"
+              value={this.state.passwdChk}
+              onChange={(e) => {this.setState({passwdChk: e.target.value})}}
+            />
           </Col>
         </FormGroup>
 
         <FormGroup controlId="formControlsSelect">
           <Col sm={6}>
             <ControlLabel>Main Office Location</ControlLabel>
-            <FormControl componentClass="select" placeholder="Select where is the main office located:" onChange={(e) => {this.setState({location: e.target.value})}}>
+            <FormControl
+              componentClass="select"
+              placeholder="Select where is the main office located:"
+              onChange={(e) => {this.setState({location: e.target.value})}}>
               <option value="select">Select</option>
               <option value="stefani">Stefani</option>
               <option value="INQU">Ingenieria Quimica</option>
@@ -111,25 +139,25 @@ export default class Asignup extends Component {
         <FormGroup controlId="formHorizontalLink" >
           <Col sm={6}>
             <ControlLabel>Association Link</ControlLabel>
-            <FormControl type="url" placeholder={"Association's Link"} value={this.state.link} onChange={(e) => {this.setState({link: e.target.value})}}/>
+            <FormControl
+              type="url"
+              placeholder={"Association's Link"}
+              value={this.state.link}
+              onChange={(e) => {this.setState({link: e.target.value})}}
+            />
           </Col>
         </FormGroup>
 
 
         <FormGroup>
           <Col >
-
             <Button type="submit" bsStyle="primary" onClick={this.submit}>
               Submit
             </Button>
           </Col>
         </FormGroup>
 
-
-
         </Form>
-
-
       </Grid>
     );
   }
