@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
 import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem, FormGroup, ControlLabel,FormControl} from 'react-bootstrap';
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
@@ -131,6 +132,12 @@ export default class IndividualEvent extends Component {
                     <div style={divStyle}>
                       <InterestedList></InterestedList>
                     </div>
+                  </Tab>
+                  <Tab eventKey={4} title="Stats" >
+                    <h3>Interested over Time</h3>
+                    <Sparklines data={[5, 10, 20, 5, 20, 25, 15, 20, 30, 50]} width={50} height={20} >
+                      <SparklinesBars color="blue" />
+                    </Sparklines>
                   </Tab>
                 </Tabs>
               </Panel>
