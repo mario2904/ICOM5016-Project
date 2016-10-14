@@ -10,3 +10,8 @@ log/
 ehthumbs.db
 Icon?
 Thumbs.db
+
+# Project related files #
+#########################
+node_modules
+dist
