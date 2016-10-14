@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem, FormGroup, ControlLabel,FormControl} from 'react-bootstrap';
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
 import axios from 'axios';
@@ -104,6 +104,25 @@ export default class IndividualEvent extends Component {
                 <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
                   <Tab eventKey={1} title="Reviews" style={contentStyle}>
                     {this.renderReviewItems()}
+                    <ListGroup >
+                      <ListGroupItem>
+
+                          <FormGroup controlId="formHorizontalAname" >
+
+                              <ControlLabel>Chewbacca</ControlLabel>
+                              <FormControl
+                                type="text"
+                                placeholder="Enter Review"
+
+                              />
+
+                          </FormGroup>
+                          <Button type="submit" bsStyle="primary" onClick={this.submit}>
+                            Submit
+                          </Button>
+                      </ListGroupItem>
+
+                    </ListGroup>
                   </Tab>
                   <Tab eventKey={2} title="Updates" style={contentStyle}>
                     {this.renderUpdateItems()}

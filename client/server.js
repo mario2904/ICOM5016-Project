@@ -524,6 +524,7 @@ app.get('/api/event/:id', (req, res) => {
   // The list of students interested of going.
 
   const response = {
+    id,
     name,
     associationId,
     associationName,
