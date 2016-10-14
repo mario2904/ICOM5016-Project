@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal,Button,Popover, Tooltip, OverlayTrigger} from 'react-bootstrap';
+import { Modal,Button,Popover, Tooltip, OverlayTrigger, Checkbox,FormGroup,Col,ControlLabel,FormControl} from 'react-bootstrap';
 
 
 
@@ -35,37 +35,46 @@ export default class ProfileAssociationModal extends Component{
       <div>
         <Button
           bsStyle="primary"
-          onClick={this.open}
-        
-        >
+          onClick={this.open}>
           Edit
         </Button>
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Edit Your Association's Sponsors</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Text in a modal</h4>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+            <h4><strong>Add A Sponsor:</strong></h4>
 
-            <h4>Popover in a modal</h4>
-            <p>there is a <OverlayTrigger overlay={popover}><a href="#">popover</a></OverlayTrigger> here</p>
+              <FormGroup controlId="formHorizontalEmail" >
+                <Col sm={6}>
+                  <ControlLabel></ControlLabel>
+                  <FormControl type="text" placeholder="Sponsor Name" />
+                </Col>
+              </FormGroup>
 
-            <h4>Tooltips in a modal</h4>
-            <p>there is a <OverlayTrigger overlay={tooltip}><a href="#">tooltip</a></OverlayTrigger> here</p>
+                <FormGroup controlId="formControlsFile" >
+                  <Col>
+                    <ControlLabel>Profile Pic</ControlLabel>
+                    <input type="file" id="formsControlsFile"/>
+                  </Col>
+                </FormGroup>
 
-            <hr/>
-            <h4>Overflowing text to show scroll behavior</h4>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+            <hr></hr>
+            <h4><strong>Delete A Sponsor:</strong></h4>
+              <FormGroup controlId="formHorizontalCollege">
+                <Col >
+                <Checkbox>Spotery</Checkbox>
+                <Checkbox>Yiftee</Checkbox>
+                <Checkbox>Inprende</Checkbox>
+                <Checkbox>Arranca</Checkbox>
+                <Checkbox>{"H3"}</Checkbox>
+                <Checkbox>Sunne</Checkbox>
+                <Checkbox>E-Ship</Checkbox>
+                <Checkbox>Enfoque</Checkbox>
+
+                </Col>
+              </FormGroup>
           </Modal.Body>
           <Modal.Footer>
 
@@ -75,4 +84,15 @@ export default class ProfileAssociationModal extends Component{
       </div>
     );
   }
+}
+
+const radioStyle={
+  display: "inline-block",
+  padding: "0px 0px 0px 15px",
+  margin: "10px 0px 0px 0px"
+}
+
+const radio1={
+  display: "inline-block",
+margin: "10px 0px 0px 0px"
 }

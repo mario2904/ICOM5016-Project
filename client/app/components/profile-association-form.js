@@ -34,18 +34,6 @@ export default class ProfileAssociationForm extends Component {
             </Col>
           </FormGroup>
 
-        <FormGroup controlId="formControlsSelectMultiple">
-           <Col sm={6}>
-           <ControlLabel>Sponsors</ControlLabel>
-             <FormControl componentClass="select" multiple>
-               <option value="select">select (multiple)</option>
-               <option value="other">...</option>
-             </FormControl>
-               <Radio>Add</Radio>
-               <Radio>Remove</Radio>
-            </Col>
-          </FormGroup>
-
           <FormGroup controlId="formHorizontalPassword">
             <Col sm={6}>
             <ControlLabel>Sponsors</ControlLabel>

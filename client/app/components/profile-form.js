@@ -16,14 +16,14 @@ export default class ProfileForm extends Component {
 
 
           <FormGroup controlId="formHorizontalEmail" >
-            <Col sm={6}>
+            <Col>
               <ControlLabel>Hometown</ControlLabel>
               <FormControl type="Hometown" placeholder="Hometown" />
             </Col>
           </FormGroup>
 
           <FormGroup controlId="formControlsFile" >
-            <Col sm={6}>
+            <Col>
               <ControlLabel>Profile Pic</ControlLabel>
               <input type="file" id="formsControlsFile"/>
             </Col>

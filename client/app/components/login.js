@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
-import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Row } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Row, Panel } from 'react-bootstrap';
 import axios from 'axios';
 
 export default class Login extends Component {
@@ -46,14 +46,17 @@ export default class Login extends Component {
 
   render () {
     return (
-      <Grid >
-        <Form horizontal>
-          <h1 style={{textAlign:"left"}}><strong>Sign In</strong></h1>
-          <FormGroup controlId="formHorizontalEmail" >
-            <Col componentClass={ControlLabel} sm={2}>
-              Email
-            </Col>
-            <Col sm={6}>
+      <Grid>
+        <h1 style={{textAlign:"center"}}><strong>Sign In</strong></h1>
+        <Form horizontal >
+
+        <Col lg={6} lgOffset={3}>
+          <Panel header={"   "} bsStyle="primary">
+
+
+          <FormGroup  style={{textAlign:"center"}} controlId="formHorizontalEmail" >
+            <Col sm={6} lgOffset={3}>
+            <ControlLabel>Email</ControlLabel>
               <FormControl
                 type="email"
                 placeholder="Email"
@@ -62,11 +65,10 @@ export default class Login extends Component {
                 />
             </Col>
           </FormGroup>
-          <FormGroup controlId="formHorizontalPassword">
-            <Col componentClass={ControlLabel} sm={2}>
-              Password
-            </Col>
-            <Col sm={6}>
+
+          <FormGroup style={{textAlign:"center"}} controlId="formHorizontalPassword">
+            <Col sm={6} lgOffset={3}>
+              <ControlLabel>Password</ControlLabel>
               <FormControl
                 type="password"
                 placeholder="Password"
@@ -75,23 +77,64 @@ export default class Login extends Component {
                 />
             </Col>
           </FormGroup>
+
+
           <FormGroup>
-            <Col smOffset={2} sm={10}>
+            <Col sm={6} lgOffset={3}>
               <Checkbox>Remember me</Checkbox>
             </Col>
           </FormGroup>
+
           <FormGroup>
-            <Col smOffset={2} sm={10}>
-              <Button type="submit" bsStyle="danger" onClick={this.submit}>
-                Sign in
-              </Button>
-              <Row><p> </p></Row>
-              <p>{"If you're a student and don't have an account,"} <a href="#" onClick={this.signup} > sign up now!</a></p>
-              <p>{"If you're an association and don't have an account,"} <a href="#" onClick={this.signupAssociation} > sign up now!</a></p>
+            <Col sm={6} lgOffset={3}>
+            <ControlLabel style={{display:"block", textAlign:"left"}}>Type Of User: </ControlLabel>
+              <div style={radio1}>
+                <p><input id="one" type="radio" name="optradio"/> Association</p>
+              </div>
+            <div style={radioStyle}>
+                <p><input id="two" type="radio" name="optradio"/> Regular</p>
+          </div>
             </Col>
           </FormGroup>
+
+          <FormGroup>
+
+            <Col sm={6} lgOffset={3}>
+
+              <div style={{display:"block"}} >
+              <Button style={{margin:"0px 0px 10px 0px"}}type="submit" bsStyle="danger" onClick={this.submit}>
+                Sign in
+              </Button>
+              </div>
+
+              <div style={{display:"inline-block"}}>
+
+              <p>Create an Account: <a href="#" onClick={this.signup} > Student? </a></p>
+
+              <a href="#" onClick={this.signupAssociation} > Association?</a>
+              </div>
+
+            </Col>
+          </FormGroup>
+
+        </Panel>
+
+      </Col>
+
         </Form>
+
       </Grid>
     );
   }
+}
+
+const radioStyle={
+  display: "inline-block",
+  padding: "0px 0px 0px 15px",
+  margin: "10px 0px 0px 0px"
+}
+
+const radio1={
+  display: "inline-block",
+margin: "10px 0px 0px 0px"
 }
