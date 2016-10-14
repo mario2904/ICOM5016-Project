@@ -94,7 +94,7 @@ export default class IndividualEvent extends Component {
                     <p><strong>Event Time</strong>:{this.state.eventInfo.startTime} - {this.state.eventInfo.endTime}</p>
                     <p><strong>Location</strong>: {this.state.eventInfo.location}</p>
                     <p><strong>Registration Link: </strong> <a href={this.state.eventInfo.registrationLink}>{"Link"}</a></p>
-                    <p><strong>Event Info:</strong>:{this.state.eventInfo.description} </p>
+                    <p><strong>Event Info: </strong>{this.state.eventInfo.description} </p>
                   </ul>
                 </Row>
               </Panel>

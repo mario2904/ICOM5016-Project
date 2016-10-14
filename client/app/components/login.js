@@ -92,7 +92,7 @@ export default class Login extends Component {
                 <p><input id="one" type="radio" name="optradio"/> Association</p>
               </div>
             <div style={radioStyle}>
-                <p><input id="two" type="radio" name="optradio"/> Regular</p>
+                <p><input id="two" type="radio" name="optradio"/> Student</p>
           </div>
             </Col>
           </FormGroup>

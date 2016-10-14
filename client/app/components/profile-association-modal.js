@@ -41,7 +41,7 @@ export default class ProfileAssociationModal extends Component{
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit Your Association's Sponsors</Modal.Title>
+            <Modal.Title><strong>Edit Your Association's Sponsors</strong></Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <h4><strong>Add A Sponsor:</strong></h4>

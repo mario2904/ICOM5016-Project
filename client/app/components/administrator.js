@@ -9,9 +9,10 @@ export default class Administrator extends Component {
       <div>
         <PageHeader>Manage Accounts and Events</PageHeader>
           <ListGroup>
-            <ListGroupItem href="/administrator/associations">Associations</ListGroupItem>
-            <ListGroupItem href="/administrator/students">Students</ListGroupItem>
-            <ListGroupItem href="/administrator/events">Events</ListGroupItem>
+            <ListGroupItem href="/administrator/associations">
+              <strong>Associations</strong></ListGroupItem>
+            <ListGroupItem href="/administrator/students"><strong>Students</strong></ListGroupItem>
+            <ListGroupItem href="/administrator/events"><strong>Events</strong></ListGroupItem>
           </ListGroup>
       </div>
 
