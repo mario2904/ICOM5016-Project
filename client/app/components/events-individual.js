@@ -30,6 +30,29 @@ export default class IndividualEvent extends Component {
     })
     .catch(function (error) {
       console.log(error);
+      tick.setState(
+        {eventInfo:{
+          name: "Hackathon",
+          eventID: "1",
+          associationName: "HackPR",
+          associationID: "45239847",
+          image: "http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png",
+          startDate: "Oct. 15, 2016",
+          endDate: "Oct. 16, 2016",
+          startTime: "9:00 am",
+          endTime: "5:00 pm",
+          location: "Roberto Clemente",
+          description: "HackPR 2016 is the perfect \
+            meeting place for the hacker and technology innovation \
+            community in Puerto Rico. Join us as a student or \
+            professional hacker to win more than {'5k'} in prizes or \
+            as a  visitors to participate in our job fair, \
+            exhibitors area, workshops and final hacks (projects) \
+            presentation at the end of the event. ",
+          registrationLink:"google.com"
+        }
+        }
+      )
     });
   }
 
@@ -54,7 +77,7 @@ export default class IndividualEvent extends Component {
                 </Col>
                 <Col xsOffset={10}>
                   <Button type="submit" bsStyle="danger" onClick={this.submit}>
-                    Interestd
+                    Interested
                   </Button>
                 </Col>
               </Row>
