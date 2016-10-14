@@ -17,8 +17,15 @@ export default class NavBar extends Component {
           <NavItem eventKey={2} href="/events">Events</NavItem>
         </Nav>
         <Nav pullRight>
-          <NavItem eventKey={1} href="#">Notifications <Badge style={{backgroundColor:"rgb(70, 73, 74)"}}>
-            3 </Badge></NavItem>
+          <NavDropdown
+            eventKey={1}
+            title={<div style={{display: "inline-block"}}>Notifications <Badge style={{backgroundColor:"rgb(70, 73, 74)"}}>2</Badge></div>}
+            id="notifications-nav-dropdown"
+            >
+            <MenuItem eventKey={1.1}>Event Update: Idea Platform's Smash Bros Tournament is tomorrow</MenuItem>
+            <MenuItem divider/>
+            <MenuItem eventKey={1.2}>Suggestion: You should buy your ticket for HackPR's Hackathon!</MenuItem>
+          </NavDropdown>
           <NavDropdown eventKey={2} title="Account" id="basic-nav-dropdown">
             <MenuItem eventKey={2.1} href="/profile">Profile</MenuItem>
             <MenuItem eventKey={2.2} href="/settings">Settings</MenuItem>
