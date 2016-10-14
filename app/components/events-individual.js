@@ -73,13 +73,17 @@ export default class IndividualEvent extends Component {
             </div>
             <div>
               <Row>
-                <Col xs={6} >
+                <Col xs={3} >
                   <p style={eventNameSize}> <strong>{this.state.eventInfo.name}</strong>  </p>
                 </Col>
-                <Col xsOffset={10}>
-                  <Button type="submit" bsStyle="danger" onClick={this.submit}>
-                    Interested
-                  </Button>
+
+                <Col xs={1} xsOffset ={5} smOffset ={6} mdOffset={6}lgOffset={7} >
+
+
+                    <Button type="submit" bsStyle="danger" onClick={this.submit}>
+                      Interested
+                    </Button>
+
                 </Col>
               </Row>
                 <Label bsStyle="primary">Competition</Label>
