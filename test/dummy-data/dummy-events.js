@@ -43,7 +43,7 @@ module.exports = [
     startTime: "6:00 pm",
     endTime: "9:00 pm",
     location: "University of Puerto Rico, Mayaguez Campus - S-228",
-    image: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14500634_881246661977335_7362168074202245899_o.jpg",
+    image: "http://1u88jj3r4db2x4txp44yqfj1.wpengine.netdna-cdn.com/wp-content/uploads/2016/03/smashmelee.jpg",
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     registrationLink: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
   },
