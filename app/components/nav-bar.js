@@ -1,42 +1,58 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Badge } from 'react-bootstrap';
+import {Menu, Segment,Icon, Dropdown} from 'semantic-ui-react'
 
 export default class NavBar extends Component {
-  render () {
+state = { activeItem: 'home' };
+handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  render() {
+     const { activeItem } = this.state
+
     return (
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="/home">E-Spotter</a>
-          </Navbar.Brand>
-          <Navbar.Toggle/>
-        </Navbar.Header>
-        <Navbar.Collapse>
-        <Nav>
-          <NavItem eventKey={1} href="/associations">Associations</NavItem>
-          <NavItem eventKey={2} href="/events">Events</NavItem>
-        </Nav>
-        <Nav pullRight>
-          <NavDropdown
-            eventKey={1}
-            title={<div style={{display: "inline-block"}}>Notifications <Badge style={{backgroundColor:"rgb(70, 73, 74)"}}>2</Badge></div>}
-            id="notifications-nav-dropdown"
-            >
-            <MenuItem eventKey={1.1}>Event Update: Idea Platform's Smash Bros Tournament is tomorrow</MenuItem>
-            <MenuItem divider/>
-            <MenuItem eventKey={1.2}>Suggestion: You should buy your ticket for HackPR's Hackathon!</MenuItem>
-          </NavDropdown>
-          <NavDropdown eventKey={2} title="Account" id="basic-nav-dropdown">
-            <MenuItem eventKey={2.1} href="/profile">Profile</MenuItem>
-            <MenuItem eventKey={2.2} href="/settings">Settings</MenuItem>
-            <MenuItem eventKey={2.3} href="/associations/:associationID">Association Profile</MenuItem>
-            <MenuItem eventKey={2.4} href="/create-event">{"Create Event"}</MenuItem>
-            <MenuItem eventKey={2.5} href="/administrator">Admin</MenuItem>
-            <MenuItem eventKey={2.6} href="/">Log Out</MenuItem>
-          </NavDropdown>
-        </Nav>
-      </Navbar.Collapse>
-      </Navbar>
+
+        <Menu  color="teal" style={{backgroundColor:"black",
+          padding: "0px 0px 5px 0px", margin:"0px 0px 200px 0px"}} inverted secondary>
+          <Menu.Item  style={{color:"white"}} name='home'
+            active={activeItem === 'home'} onClick={this.handleItemClick}
+            href="/home">
+            E-Spotter <Icon name="marker"  size="large"color= "blue"/>
+            </Menu.Item>
+
+          <Menu.Item color="red" style={{color:"white"}} name='associations'
+            active={activeItem === 'associations'} onClick={this.handleItemClick}
+            href="/associations">
+            Associations <Icon name="university" color= "green"/> </Menu.Item>
+
+        <Menu.Item style={{color:"white"}} name='events'
+
+           active={activeItem === 'events'} onClick={this.handleItemClick} href="/events">
+           Events <Icon name="calendar outline"  color= "red"/> </Menu.Item>
+
+          <Menu.Menu position='right'>
+          <Dropdown as={Menu.Item} text="Account" icon='user' simple
+            name="account" active={activeItem === 'account'} onClick={this.handleItemClick}>
+                   <Dropdown.Menu>
+                     <Dropdown.Item href="/profile">Profile</Dropdown.Item>
+                     <Dropdown.Item href="/associations/:associationID">Association Profile</Dropdown.Item>
+                     <Dropdown.Item href="/settings">Settings</Dropdown.Item>
+                     <Dropdown.Divider />
+                     <Dropdown.Item href="/create-event">Create Event</Dropdown.Item>
+                     <Dropdown.Item href="/administrator">Admin</Dropdown.Item>
+                     <Dropdown.Item href="/">Log Out</Dropdown.Item>
+                   </Dropdown.Menu>
+                 </Dropdown>
+           </Menu.Menu>
+
+        </Menu>
+
     );
   }
+}
+
+const navStyle ={
+  borderStyle: "solid",
+  borderColor: "black",
+  borderWidth: "5px",
+  width: "100%"
 }

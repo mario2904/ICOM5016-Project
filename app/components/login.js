@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
-import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Row, Panel } from 'react-bootstrap';
+import { FormGroup, FormControl,Col, Checkbox, ControlLabel, Row, Panel } from 'react-bootstrap';
 import axios from 'axios';
+import { Button, Form, Grid, Icon } from 'semantic-ui-react'
 
 export default class Login extends Component {
   constructor () {
@@ -46,65 +47,63 @@ export default class Login extends Component {
 
   render () {
     return (
-      <Grid>
+      <Grid centered columns ={2}>
+
+        <Grid.Row>
         <h1 style={{textAlign:"center"}}><strong>Sign In</strong></h1>
-        <Form horizontal >
+        </Grid.Row>
 
-        <Col lg={6} lgOffset={3}>
-          <Panel header={"   "} bsStyle="primary">
+        <Form>
 
-
-          <FormGroup  style={{textAlign:"center"}} controlId="formHorizontalEmail" >
-            <Col sm={6} lgOffset={3}>
-            <ControlLabel>Email</ControlLabel>
-              <FormControl
+          <Form.Group style={{textAlign:"center"}}>
+            <Grid.Column width={12}>
+            <Form.Field label = "Email"></Form.Field>
+              <Form.Input
                 type="email"
-                placeholder="Email"
+                placeholder="email@upr.edu"
                 value={this.state.email}
                 onChange={(e) => {this.setState({email: e.target.value})}}
                 />
-            </Col>
-          </FormGroup>
+            </Grid.Column>
+          </Form.Group>
 
-          <FormGroup style={{textAlign:"center"}} controlId="formHorizontalPassword">
+          <Form.Group style={{textAlign:"center"}}>
             <Col sm={6} lgOffset={3}>
-              <ControlLabel>Password</ControlLabel>
-              <FormControl
+                <Form.Field label = "Password"></Form.Field>
+              <Form.Input
                 type="password"
                 placeholder="Password"
                 value={this.state.password}
                 onChange={(e) => {this.setState({password: e.target.value})}}
                 />
             </Col>
-          </FormGroup>
+          </Form.Group>
 
 
-          <FormGroup>
-            <Col sm={6} lgOffset={3}>
-              <Checkbox>Remember me</Checkbox>
-            </Col>
-          </FormGroup>
+          <Form.Group>
 
-          <FormGroup>
-            <Col sm={6} lgOffset={3}>
-            <ControlLabel style={{display:"block", textAlign:"left"}}>Type Of User: </ControlLabel>
-              <div style={radio1}>
-                <p><input id="one" type="radio" name="optradio"/> Association</p>
-              </div>
-            <div style={radioStyle}>
-                <p><input id="two" type="radio" name="optradio"/> Student</p>
-          </div>
-            </Col>
-          </FormGroup>
+              <Form.Checkbox label ="Remember me?"></Form.Checkbox>
 
-          <FormGroup>
+          </Form.Group>
 
-            <Col sm={6} lgOffset={3}>
+          <Form.Group inline>
+
+            <Form.Field label="Type Of User:" style={{display:"block", textAlign:"left"}}></Form.Field>
+            <Form.Radio style={radio1} label= "Association"></Form.Radio>
+            <Form.Radio style={radioStyle} label= "Student"></Form.Radio>
+
+          </Form.Group>
+
+          <Form.Group>
 
               <div style={{display:"block"}} >
-              <Button style={{margin:"0px 0px 10px 0px"}}type="submit" bsStyle="danger" onClick={this.submit}>
-                Sign in
+                <Button.Group>
+              <Button color="blue" type="submit" onClick={this.submit}>
+                <Icon name="student"></Icon> Student
               </Button>
+              <Button.Or/>
+              <Button color ="red"> <Icon name="university"></Icon> Association</Button>
+              </Button.Group>
               </div>
 
               <div style={{display:"inline-block"}}>
@@ -114,12 +113,8 @@ export default class Login extends Component {
               <a href="#" onClick={this.signupAssociation} > Association?</a>
               </div>
 
-            </Col>
-          </FormGroup>
 
-        </Panel>
-
-      </Col>
+          </Form.Group>
 
         </Form>
 

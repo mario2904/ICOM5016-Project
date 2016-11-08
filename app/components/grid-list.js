@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Grid, Row } from 'react-bootstrap';
-
+import { Row } from 'react-bootstrap';
+import {Grid} from 'semantic-ui-react';
 export default class GridList extends Component {
   renderListItems () {
     const { ListItem, items } = this.props;
@@ -11,9 +11,9 @@ export default class GridList extends Component {
   render () {
     return (
       <Grid>
-        <Row>
+        <Grid.Row>
           {this.renderListItems()}
-        </Row>
+        </Grid.Row>
       </Grid>
     );
   }
