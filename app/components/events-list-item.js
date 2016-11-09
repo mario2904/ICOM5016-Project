@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { Col, Thumbnail } from 'react-bootstrap';
 import { Link } from 'react-router';
 import {Grid, Card, Image, Icon} from 'semantic-ui-react';
+
 export default class EventsListItem extends Component {
   render () {
     const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
-
-      <Grid.Column computer={4} mobile={16}>
-        {/* Small hack to have fixed sized images (height) inside Thumbnail */}
-        {/* object-fit will accept: fill, contain, cover, none, scale-down */}
-
-      <Card href={"/events/" + id} alt={name}
-        style= {{backgroundColor:"rgb(247, 247, 247)", margin:"25px 0px 25px 0px"}}>
-        <Image style={{ width:"500px", height:"200px", borderRadius: 0}} src={image}></Image>
+      <Grid.Column mobile={16} tablet={8} computer={4}>
+      <Card
+        as={Link} to={"/events/" + id}
+        alt={name}
+        centered
+        style= {{backgroundColor:"rgb(247, 247, 247)"}}>
+        <Image style={{ width:"500px", height:"200px"}} src={image}></Image>
         <Card.Content>
           <Card.Header style={nameStyle}><strong>{name}</strong></Card.Header>
           <Card.Meta style={nameStyle}><em>{associationName}</em></Card.Meta>
@@ -26,7 +25,6 @@ export default class EventsListItem extends Component {
 
         </Card>
       </Grid.Column>
-
     );
   }
 }

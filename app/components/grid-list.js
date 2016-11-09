@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Row } from 'react-bootstrap';
-import {Grid} from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 export default class GridList extends Component {
   renderListItems () {
     const { ListItem, items } = this.props;
@@ -10,7 +9,7 @@ export default class GridList extends Component {
   }
   render () {
     return (
-      <Grid padded>
+      <Grid>
           {this.renderListItems()}
       </Grid>
     );
