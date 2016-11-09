@@ -101,7 +101,7 @@ class Home extends Component {
                 <Col xs={12} md={12}>
                   <Card>
                     <CardHeader
-                      title="Without Avatar"
+                      title="Updates"
                       subtitle="Subtitle"
                       actAsExpander={true}
                       showExpandableButton={true}

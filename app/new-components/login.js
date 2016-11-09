@@ -1,17 +1,41 @@
 import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import { grey300 } from 'material-ui/styles/colors';
 
+import LoginBox from './login-box';
+
+const banner = "images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png";
 const styles = {
+  banner: {
+    width: '100%',
+    backgroundImage: `url(${banner})`,
+    height:'500px',
+    backgroundPosition: 'center',
+    backgroundSize: '100% 100%',
+  },
   login: {
     textAlign: 'center',
-    marginTop: 50,
-    padding: 20,
-    display: 'inline-block',
+    paddingTop: '250'
   },
+  section: {
+    width: '100%',
+    backgroundColor: grey300,
+    height:'400px',
+    backgroundPosition: 'center',
+    backgroundSize: '100% 100%',
+  },
+  howto: {
+    title: {
+      fontSize: 50,
+      paddingTop: 80,
+    }
+
+  }
 };
 
 export default class Login extends Component {
@@ -42,35 +66,19 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div style={{textAlign: 'center'}}>
-        <Paper style={styles.login}>
-          <h1>Login</h1>
-          <TextField
-            id="text-field-controlled-email"
-            hintText="E-mail"
-            value={this.state.email}
-            type="email"
-            onChange={this.handleEmailChange}
-            />
-          <br/>
-          <TextField
-            id="text-field-controlled-password"
-            hintText="Password"
-            value={this.state.password}
-            type="password"
-            onChange={this.handlePasswordChange}
-            />
-          <br />
-          <br />
-          <RaisedButton
-            label="Log in"
-            onTouchTap={this.handleLogin}
-            primary={true}
-            />
-          <h5>Don't have an account? Sign up as a <Link to="#">Student</Link> or <Link to="#">Association</Link></h5>
-        </Paper>
-      </div>
+      <div>
+        <div style={styles.banner}>
+          <LoginBox style={styles.login}/>
+        </div>
+        <div style={styles.section}>
+          <Grid>
+            <Row style={{textAlign: 'center'}}>
+              <p style={styles.howto.title}>How E-Spotter Works</p>
+            </Row>
+          </Grid>
+        </div>
 
+      </div>
     );
   }
 }
