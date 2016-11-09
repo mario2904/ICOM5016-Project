@@ -10,9 +10,10 @@ handleItemClick = (e, { name }) => this.setState({ activeItem: name });
      const { activeItem } = this.state
 
     return (
-
-        <Menu color="teal" style={{backgroundColor:"black",
-           margin:"0px 0px 14px 0px"}} inverted secondary>
+      <Grid>
+      <Grid.Column computer={16} mobile={16} >
+        <Menu  style={{backgroundColor:"black",
+           margin:"0px 0px 14px 0px"}} secondary>
           <Menu.Item  style={{color:"white"}} name='home'
             active={activeItem === 'home'} onClick={this.handleItemClick}
             href="/home">
@@ -27,10 +28,10 @@ handleItemClick = (e, { name }) => this.setState({ activeItem: name });
         <Menu.Item style={{color:"white"}} name='events'
 
            active={activeItem === 'events'} onClick={this.handleItemClick} href="/events">
-           Events <Icon name="calendar outline"  color= "red"/> </Menu.Item>
+           Events <Icon name="calendar outline" color= "red"/> </Menu.Item>
 
           <Menu.Menu position='right'>
-          <Dropdown as={Menu.Item} text="Account" icon='user' simple
+          <Dropdown style={{color:"white"}} as={Menu.Item} text="Account" icon='user' simple
             name="account" active={activeItem === 'account'} onClick={this.handleItemClick}>
                    <Dropdown.Menu>
                      <Dropdown.Item href="/profile">Profile</Dropdown.Item>
@@ -45,7 +46,8 @@ handleItemClick = (e, { name }) => this.setState({ activeItem: name });
            </Menu.Menu>
 
         </Menu>
-
+      </Grid.Column>
+      </Grid>
     );
   }
 }

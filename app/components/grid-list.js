@@ -10,12 +10,8 @@ export default class GridList extends Component {
   }
   render () {
     return (
-      <Grid >
-        <Grid.Row columns={4}>
-
+      <Grid padded>
           {this.renderListItems()}
-
-        </Grid.Row>
       </Grid>
     );
   }

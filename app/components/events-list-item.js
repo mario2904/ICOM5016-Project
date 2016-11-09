@@ -6,18 +6,13 @@ export default class EventsListItem extends Component {
   render () {
     const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
-      <Grid.Column>
+
+      <Grid.Column computer={4} mobile={16}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
         {/* object-fit will accept: fill, contain, cover, none, scale-down */}
-        <style type="text/css">{`
-        .thumbnail img {
-            height: 200px;
-            width: 500px;
-            object-fit: fill;
-        }
-        `}</style>
+
       <Card href={"/events/" + id} alt={name}
-        style= {{backgroundColor:"rgb(247, 247, 247)"}}>
+        style= {{backgroundColor:"rgb(247, 247, 247)", margin:"25px 0px 25px 0px"}}>
         <Image style={{ width:"500px", height:"200px"}} src={image}></Image>
         <Card.Content>
           <Card.Header style={nameStyle}><strong>{name}</strong></Card.Header>
@@ -31,6 +26,7 @@ export default class EventsListItem extends Component {
 
         </Card>
       </Grid.Column>
+      
     );
   }
 }
