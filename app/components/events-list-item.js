@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Col, Thumbnail } from 'react-bootstrap';
 import { Link } from 'react-router';
 import {Grid, Card, Image, Icon} from 'semantic-ui-react';
 
@@ -8,15 +7,6 @@ export default class EventsListItem extends Component {
     const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
       <Grid.Column mobile={16} tablet={8} computer={4}>
-        {/* Small hack to have fixed sized images (height) inside Thumbnail */}
-        {/* object-fit will accept: fill, contain, cover, none, scale-down */}
-        <style type="text/css">{`
-        .thumbnail img {
-            height: 200px;
-            width: 500px;
-            object-fit: fill;
-        }
-        `}</style>
       <Card
         as={Link} to={"/events/" + id}
         alt={name}

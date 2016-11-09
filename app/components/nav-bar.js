@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Badge } from 'react-bootstrap';
-// import {Menu, Segment,Icon, Dropdown, Grid} from 'semantic-ui-react';
 import { Link } from 'react-router'
 import { Menu, Segment, Icon, Grid, Dropdown } from 'semantic-ui-react';
 
