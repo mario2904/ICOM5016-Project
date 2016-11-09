@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Badge } from 'react-bootstrap';
-import {Menu, Segment,Icon, Dropdown} from 'semantic-ui-react'
+import {Menu, Segment,Icon, Dropdown, Grid} from 'semantic-ui-react'
 
 export default class NavBar extends Component {
 state = { activeItem: 'home' };
@@ -11,8 +11,8 @@ handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
     return (
 
-        <Menu  color="teal" style={{backgroundColor:"black",
-          padding: "0px 0px 5px 0px", margin:"0px 0px 200px 0px"}} inverted secondary>
+        <Menu color="teal" style={{backgroundColor:"black",
+           margin:"0px 0px 14px 0px"}} inverted secondary>
           <Menu.Item  style={{color:"white"}} name='home'
             active={activeItem === 'home'} onClick={this.handleItemClick}
             href="/home">

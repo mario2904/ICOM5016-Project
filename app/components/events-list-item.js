@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Col, Thumbnail } from 'react-bootstrap';
 import { Link } from 'react-router';
-import {Grid, Card, Image} from 'semantic-ui-react';
+import {Grid, Card, Image, Icon} from 'semantic-ui-react';
 export default class EventsListItem extends Component {
   render () {
     const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
-      <Col sm={6} md={3}>
+      <Grid.Column>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
         {/* object-fit will accept: fill, contain, cover, none, scale-down */}
         <style type="text/css">{`
@@ -18,17 +18,19 @@ export default class EventsListItem extends Component {
         `}</style>
       <Card href={"/events/" + id} alt={name}
         style= {{backgroundColor:"rgb(247, 247, 247)"}}>
-        <Image src={image} size ="medium"></Image>
-          <Card.Header><strong>{name}</strong></Card.Header>
-          <Card.Meta><em>{associationName}</em></Card.Meta>
-          <Card.Description>
-            <h6>{startDate} {startDate === endDate ? null: ' - ' + endDate}</h6>
-            <h6>{startTime + ' - ' + endTime}</h6>
-            <h6 style={nameStyle} >{location}</h6>
+        <Image style={{ width:"500px", height:"200px"}} src={image}></Image>
+        <Card.Content>
+          <Card.Header style={nameStyle}><strong>{name}</strong></Card.Header>
+          <Card.Meta style={nameStyle}><em>{associationName}</em></Card.Meta>
+          <Card.Description style={nameStyle}> {startDate} {startDate === endDate ? null: ' - ' + endDate}
+            {startTime + ' - ' + endTime}</Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+          <Card.Description style={nameStyle}><Icon name="marker" color="red"></Icon> {location}</Card.Description>
+        </Card.Content>
 
-            </Card.Description>
         </Card>
-      </Col>
+      </Grid.Column>
     );
   }
 }
