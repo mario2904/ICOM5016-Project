@@ -13,7 +13,7 @@ export default class EventsListItem extends Component {
 
       <Card href={"/events/" + id} alt={name}
         style= {{backgroundColor:"rgb(247, 247, 247)", margin:"25px 0px 25px 0px"}}>
-        <Image style={{ width:"500px", height:"200px"}} src={image}></Image>
+        <Image style={{ width:"500px", height:"200px", borderRadius: 0}} src={image}></Image>
         <Card.Content>
           <Card.Header style={nameStyle}><strong>{name}</strong></Card.Header>
           <Card.Meta style={nameStyle}><em>{associationName}</em></Card.Meta>
@@ -26,7 +26,7 @@ export default class EventsListItem extends Component {
 
         </Card>
       </Grid.Column>
-      
+
     );
   }
 }
