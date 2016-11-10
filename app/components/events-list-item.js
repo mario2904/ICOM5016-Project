@@ -11,7 +11,7 @@ export default class EventsListItem extends Component {
         as={Link} to={"/events/" + id}
         alt={name}
         centered
-        style= {{backgroundColor:"rgb(247, 247, 247)"}}>
+        style= {{backgroundColor:"rgb(255, 255, 255)"}}>
         <Image style={{ width:"500px", height:"200px"}} src={image}></Image>
         <Card.Content>
           <Card.Header style={nameStyle}><strong>{name}</strong></Card.Header>
@@ -19,8 +19,8 @@ export default class EventsListItem extends Component {
           <Card.Description style={nameStyle}> {startDate} {startDate === endDate ? null: ' - ' + endDate}
             {startTime + ' - ' + endTime}</Card.Description>
         </Card.Content>
-        <Card.Content extra>
-          <Card.Description style={nameStyle}><Icon name="marker" color="red"></Icon> {location}</Card.Description>
+        <Card.Content style={{backgroundColor:"rgb(242, 242, 242)"}}extra>
+          <Card.Description style={nameStyle}><Icon name="marker" color="red"></Icon>{location}</Card.Description>
         </Card.Content>
 
         </Card>

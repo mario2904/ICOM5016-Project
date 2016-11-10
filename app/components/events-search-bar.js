@@ -5,11 +5,11 @@ export default class EventsSearchBar extends Component {
   render () {
     return (
 
-      <Segment inverted color="blue" style={{borderRadius: 0}}>
-        <Grid padded >
+
+        <Grid padded style={{padding: 40}}>
           <Input  action={{ icon: 'search'}} placeholder='Search...' />
           <Form>
-            <Form.Group >
+            <Form.Group>
               <Form.Field inline control={Select} label='Order by'
                 options={order} placeholder='i.e. Most Popular' />
               <Form.Field inline control={Select} label='Categories'
@@ -17,7 +17,7 @@ export default class EventsSearchBar extends Component {
             </Form.Group>
           </Form>
         </Grid>
-      </Segment>
+
     );
   }
 }
