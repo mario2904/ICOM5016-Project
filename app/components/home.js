@@ -9,6 +9,8 @@ import HomeSearchBar from './home-search-bar';
 import GridList from './grid-list';
 import EventsListItem from './events-list-item';
 
+const banner = '/images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png';
+
 const styles = {
   title: {
     textAlign: 'center'
@@ -18,6 +20,16 @@ const styles = {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis'
+  },
+  banner: {
+    width: '100%',
+    backgroundImage: `url(${banner})`,
+    height:'400px',
+    backgroundPosition: 'center',
+    backgroundSize: '100% 100%'
+  },
+  menubar: {
+    borderRadius: 0
   }
 }
 
@@ -55,8 +67,6 @@ export default class Home extends Component {
     .catch(function (error) {
       console.log(error);
     });
-
-
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -105,18 +115,33 @@ export default class Home extends Component {
 
     return (
       <div>
-        <h2 style={styles.title}>Welcome Back!</h2>
-        <Menu pointing style={{borderRadius:0}}>
-          <Menu.Item name='news feed' active={activeItem === 'news feed'} onClick={this.handleItemClick} />
-          <Menu.Item name='events' active={activeItem === 'events'} onClick={this.handleItemClick} />
-          <Menu.Item name='associations' active={activeItem === 'associations'} onClick={this.handleItemClick} />
-
-        </Menu>
-        <Segment padded>
+        <div style={styles.banner}>
+          <h2 style={styles.title}>Welcome Back!</h2>
+        </div>
+        <div>
+          <Menu pointing style={styles.menubar}>
+            <Menu.Item
+              name='news feed'
+              icon='feed'
+              active={activeItem === 'news feed'}
+              onClick={this.handleItemClick} />
+            <Menu.Item
+              name='events'
+              icon='calendar'
+              active={activeItem === 'events'}
+              onClick={this.handleItemClick} />
+            <Menu.Item
+              name='associations'
+              icon='university'
+              active={activeItem === 'associations'}
+              onClick={this.handleItemClick} />
+          </Menu>
+          <Segment padded>
             {(this.state.activeItem === 'events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
-            {(this.state.activeItem === 'associations') ? <Grid padded centered>{this.renderMyAssociations()}</Grid>: null}
+            {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
             {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
-        </Segment>
+          </Segment>
+        </div>
       </div>
     );
   }
