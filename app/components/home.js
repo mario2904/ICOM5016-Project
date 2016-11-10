@@ -8,7 +8,7 @@ import axios from 'axios';
 import HomeSearchBar from './home-search-bar';
 import GridList from './grid-list';
 import EventsListItem from './events-list-item';
-
+import AssociationsListItem from './associations-list-item';
 const banner = '/images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png';
 
 const styles = {
@@ -92,20 +92,8 @@ export default class Home extends Component {
   };
 
   renderMyAssociations = () => {
-    return this.state.associations.map((association) => {
-      const { id, name, initials, profileImage } = association;
-      return (
-        <Grid.Column mobile={16} tablet={8} computer={4} key={id} style={styles.title}>
-          <Card centered>
-            <ImageComponent src={profileImage} style={{ width:"500px", height:"200px"}}/>
-            <Card.Content>
-              <Card.Header style={styles.overflow}>{name}</Card.Header>
-              <Card.Meta>{initials}</Card.Meta>
-            </Card.Content>
-          </Card>
-        </Grid.Column>
-      );
-    });
+    return  <GridList items={this.state.associations} ListItem={AssociationsListItem}/>;
+
   }
 
   renderMyFeeds = () => <Feed events={this.props.feeds} />;
@@ -136,7 +124,7 @@ export default class Home extends Component {
               active={activeItem === 'associations'}
               onClick={this.handleItemClick} />
           </Menu>
-          <Segment padded>
+          <Segment style={{backgroundColor:"rgb(247, 247, 247)"}} padded>
             {(this.state.activeItem === 'events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
             {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
             {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
