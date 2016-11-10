@@ -66,6 +66,7 @@ export default class Home extends Component {
       const { id, name, associationName, startDate, endDate, startTime, endTime, location, image, description } = event;
 
       return (
+
         <Item key={id}>
           <Image size='small' src={image} />
           <Content>
@@ -105,13 +106,13 @@ export default class Home extends Component {
     return (
       <div>
         <h2 style={styles.title}>Welcome Back!</h2>
-        <Menu pointing secondary>
+        <Menu pointing style={{borderRadius:0}}>
           <Menu.Item name='news feed' active={activeItem === 'news feed'} onClick={this.handleItemClick} />
           <Menu.Item name='events' active={activeItem === 'events'} onClick={this.handleItemClick} />
           <Menu.Item name='associations' active={activeItem === 'associations'} onClick={this.handleItemClick} />
 
         </Menu>
-        <Segment>
+        <Segment padded>
             {(this.state.activeItem === 'events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
             {(this.state.activeItem === 'associations') ? <Grid padded centered>{this.renderMyAssociations()}</Grid>: null}
             {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
