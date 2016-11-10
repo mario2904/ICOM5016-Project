@@ -28,6 +28,20 @@ const imgUpload = multer({ dest: './public/images/tmp', fileFilter: filter.image
 const test = require('./test');
 // Create Testing db
 const db = {};
+
+var pgp = require('pg-promise')(/*options*/);
+var db1 = pgp('postgres://postgres:postgres@localhost:8000/postgres');
+
+db1.connect()
+    .then(function (obj) {
+        console.log('DB connection established.')
+        obj.done(); // success, release the connection;
+    })
+    .catch(function (error) {
+        console.log("ERROR:", error.message || error);
+    });
+
+
 // Set Schema
 test.createSchema(db);
 // Fill testing db with dummy data
@@ -353,39 +367,50 @@ app.get('/api/student/:id', (req, res) => {
 //        followers: [] uuid
 app.get('/api/association/all', (req, res) => {
   const response = [];
-  for (var id in db.association) {
-    if (db.association.hasOwnProperty(id)) {
-      // Destructure association information
-      const { name, initials, location, link, email, profileImage, bio } = db.association[id];
-      // TODO: Get extra information from the db
-      //
-      // Get extra information from the Testing db (other tables)
-      const sponsors = db.associationSponsors[id];
-      const activeEvents = db.activeEvents[id];
-      const pastEvents = db.pastEvents[id];
-      const followers = db.followers[id];
+  db1.any("SELECT associationid, associationname, initials, room, pagelink, email, image_path, bio \
+          FROM associations natural join account natural join images natural join location", [true])
+      .then(function (data) {
+          // success;
 
-      const singleAssociation = {
-        id,
-        name,
-        initials,
-        location,
-        link,
-        email,
-        profileImage,
-        bio,
-        sponsors,
-        activeEvents,
-        pastEvents,
-        followers
-      }
-      response.push(singleAssociation);
-    }
-  }
+          for (let i = 0; i<data.length;i++) {
 
-  // Send All Associations Information
-  console.log('Success: Get All Associations Information');
-  res.json({associations: response})
+              // Destructure association information
+              const { associationid, associationname, initials, room, pagelink, email, image_path, bio } = data[i];
+              // TODO: Get extra information from the db
+              //
+              // Get extra information from the Testing db (other tables)
+
+
+              // const sponsors = db.associationSponsors[id];
+              // const activeEvents = db.activeEvents[id];
+              // const pastEvents = db.pastEvents[id];
+              // const followers = db.followers[id];
+
+              const singleAssociation = {
+                id: associationid,
+                name: associationname,
+                initials: initials,
+                location: room,
+                link: pagelink,
+                email: email,
+                profileImage: image_path,
+                bio: bio
+              }
+              response.push(singleAssociation);
+
+          }
+
+          // Send All Associations Information
+          console.log('Success: Get All Associations Information');
+          res.json({associations: response})
+          //console.log(data[0])
+          console.log('worked')
+      })
+      .catch(function (error) {
+          // error;
+          console.log('no function')
+      });
+
 });
 
 // GET - Association Information
