@@ -15,7 +15,7 @@ export default class AssociationsListItem extends Component {
          <Item style={{margin:"10px 0px 10px 0px"}}>
           <Image style={{width:"150px", height:"150px"}} src={profileImage}/>
           <Item.Content>
-        <Item.Header as='a'>{initials}</Item.Header>
+        <Item.Header>{initials}</Item.Header>
           <Item.Meta style={nameStyle}>IEEE Women in Engineering - UPRM</Item.Meta>
         <Item.Description><Icon name="user" color="blue"></Icon>following: #
     </Item.Description>
