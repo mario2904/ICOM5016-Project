@@ -27,10 +27,10 @@ export default class Events extends Component {
   }
   render () {
     return (
-      <Grid centered>
-        <Grid.Row style={{padding:"50px 0px 0px 0px"}}>
+      <Grid style={{backgroundColor:"rgb(247, 247, 247)"}}centered>
+        <Grid.Row style={{padding:"50px 0px 50px 0px"}}>
         <h1 style={{textAlign:"center"}}>
-          <Icon color="green" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
+          <Icon color="teal" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
         </Grid.Row>
         <EventsSearchBar/>
         <GridList items={this.state.events} ListItem={EventsListItem}/>
