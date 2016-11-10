@@ -7,7 +7,7 @@ export default class EventsSearchBar extends Component {
 
 
         <Grid padded style={{padding: 40}}>
-          <Input  action={{ icon: 'search'}} placeholder='Search...' />
+          <Input  action={{ icon: 'search'}} placeholder='Search by name...' />
           <Form>
             <Form.Group>
               <Form.Field inline control={Select} label='Order by'

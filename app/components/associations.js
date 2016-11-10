@@ -32,6 +32,9 @@ export default class Associations extends Component {
           <h1 style={{textAlign:"center"}}>
             <Icon color="blue" size="huge" name="university"></Icon><strong>Student Associations</strong></h1>
           </Grid.Row>
+          <Grid.Row centered>
+          <AssociationsSearchBar></AssociationsSearchBar>
+          </Grid.Row>
           <GridList items={this.state.associations} ListItem={AssociationsListItem}/>
           </Grid>
     );
