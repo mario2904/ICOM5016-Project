@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import { Menu, Segment, Icon, Grid, Dropdown } from 'semantic-ui-react';
 
+const styles = {
+  navbar: {
+    borderRadius: 0,
+    margin: 0
+  }
+}
+
 export default class NavBar extends Component {
 
   state = { activeItem: 'E-Spotter' };
@@ -11,7 +18,7 @@ export default class NavBar extends Component {
   render() {
     const { activeItem } = this.state;
     return (
-      <Segment inverted style={{borderRadius: 0}}>
+      <Segment inverted style={styles.navbar}>
         <Grid>
           <Grid.Row only='computer'>
             <Menu inverted pointing secondary fluid >
@@ -77,11 +84,4 @@ export default class NavBar extends Component {
       </Segment>
     )
   }
-}
-
-const navStyle ={
-  borderStyle: "solid",
-  borderColor: "black",
-  borderWidth: "5px",
-  width: "100%"
 }
