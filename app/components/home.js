@@ -111,11 +111,11 @@ export default class Home extends Component {
           <Menu.Item name='associations' active={activeItem === 'associations'} onClick={this.handleItemClick} />
 
         </Menu>
-        <Segment>
+
             {(this.state.activeItem === 'events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
-            {(this.state.activeItem === 'associations') ? <Grid padded centered>{this.renderMyAssociations()}</Grid>: null}
+            {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
             {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
-        </Segment>
+
       </div>
     );
   }
