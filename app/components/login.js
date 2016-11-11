@@ -47,7 +47,7 @@ export default class Login extends Component {
 
   render () {
     return (
-      <Grid stackable columns={2}>
+  <Grid padded stackable columns={2}>
     <Grid.Row centered>
       <Grid.Column color="blue" width={8} style={{padding:"200px 0px 200px 0px"}}>
         <h1><strong>Sign In</strong><Icon name="user" size="large"></Icon></h1>

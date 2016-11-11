@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Grid, Button, Row, Col, Tab, Tabs, Image} from 'react-bootstrap';
 import ModalOverlay from "./modal-overlay";
 import Associations from "./associations";
 import GridList from "./grid-list";
@@ -8,6 +7,10 @@ import EventsListItem from './events-list-item';
 import SponsorsListItem from './sponsors-list-item';
 import ProfileAssociationForm from './profile-association-form';
 import axios from 'axios';
+
+import {Form, Grid, Icon,Input, Image, Segment,Item } from 'semantic-ui-react'
+
+const banner = '/images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png';
 
 export default class ProfileAssociation extends Component{
 
@@ -94,43 +97,58 @@ export default class ProfileAssociation extends Component{
   render(){
     return (
       <Grid>
-        <Row>
+        <Grid.Row columns={2}>
+          <Segment>
+      <Grid.Column width={4}>
 
-          <Col lg={4} xs={5}>
+        <Image style={{width:"200px", height:"200px"}}
+          src={this.state.associationInfo.profileImage}></Image>
 
-            <Image style={imgStyle} src={this.state.associationInfo.profileImage} responsive thumbnail/>
-
-          </Col>
-
-          <Col lg={8} xs={7}>
-            <h1 style={txt}><strong> {this.state.associationInfo.name}</strong></h1>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs={12}>
-            <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
-              <Tab eventKey={1} title="About" style={contentStyle}>
-                <p><strong>Email</strong>: {this.state.associationInfo.email}</p>
-                <p><strong>Location</strong>: {this.state.associationInfo.location}</p>
-                <p><strong>Page Link</strong>: {this.state.associationInfo.link} </p>
-                <p><strong>Description</strong>: {this.state.associationInfo.bio}</p>
-              </Tab>
-
-              <Tab eventKey={2} title="Live/Future Events" style={contentStyle}>
-                <GridList items={this.state.activeEvents} ListItem={EventsListItem}/></Tab>
-              <Tab eventKey={3} title="Past Events" style={contentStyle}>
-                <GridList items={this.props.events} ListItem={EventsListItem}/></Tab>
-              <Tab eventKey={4} title="Sponsors" style={contentStyle}>
-                <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>
-              </Tab>
-              <Tab eventKey={5} title="Edit Profile" style={contentStyle}>
-              <ProfileAssociationForm></ProfileAssociationForm></Tab>
-            </Tabs>
-          </Col>
-
-        </Row>
+    </Grid.Column>
+      <Grid.Column width={12}>
+      <Image style={{height:"300px", width:"100%"}}src={banner}></Image>
+      </Grid.Column>
+      </Segment>
+      </Grid.Row>
       </Grid>
+      // <Grid>
+      //   <Row>
+      //
+      //     <Col lg={4} xs={5}>
+      //
+      //       <Image style={imgStyle} src={this.state.associationInfo.profileImage} responsive thumbnail/>
+      //
+      //     </Col>
+      //
+      //     <Col lg={8} xs={7}>
+      //       <h1 style={txt}><strong> {this.state.associationInfo.name}</strong></h1>
+      //     </Col>
+      //   </Row>
+      //
+      //   <Row>
+      //     <Col xs={12}>
+      //       <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
+      //         <Tab eventKey={1} title="About" style={contentStyle}>
+      //           <p><strong>Email</strong>: {this.state.associationInfo.email}</p>
+      //           <p><strong>Location</strong>: {this.state.associationInfo.location}</p>
+      //           <p><strong>Page Link</strong>: {this.state.associationInfo.link} </p>
+      //           <p><strong>Description</strong>: {this.state.associationInfo.bio}</p>
+      //         </Tab>
+      //
+      //         <Tab eventKey={2} title="Live/Future Events" style={contentStyle}>
+      //           <GridList items={this.state.activeEvents} ListItem={EventsListItem}/></Tab>
+      //         <Tab eventKey={3} title="Past Events" style={contentStyle}>
+      //           <GridList items={this.props.events} ListItem={EventsListItem}/></Tab>
+      //         <Tab eventKey={4} title="Sponsors" style={contentStyle}>
+      //           <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>
+      //         </Tab>
+      //         <Tab eventKey={5} title="Edit Profile" style={contentStyle}>
+      //         <ProfileAssociationForm></ProfileAssociationForm></Tab>
+      //       </Tabs>
+      //     </Col>
+      //
+      //   </Row>
+      // </Grid>
     );
   }
 }
