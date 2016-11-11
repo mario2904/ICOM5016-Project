@@ -1,9 +1,34 @@
 import React, { Component } from 'react';
-import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
-import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem, FormGroup, ControlLabel,FormControl} from 'react-bootstrap';
+// import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
+// import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem, FormGroup, ControlLabel,FormControl} from 'react-bootstrap';
+import { Link } from 'react-router'
+import { Image, Segment, Header, Grid, List, Label } from 'semantic-ui-react';
+
+
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
 import axios from 'axios';
+
+const banner = '/images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png';
+
+const styles = {
+  banner: {
+    width: '100%',
+    backgroundImage: `url(${banner})`,
+    height:'400px',
+    backgroundPosition: 'center',
+    backgroundSize: '100% 100%'
+  },
+  image: {
+    // marginTop: '-10%'
+  },
+  background: {
+    backgroundColor:"rgb(247, 247, 247)"
+  },
+  label: {
+    marginTop: '2px'
+  }
+}
 
 export default class IndividualEvent extends Component {
   renderUpdateItems () {
@@ -16,10 +41,70 @@ export default class IndividualEvent extends Component {
       return <ReviewUpdateItem name={review1.reviewName} key={i} review={review1.reviewBody}/>;
     });
   }
+  renderInterestedUsers() {
+    if(!this.state.eventInfo.interested) {
+      return null;
+    }
+    return this.state.eventInfo.interested.map((user) => {
+      return (
+        <List.Item key={user.id}>
+          <Image avatar src={user.image}/>
+          <List.Content>
+            <List.Header
+              as={Link} to={'/student/' + user.id} >
+              {user.firstName + ' ' + user.lastName}
+            </List.Header>
+          </List.Content>
+        </List.Item>
+      );
+    })
+  }
+  renderDetails() {
+    const { associationName, startDate, endDate, startTime, endTime, location, registrationLink } = this.state.eventInfo;
+    return (
+      <List>
+        <List.Item
+          icon='users'
+          content={associationName} />
+        <List.Item
+          icon='wait'
+          content={startTime + ' - ' + endTime} />
+        <List.Item
+          icon='calendar'
+          content={startDate + ((startDate === endDate) ? '': ' - ' + endDate)} />
+        <List.Item
+          icon='marker'
+          content={location} />
+        {(registrationLink === '')? null:
+          <List.Item
+            icon='linkify'
+            content={<a href={registrationLink}>Registration</a>} />
+        }
+      </List>
+
+    );
+  }
+
+  renderCategories() {
+    if(!this.state.eventInfo.categories) {
+      return null;
+    }
+    console.log(this.state.eventInfo.categories);
+    return this.state.eventInfo.categories.map((cat) => {
+      return (
+        <Label
+          style={styles.label}
+          icon={categories[cat].icon}
+          color={categories[cat].color}
+          key={cat}
+          content={cat} />
+      );
+    });
+  }
 
   constructor () {
     super();
-    this.state = {eventInfo: []};
+    this.state = {eventInfo: {}};
   }
   componentWillMount() {
     const tick = this;
@@ -27,12 +112,16 @@ export default class IndividualEvent extends Component {
     axios.get('/api/event/'+this.props.params.eventID)
     .then(function (response) {
       console.log(response);
-      tick.setState({eventInfo: response.data})
+      const temp = response.data;
+      temp.interested = interested;
+      temp.categories = eventCategories;
+      tick.setState({eventInfo: temp})
     })
     .catch(function (error) {
       console.log(error);
       tick.setState(
-        {eventInfo:{
+        {
+          eventInfo:{
           name: "Hackathon",
           eventID: "1",
           associationName: "HackPR",
@@ -50,106 +139,65 @@ export default class IndividualEvent extends Component {
             as a  visitors to participate in our job fair, \
             exhibitors area, workshops and final hacks (projects) \
             presentation at the end of the event. ",
-          registrationLink:"google.com"
+          registrationLink:"google.com",
+          interested: interested,
+          categories: eventCategories
         }
-        }
-      )
+      })
     });
   }
 
-
   render(){
-    console.log(this.props.params.eventID);
     return (
-      <Grid>
-        <div>
-          <Panel header={this.state.eventInfo.associationName} bsStyle="primary">
-            <div>
-              <Panel>
-                <div>
-                  <img style={photoBanner} src={this.state.eventInfo.image} />
-                </div>
-              </Panel>
-            </div>
-            <div>
-              <Row>
-                <Col xs={3} >
-                  <p style={eventNameSize}> <strong>{this.state.eventInfo.name}</strong>  </p>
-                </Col>
+      <div style={styles.background}>
+        <Image
+          src={this.state.eventInfo.image}
+          size='large'
+          style={styles.image}
+          bordered
+          centered/>
+        <Grid padded>
+          <Grid.Row>
+            <Grid.Column stretched computer={11} tablet={11} mobile={16} >
+              <Segment>
+                <Header as='h2'>
+                  {this.state.eventInfo.name}
+                </Header>
+                {this.renderCategories()}
+                <br /><br />
+                <span>
+                  {this.state.eventInfo.description}
+                </span>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column computer={5} tablet={5} mobile={16} >
+              <Segment padded>
+                {this.renderDetails()}
+              </Segment>
+            </Grid.Column>
 
-                <Col xs={1} xsOffset ={5} smOffset ={6} mdOffset={6}lgOffset={7} >
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column stretched computer={11} tablet={11} mobile={16} >
+              <Segment>
+                <Header as='h2'>Updates</Header>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column computer={5} tablet={5} mobile={16} floated='right'>
+              <Segment>
+                <List>
+                  {this.renderInterestedUsers()}
+                </List>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
 
+          </Grid.Row>
 
-                    <Button type="submit" bsStyle="danger" onClick={this.submit}>
-                      Interested
-                    </Button>
-
-                </Col>
-              </Row>
-                <Label bsStyle="primary">Competition</Label>
-                <Label bsStyle="primary">Paying Event</Label>
-                <Label></Label>
-              <Row> <p> </p></Row>
-            </div>
-            <div>
-              <Panel>
-                <Row>
-                  <ul>
-                    <p><strong>Event Date</strong>:{this.state.eventInfo.startDate} - {this.state.eventInfo.endDate}</p>
-                    <p><strong>Event Time</strong>:{this.state.eventInfo.startTime} - {this.state.eventInfo.endTime}</p>
-                    <p><strong>Location</strong>: {this.state.eventInfo.location}</p>
-                    <p><strong>Registration Link: </strong> <a href={this.state.eventInfo.registrationLink}>{"Link"}</a></p>
-                    <p><strong>Event Info: </strong>{this.state.eventInfo.description} </p>
-                  </ul>
-                </Row>
-              </Panel>
-            </div>
-            <div>
-              <Panel>
-                <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
-                  <Tab eventKey={1} title="Reviews" style={contentStyle}>
-                    {this.renderReviewItems()}
-                    <ListGroup >
-                      <ListGroupItem>
-
-                          <FormGroup controlId="formHorizontalAname" >
-
-                              <ControlLabel>Chewbacca</ControlLabel>
-                              <FormControl
-                                type="text"
-                                placeholder="Enter Review"
-
-                              />
-
-                          </FormGroup>
-                          <Button type="submit" bsStyle="primary" onClick={this.submit}>
-                            Submit
-                          </Button>
-                      </ListGroupItem>
-
-                    </ListGroup>
-                  </Tab>
-                  <Tab eventKey={2} title="Updates" style={contentStyle}>
-                    {this.renderUpdateItems()}
-                  </Tab>
-                  <Tab eventKey={3} title="Interested List" style={contentStyle}>
-                    <div style={divStyle}>
-                      <InterestedList></InterestedList>
-                    </div>
-                  </Tab>
-                  <Tab eventKey={4} title="Stats" >
-                    <h3>Interested over Time</h3>
-                    <Sparklines data={[5, 10, 20, 5, 20, 25, 15, 20, 30, 50]} width={50} height={20} >
-                      <SparklinesBars color="blue" />
-                    </Sparklines>
-                  </Tab>
-                </Tabs>
-              </Panel>
-            </div>
-          </Panel>
-        </div>
-      </Grid>
-    )
+        </Grid>
+      </div>
+    );
   }
 }
 
@@ -187,7 +235,6 @@ IndividualEvent.defaultProps = {
         exhibitors area, workshops and final hacks (projects) \
         presentation at the end of the event. ",
       registrationLink:"google.com"
-
     },
   reviews:[
     {
@@ -210,4 +257,87 @@ IndividualEvent.defaultProps = {
     updateBody:   "Saludos, el salon a cambiado al S113"
     }
   ]
+};
+
+const interested = [
+  {
+    firstName: 'Maria',
+    lastName: 'Jimenez',
+    image: 'http://semantic-ui.com/images/avatar/small/helen.jpg',
+    id: 1
+  },
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    image: 'http://semantic-ui.com/images/avatar/small/daniel.jpg',
+    id: 2,
+  },
+  {
+    firstName: 'Elliot',
+    lastName: 'Fu',
+    image: 'http://semantic-ui.com/images/avatar/small/elliot.jpg',
+    id: 3
+  },
+  {
+    firstName: 'Paola',
+    lastName: 'Xiau',
+    image: 'http://semantic-ui.com/images/avatar/small/stevie.jpg',
+    id: 4
+  }
+];
+
+const eventCategories = [
+  'Food',
+  'Music',
+  'Fundraiser',
+  'Arts',
+  'Social',
+  'Educational',
+  'Business',
+  'Sport',
+  'Competition',
+  'Other'
+];
+
+const categories = {
+  Food: {
+    color: 'red',
+    icon: 'food'// food or spoon
+  },
+  Music: {
+    color: 'blue',
+    icon: 'music'// music or unmute or sound
+  },
+  Fundraiser: {
+    color: 'violet',
+    icon: 'ticket' // ticket or money
+  },
+  Arts: {
+    color: 'teal',
+    icon: 'paint brush'
+  },
+  Social: {
+    color: 'green',
+    icon: 'users'
+  },
+  Educational: {
+    color: 'orange',
+    icon: 'student' // student or book
+  },
+  Business: {
+    color: 'yellow',
+    icon: 'travel'
+  },
+  Sport: {
+    color: 'black',
+    icon: 'soccer'
+  },
+  Competition: {
+    color: 'purple',
+    icon: 'trophy'
+  },
+  Other: {
+    color: 'grey',
+    icon: 'idea'
+  }
 };
