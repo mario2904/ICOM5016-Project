@@ -8,9 +8,9 @@ import SponsorsListItem from './sponsors-list-item';
 import ProfileAssociationForm from './profile-association-form';
 import axios from 'axios';
 
-import {Form, Grid, Icon,Input, Image, Segment,Item } from 'semantic-ui-react'
+import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider } from 'semantic-ui-react'
 
-const banner = '/images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png';
+const banner = '/images/banner/mountains.png';
 
 export default class ProfileAssociation extends Component{
 
@@ -20,7 +20,8 @@ export default class ProfileAssociation extends Component{
       associationInfo: [],
       activeEvents: [],
       sponsors:[],
-      pastEvents: []
+      pastEvents: [],
+      activeItem: 'about'
 
     };
   }
@@ -45,7 +46,6 @@ export default class ProfileAssociation extends Component{
         });
       });
 
-
       response.data.sponsors.map((id) => {
         axios.get('/api/sponsors/'+id)
         .then(function (response) {
@@ -56,8 +56,6 @@ export default class ProfileAssociation extends Component{
           console.log(error);
         });
       });
-
-
 
     })
     .catch(function (error) {
@@ -84,33 +82,99 @@ export default class ProfileAssociation extends Component{
         }
         }
       )
-
-
-
-
-
-
     });
   }
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  renderAbout = () => {
+    return(
+    <Grid.Row style={{paddingTop:"10px", paddingBottom:"100px"}}>
+      <Segment style={{borderRadius:0, width:"100%", paddingBottom:"100px"}}>
+        <h2><strong>About</strong></h2>
+        <Divider></Divider>
+        <p><strong>Email</strong>: {this.state.associationInfo.email}</p>
+        <p><strong>Location</strong>: {this.state.associationInfo.location}</p>
+        <p><strong>Page Link</strong>: {this.state.associationInfo.link} </p>
+        <p><strong>Description</strong>: {this.state.associationInfo.bio}</p>
+      </Segment>
+    </Grid.Row>
+  );
+
+  };
+  renderMyCurrentEvents = () => {
+    return  <GridList items={this.state.activeEvents} ListItem={EventsListItem}/>;
+
+  };
+
+  renderMyPastEvents = () => {
+    return <GridList items={this.props.events} ListItem={EventsListItem}/>;
+  };
+
+  renderSponsors = () => {
+    return  <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>;
+  };
 
 
   render(){
-    return (
-      <Grid>
-        <Grid.Row columns={2}>
-          <Segment>
-      <Grid.Column width={4}>
+    const { activeItem } = this.state
 
-        <Image style={{width:"200px", height:"200px"}}
-          src={this.state.associationInfo.profileImage}></Image>
+      return (
+        <Grid style={{paddingLeft:"100px", paddingRight:"100px",
+          backgroundColor:"rgb(247, 247, 247)"}}>
+          <Grid.Row style={{paddingBottom: 0}} >
 
-    </Grid.Column>
-      <Grid.Column width={12}>
-      <Image style={{height:"300px", width:"100%"}}src={banner}></Image>
-      </Grid.Column>
-      </Segment>
+        <Grid.Column style={{padding:"0px", margin: 0}} width={4}>
+          <Image style={{width:"100%", height:"250px", padding: 0}}
+            src={this.state.associationInfo.profileImage}></Image>
+
+        </Grid.Column>
+          <Grid.Column style={{padding:"0px"}}width={12}>
+          <Image style={{height:"250px", width:"100%"}} src={banner}></Image>
+          </Grid.Column>
+        </Grid.Row>
+
+          <Grid.Row style={{paddingBottom:0}}>
+          <Segment style={{borderRadius:0, width:"100%"}}>
+            <h1><strong>{this.state.associationInfo.name}</strong></h1>
+          </Segment>
+          </Grid.Row>
+
+       <Grid.Row style={{paddingTop: 0}}>
+         <Menu fluid pointing widths={5} style={{borderRadius: 0}}>
+            <Menu.Item icon="info circle"
+              name='about'
+              active={activeItem === 'about'}
+              onClick={this.handleItemClick} />
+            <Menu.Item icon="checked calendar"
+              name='current events' active={activeItem === 'current events'}
+              onClick={this.handleItemClick} />
+            <Menu.Item icon="delete calendar"
+              name='past events'
+              active={activeItem === 'past events'}
+              onClick={this.handleItemClick} />
+            <Menu.Item icon="hand spock"
+              name='sponsors'
+              active={activeItem === 'sponsors'}
+              onClick={this.handleItemClick} />
+            <Menu.Item icon="write"
+              name='edit profile'
+              active={activeItem === 'edit profile'}
+              onClick={this.handleItemClick} />
+         </Menu>
       </Grid.Row>
-      </Grid>
+
+      <Grid.Row style={{paddingBottom:"50px"}}>
+      <Segment style={{backgroundColor:"rgb(236, 238, 238)", borderRadius: 0, width:"100%"}} padded>
+        {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
+        {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
+        {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
+        {(this.state.activeItem === 'sponsors') ? <Grid centered padded>{this.renderSponsors()}</Grid>: null}
+        {(this.state.activeItem === 'edit profile') ?
+          <h1 style={{textAlign:"center"}}>Nothing to Show Here<Icon name="meh" size="huge"></Icon></h1> : null}
+      </Segment>
+        </Grid.Row>
+
+    </Grid>
       // <Grid>
       //   <Row>
       //
