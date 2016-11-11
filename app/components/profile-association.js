@@ -60,27 +60,27 @@ export default class ProfileAssociation extends Component{
     .catch(function (error) {
       console.log(error);
 
-      tick.setState(
-        {
-          associationInfo:{
-          name: 'Neuro-RUM / Club Literario en Neurociencias',
-          initials: 'Neuro-RUM',
-          location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
-          link: 'http://neurorum.wordpress.com/',
-          email: 'neuro_rum@uprm.edu',
-          password: 'password',
-          profileImage: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751',
-          bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, \
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris \
-          nisi ut aliquip exea commodo consequat. Duis aute irure dolor in \
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
-          pariatur. Excepteur sint occaecatcupidatat non proident, sunt in culpa\
-           qui officia deserunt mollit anim id est laborum.'
-
-        }
-        }
-      )
+      // tick.setState(
+      //   {
+      //     associationInfo:{
+      //     name: 'Neuro-RUM / Club Literario en Neurociencias',
+      //     initials: 'Neuro-RUM',
+      //     location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
+      //     link: 'http://neurorum.wordpress.com/',
+      //     email: 'neuro_rum@uprm.edu',
+      //     password: 'password',
+      //     profileImage: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751',
+      //     bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, \
+      //     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+      //     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris \
+      //     nisi ut aliquip exea commodo consequat. Duis aute irure dolor in \
+      //     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
+      //     pariatur. Excepteur sint occaecatcupidatat non proident, sunt in culpa\
+      //      qui officia deserunt mollit anim id est laborum.'
+      //
+      //   }
+      //   }
+      // )
 
 
 

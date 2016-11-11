@@ -434,36 +434,78 @@ app.get('/api/association/:id', (req, res) => {
   const { id } = req.params;
   // TODO: Check if it is in the db...
   //
+console.log("test" + id);
+
+  db1.one("SELECT associationname, initials, room, pagelink, email, image_path, bio \
+          FROM associations natural join account natural join images natural join location\
+          WHERE associationid = ${idused}", {idused: id})
+      .then(function (data) {
+          // success;
+          console.log("queried")
+          console.log(data)
+
+
+              // Destructure association information
+              const { associationname, initials, room, pagelink, email, image_path, bio } = data;
+              // TODO: Get extra information from the db
+              //
+              // Get extra information from the Testing db (other tables)
+
+
+              // const sponsors = db.associationSponsors[id];
+              // const activeEvents = db.activeEvents[id];
+              // const pastEvents = db.pastEvents[id];
+              // const followers = db.followers[id];
+
+
+              const response = {
+                name: associationname,
+                initials: initials,
+                location: room,
+                link: pagelink,
+                email: email,
+                profileImage: image_path,
+                bio: bio
+              }
+
+
+
+
+          // Send All Associations Information
+          console.log('Success: Get All Associations Information');
+          console.log(response);
+          res.json(response);
+          //console.log(data[0])
+          console.log('worked');
+      })
+      .catch(function (error) {
+          // error;
+          console.log('no function')
+      });
+
+
+
+
+
+
+
+
+
   // Check if it is in the Testing db
-  const association = db.association[id];
-  if (association === undefined)
-    return res.status(400).send('Error: Association not found in the DB.');
+  //const association = db.association[id];
+  //if (association === undefined)
+    //return res.status(400).send('Error: Association not found in the DB.');
   // Destructure association information
-  const { name, initials, location, link, email, profileImage, bio } = association;
+  //const { name, initials, location, link, email, profileImage, bio } = association;
   // TODO: Get extra information from the db
   //
   // Get extra information from the Testing db (other tables)
-  const sponsors = db.associationSponsors[id];
-  const activeEvents = db.activeEvents[id];
-  const pastEvents = db.pastEvents[id];
-  const followers = db.followers[id];
+  // const sponsors = db.associationSponsors[id];
+  // const activeEvents = db.activeEvents[id];
+  // const pastEvents = db.pastEvents[id];
+  // const followers = db.followers[id];
 
-  const response = {
-    name,
-    initials,
-    location,
-    link,
-    email,
-    profileImage,
-    bio,
-    sponsors,
-    activeEvents,
-    pastEvents,
-    followers
-  }
-  // Send Association Information
-  console.log('Success: Get Association Information');
-  res.json(response)
+
 });
 
 // GET - Event Information
