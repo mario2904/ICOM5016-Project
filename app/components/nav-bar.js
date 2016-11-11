@@ -36,7 +36,9 @@ export default class NavBar extends Component {
                 as={Link} to='/associations'
                 active={activeItem === 'associations'}
                 icon='university'
-                onClick={this.handleItemClick} />
+                onClick={this.handleItemClick}>
+              </Menu.Item>
+
 
               <Menu.Item
                 fitted

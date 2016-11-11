@@ -9,11 +9,13 @@ import HomeSearchBar from './home-search-bar';
 import GridList from './grid-list';
 import EventsListItem from './events-list-item';
 import AssociationsListItem from './associations-list-item';
-const banner = '/images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png';
+const banner = '/images/banner/Deer-overlooking-a-lake-at-sunset.jpg';
 
 const styles = {
   title: {
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white',
+    paddingTop:"100px"
   },
   // Fixes Oversizing of the Thumbnail if the name is too long.
   overflow: {
@@ -24,7 +26,7 @@ const styles = {
   banner: {
     width: '100%',
     backgroundImage: `url(${banner})`,
-    height:'400px',
+    height:'500px',
     backgroundPosition: 'center',
     backgroundSize: '100% 100%'
   },
@@ -104,7 +106,7 @@ export default class Home extends Component {
     return (
       <div>
         <div style={styles.banner}>
-          <h2 style={styles.title}>Welcome Back!</h2>
+          <h2 style={styles.title}>Welcome Back!<Icon size="large" name="smile"></Icon></h2>
         </div>
         <div>
           <Menu pointing style={styles.menubar}>

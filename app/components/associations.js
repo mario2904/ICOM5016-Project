@@ -36,7 +36,7 @@ export default class Associations extends Component {
           <AssociationsSearchBar></AssociationsSearchBar>
           </Grid.Row>
           <GridList items={this.state.associations} ListItem={AssociationsListItem}/>
-          </Grid>
+      </Grid>
     );
   }
 }
