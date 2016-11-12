@@ -1,24 +1,17 @@
-import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, HelpBlock } from 'react-bootstrap';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import axios from 'axios';
 
 export default class Asignup extends Component {
 
-  constructor () {
-    super();
-    this.state = {
-      name: '',
-      initials: '',
-      location: '',
-      link: '',
-      email: '',
-      password: '',
-      passwdChk: ''
-    }
-    this.submit = this.submit.bind(this);
-    this.checkPasswordLength = this.checkPasswordLength.bind(this);
+  state = { serializedForm: {} };
+
+  handleSubmit = (e, serializedForm) => {
+    e.preventDefault()
+    this.setState({ serializedForm })
   }
+  
   checkPasswordLength(string1){
     var integer = string1.length;
     if(integer>=8){return true};
@@ -49,116 +42,37 @@ export default class Asignup extends Component {
     });
   }
 }
-  render () {
+  render() {
     return (
-      <Grid>
-
-      <h1><strong>Welcome to E-Spotter</strong> </h1>
-      <p>Please enter {"the association's"} information</p>
-        <Form horizontal>
-
-        <FormGroup controlId="formHorizontalAname" >
-          <Col sm={6}>
-            <ControlLabel>Association Name</ControlLabel>
-            <FormControl
-              type="text"
-              placeholder="Association Name"
-              value={this.state.name}
-              onChange={(e) => {this.setState({name: e.target.value})}}
-            />
-          </Col>
-        </FormGroup>
-
-
-        <FormGroup controlId="formHorizontalAinitials" >
-          <Col sm={6}>
-            <ControlLabel>{"Association's Initials"}</ControlLabel>
-            <FormControl
-              type="text"
-              placeholder={"Association's Initials"}
-              value={this.state.initials}
-              onChange={(e) => {this.setState({initials: e.target.value})}}
-            />
-          </Col>
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalEmail" >
-          <Col sm={6}>
-            <ControlLabel>Email</ControlLabel>
-            <FormControl
-              type="email"
-              placeholder="Email"
-              value={this.state.email}
-              onChange={(e) => {this.setState({email: e.target.value})}}
-            />
-          </Col>
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalPassword" >
-          <Col sm={6}>
-            <ControlLabel>Password (Must be 8 characters or longer)</ControlLabel>
-            <FormControl
-              type="password"
-              placeholder="Enter Password"
-              value={this.state.password}
-              onChange={(e) => {this.setState({password: e.target.value})}}
-            />
-          </Col>
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalPassword" >
-          <Col sm={6}>
-            <ControlLabel>Re-enter Password</ControlLabel>
-            <FormControl
-              type="password"
-              placeholder="Re-enter Password"
-              value={this.state.passwdChk}
-              onChange={(e) => {this.setState({passwdChk: e.target.value})}}
-            />
-          </Col>
-        </FormGroup>
-
-        <FormGroup controlId="formControlsSelect">
-          <Col sm={6}>
-            <ControlLabel>Main Office Location</ControlLabel>
-            <FormControl
-              componentClass="select"
-              placeholder="Select where is the main office located:"
-              onChange={(e) => {this.setState({location: e.target.value})}}>
-              <option value="select">Select</option>
-              <option value="stefani">Stefani</option>
-              <option value="INQU">Ingenieria Quimica</option>
-              <option value="INCI">Edificio de Civil</option>
-              <option value="Luchetti">Luchetti</option>
-              <option value="ININ">Ingenieria Industrial</option>
-              <option value="Other">other</option>
-            </FormControl>
-          </Col>
-        </FormGroup>
-
-        <FormGroup controlId="formHorizontalLink" >
-          <Col sm={6}>
-            <ControlLabel>Association Link</ControlLabel>
-            <FormControl
-              type="url"
-              placeholder={"Association's Link"}
-              value={this.state.link}
-              onChange={(e) => {this.setState({link: e.target.value})}}
-            />
-          </Col>
-        </FormGroup>
-
-
-        <FormGroup>
-          <Col >
-            <Button type="submit" bsStyle="primary" onClick={this.submit}>
-              Submit
-            </Button>
-          </Col>
-        </FormGroup>
-
-        </Form>
-      </Grid>
+      <div>
+        <Header as='h2' attached='top'>
+          Association Sign-up
+        </Header>
+        <Segment attached>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Input label='Association Name' name='name' placeholder='Association Name'/>
+            <Form.Input label='Association Initials' name='initials' placeholder='Association Initials' />
+            <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
+            <Form.Input label='Password' name='password' placeholder='Password' type='password' />
+            <Form.Input label='Re-enter Password' name='rePassword' placeholder='Re-enter Password' type='password' />
+            <Form.Select label='Main Office Location' name='location' options={location} placeholder='Main Office Location' />
+            <Form.Input label='Association Link' name='link' placeholder='Association Link' />
+            <Form.Field>
+              <Checkbox label='I agree to the Terms and Conditions' />
+            </Form.Field>
+            <Button type='submit'>Submit</Button>
+          </Form>
+        </Segment>
+      </div>
     );
   }
 }
+
+const location = [
+  { text: 'Stefani', value: 'stefani' },
+  { text: 'Ingenieria Quimica', value: 'ingenieria_quimica' },
+  { text: 'Edificio de Civil', value: 'edificio_de_civil' },
+  { text: 'Luchetti', value: 'luchetti' },
+  { text: 'Ingenieria Industrial', value: 'ingenieria_industrial' },
+  { text: 'Other', value: 'other' },
+];

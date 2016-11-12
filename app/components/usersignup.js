@@ -1,15 +1,18 @@
-// import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, HelpBlock } from 'react-bootstrap';
 import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import axios from 'axios';
-
 
 export default class Usignup extends Component {
 
   state = { serializedForm: {} };
 
   handleGenderChange = (e, { value }) => this.setState({ gender: value });
+
+  handleSubmit = (e, serializedForm) => {
+    e.preventDefault()
+    this.setState({ serializedForm })
+  }
 
   checkPasswordLength(string1){
     var integer = string1.length;
@@ -54,7 +57,7 @@ export default class Usignup extends Component {
           Student Sign-up
         </Header>
         <Segment attached>
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
             <Form.Input label='First Name' name='firstName' placeholder='First Name'/>
             <Form.Input label='Last Name' name='lastName' placeholder='Last Name' />
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
@@ -81,182 +84,6 @@ export default class Usignup extends Component {
       </div>
     );
   }
-
-  // render () {
-  //   return (
-  //     <Grid>
-  //
-  //     <h1><strong>Welcome to E-Spotter</strong> </h1>
-  //       <Form horizontal>
-  //
-  //       <FormGroup controlId="formHorizontalFname" >
-  //         <Col sm={6}>
-  //           <ControlLabel>First Name</ControlLabel>
-  //           <FormControl t
-  //             ype="text"
-  //             placeholder="First Name"
-  //             value={this.state.firstName}
-  //             onChange={(e) => {this.setState({firstName: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formHorizontalLname" >
-  //         <Col sm={6}>
-  //           <ControlLabel>Last Name</ControlLabel>
-  //           <FormControl
-  //             type="text"
-  //             placeholder="Last Name"
-  //             value={this.state.lastName}
-  //             onChange={(e) => {this.setState({lastName: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formHorizontalEmail" >
-  //         <Col sm={6}>
-  //           <ControlLabel>Email</ControlLabel>
-  //           <FormControl
-  //             type="email"
-  //             placeholder="Email"
-  //             value={this.state.email}
-  //             onChange={(e) => {this.setState({email: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formHorizontalPassword" >
-  //         <Col sm={6}>
-  //           <ControlLabel>Password (Must be 8 characters or longer)</ControlLabel>
-  //           <FormControl
-  //             type="password"
-  //             placeholder="Enter Password"
-  //             value={this.state.password}
-  //             onChange={(e) => {this.setState({password: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formHorizontalPassword" >
-  //         <Col sm={6}>
-  //           <ControlLabel>Re-enter Password</ControlLabel>
-  //           <FormControl
-  //             type="password"
-  //             placeholder="Re-enter Password"
-  //             value={this.state.passwdChk}
-  //             onChange={(e) => {this.setState({passwdChk: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formHorizontalBirthday" >
-  //         <Col sm={6}>
-  //           <ControlLabel>{"Birthday"}</ControlLabel>
-  //           <FormControl
-  //             type="date"
-  //             value={this.state.age}
-  //             onChange={(e) => {this.setState({age: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup>
-  //         <Col sm={6}>
-  //         <ControlLabel
-  //           style={{display:"block", textAlign:"left", margin: "10px 0px 0px 0px"}}>Gender: </ControlLabel>
-  //           <div style={radio1}>
-  //             <p><input
-  //                 id="one"
-  //                 type="radio"
-  //                 name="optradio"
-  //                 value="Male"
-  //                 onChange={(e) => {this.setState({gender: e.target.value})}}
-  //                 />
-  //               Male
-  //             </p>
-  //           </div>
-  //         <div  style={radioStyle}>
-  //             <p><input
-  //                 id="two"
-  //                 type="radio"
-  //                 name="optradio"
-  //                 value= "Female"
-  //                 onChange={(e) => {this.setState({gender: e.target.value})}}
-  //                 />
-  //               Female
-  //             </p>
-  //       </div>
-  //          <div style={radioStyle}>
-  //             <p><input
-  //                 id="three"
-  //                 type="radio"
-  //                 name="optradio"
-  //                 value= "Other"
-  //                 onChange={(e) => {this.setState({gender: e.target.value})}}
-  //                 />
-  //               Other
-  //             </p>
-  //          </div>
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formHorizontalHometown" >
-  //         <Col sm={6}>
-  //           <ControlLabel>{"Hometown"}</ControlLabel>
-  //           <FormControl
-  //             type="text"
-  //             placeholder="Hometown"
-  //             value={this.state.hometown}
-  //             onChange={(e) => {this.setState({hometown: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formHorizontalCollege" >
-  //         <Col sm={6}>
-  //           <ControlLabel>{"College"}</ControlLabel>
-  //           <FormControl
-  //             type="text"
-  //             placeholder="College"
-  //             value={this.state.college}
-  //             onChange={(e) => {this.setState({college: e.target.value})}}
-  //           />
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup controlId="formControlsSelect">
-  //         <Col sm={6}>
-  //           <ControlLabel>Major</ControlLabel>
-  //           <FormControl
-  //             componentClass="select"
-  //             placeholder="Select Major"
-  //             onChange={(e) => {this.setState({major: e.target.value})}}>
-  //             <option value="select">Select</option>
-  //             <option value="ICOM">ICOM</option>
-  //             <option value="INEL">INEL</option>
-  //             <option value="INQU">INQU</option>
-  //             <option value="INCI">INCI</option>
-  //             <option value="INME">INME</option>
-  //             <option value="ININ">ININ</option>
-  //             <option value="Other">other</option>
-  //           </FormControl>
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       <FormGroup>
-  //         <Col >
-  //
-  //           <Button type="submit" bsStyle="primary" onClick={this.submit}>
-  //             Submit
-  //           </Button>
-  //         </Col>
-  //       </FormGroup>
-  //
-  //       </Form>
-  //
-  //     </Grid>
-  //   );
-  // }
 }
 
 const majors = [

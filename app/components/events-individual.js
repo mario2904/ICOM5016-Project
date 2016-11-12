@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router'
 import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon } from 'semantic-ui-react';
 
-
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
 import axios from 'axios';
-
 
 const styles = {
   image: {
@@ -74,7 +72,6 @@ export default class IndividualEvent extends Component {
             content={<a href={registrationLink}>Registration</a>} />
         }
       </List>
-
     );
   }
 
