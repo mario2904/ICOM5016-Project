@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-// import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
-// import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem, FormGroup, ControlLabel,FormControl} from 'react-bootstrap';
 import { Link } from 'react-router'
 import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon } from 'semantic-ui-react';
 
@@ -199,14 +197,13 @@ export default class IndividualEvent extends Component {
   render(){
     return (
       <div style={styles.background}>
-
         <Grid padded>
           <Grid.Row style={styles.row}>
-            <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column} >
+            <Grid.Column style={styles.column} >
               <Segment>
                 <Image
                   src={this.state.eventInfo.image}
-                  size='medium'
+                  size='big'
                   style={styles.image}
                   bordered
                   centered/>
@@ -224,10 +221,9 @@ export default class IndividualEvent extends Component {
                 {this.state.eventInfo.description}
               </Segment>
             </Grid.Column>
-
           </Grid.Row>
           <Grid.Row style={styles.row}>
-            <Grid.Column  computer={11} tablet={11} mobile={16} style={styles.column} stretched>
+            <Grid.Column  computer={11} tablet={11} mobile={16} stretched>
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
                   <Header as='h2' attached='top'>
@@ -259,9 +255,8 @@ export default class IndividualEvent extends Component {
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
-
             </Grid.Column>
-            <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column} >
+            <Grid.Column computer={5} tablet={5} mobile={16} >
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
                   <Header as='h2' attached='top'>
@@ -291,71 +286,12 @@ export default class IndividualEvent extends Component {
                 </Grid.Column>
               </Grid.Row>
             </Grid.Column>
-
           </Grid.Row>
         </Grid>
       </div>
     );
   }
 }
-
-const eventNameSize = {
-  fontSize: "30px"
-}
-const photoBanner = {
-  height: "100%",
-  width: "100%"
-}
-const contentStyle = {
-  margin: "30px 0px 0px 0px"
-}
-const divStyle = {
-    overflow: "auto"
-}
-IndividualEvent.defaultProps = {
-  eventData:
-    {
-      name: "Hackathon",
-      eventID: "1",
-      associationName: "HackPR",
-      associationID: "45239847",
-      image: "http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png",
-      startDate: "Oct. 15, 2016",
-      endDate: "Oct. 16, 2016",
-      startTime: "9:00 am",
-      endTime: "5:00 pm",
-      location: "Roberto Clemente",
-      description: "HackPR 2016 is the perfect \
-        meeting place for the hacker and technology innovation \
-        community in Puerto Rico. Join us as a student or \
-        professional hacker to win more than {'5k'} in prizes or \
-        as a  visitors to participate in our job fair, \
-        exhibitors area, workshops and final hacks (projects) \
-        presentation at the end of the event. ",
-      registrationLink:"google.com"
-    },
-  reviews:[
-    {
-      reviewName: "Carlos Ojeda",
-      reviewBody: " Critics Consensus: Ambitious and refreshing, Atlanta \
-          offers a unique vehicle for star and series creator Donald Glover's \
-          eccentric brand of humor -- as well as a number of \
-          timely, trenchant observations."
-
-    },
-    {
-      reviewName: "Harambe",
-      reviewBody: " Harambe LIVES!!!! He'll be back with a vengeance.OUT FOR HARAMBE!"
-
-    }
-  ],
-  updates: [
-    {
-    udpateHeader: "Cambio de Salon",
-    updateBody:   "Saludos, el salon a cambiado al S113"
-    }
-  ]
-};
 
 const updates = [
   {
