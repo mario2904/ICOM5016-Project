@@ -2,23 +2,15 @@ import React, { Component } from 'react';
 // import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
 // import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem, FormGroup, ControlLabel,FormControl} from 'react-bootstrap';
 import { Link } from 'react-router'
-import { Image, Segment, Header, Grid, List, Label } from 'semantic-ui-react';
+import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon } from 'semantic-ui-react';
 
 
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
 import axios from 'axios';
 
-const banner = '/images/banner/tumblr_nhq4cr4lOz1u7bj7uo1_1280.png';
 
 const styles = {
-  banner: {
-    width: '100%',
-    backgroundImage: `url(${banner})`,
-    height:'400px',
-    backgroundPosition: 'center',
-    backgroundSize: '100% 100%'
-  },
   image: {
     // marginTop: '-10%'
   },
@@ -27,20 +19,19 @@ const styles = {
   },
   label: {
     marginTop: '2px'
+  },
+  column: {
+    paddingTop: '.5rem',
+    paddingBottom: '.5rem'
+  },
+  row: {
+    paddingTop: 0,
+    paddingBottom: 0
   }
 }
 
 export default class IndividualEvent extends Component {
-  renderUpdateItems () {
-    return this.props.updates.map(function(update1, i) {
-      return <ReviewUpdateItem name={update1.udpateHeader} key={i} review={update1.updateBody}/>;
-    });
-  }
-  renderReviewItems () {
-    return this.props.reviews.map(function(review1, i) {
-      return <ReviewUpdateItem name={review1.reviewName} key={i} review={review1.reviewBody}/>;
-    });
-  }
+
   renderInterestedUsers() {
     if(!this.state.eventInfo.interested) {
       return null;
@@ -59,7 +50,11 @@ export default class IndividualEvent extends Component {
       );
     })
   }
+
   renderDetails() {
+    if(!this.state.eventInfo) {
+      return null;
+    }
     const { associationName, startDate, endDate, startTime, endTime, location, registrationLink } = this.state.eventInfo;
     return (
       <List>
@@ -102,6 +97,54 @@ export default class IndividualEvent extends Component {
     });
   }
 
+  renderUpdates() {
+    if(!this.state.eventInfo.updates) {
+      return null;
+    }
+    return this.state.eventInfo.updates.map((update) => {
+      const { id, title, text, timestamp } = update;
+      return (
+        <Comment key={id}>
+          <Comment.Avatar src={this.state.eventInfo.associationImage} />
+          <Comment.Content>
+            <Comment.Author as='span'>{title}</Comment.Author>
+            <Comment.Metadata>
+              <span>{timestamp}</span>
+            </Comment.Metadata>
+            <Comment.Text>
+              <span>{text}</span>
+            </Comment.Text>
+          </Comment.Content>
+        </Comment>
+      );
+    });
+  }
+
+  renderReviews() {
+    if(!this.state.eventInfo.reviews) {
+      return null;
+    }
+    return this.state.eventInfo.reviews.map((review) => {
+      const { id, firstName, lastName, image, comment, timestamp, stars, userId } = review;
+      return (
+        <Comment key={id}>
+          <Comment.Avatar src={image} />
+          <Comment.Content>
+            <Comment.Author as={Link} to={'/students/' + userId}>{firstName + ' ' + lastName}</Comment.Author>
+            <Comment.Metadata>
+              <span>{timestamp}</span>
+            </Comment.Metadata>
+            <Comment.Text>
+              <Rating icon='star' defaultRating={stars} maxRating={5} />
+              <br />
+              <span>{comment}</span>
+            </Comment.Text>
+          </Comment.Content>
+        </Comment>
+      );
+    })
+  }
+
   constructor () {
     super();
     this.state = {eventInfo: {}};
@@ -115,6 +158,9 @@ export default class IndividualEvent extends Component {
       const temp = response.data;
       temp.interested = interested;
       temp.categories = eventCategories;
+      temp.updates = updates;
+      temp.reviews = reviews;
+      temp.associationImage = "/images/defaults/default-profile.jpg";
       tick.setState({eventInfo: temp})
     })
     .catch(function (error) {
@@ -141,7 +187,10 @@ export default class IndividualEvent extends Component {
             presentation at the end of the event. ",
           registrationLink:"google.com",
           interested: interested,
-          categories: eventCategories
+          categories: eventCategories,
+          updates: updates,
+          reviews: reviews,
+          associationImage: "/images/defaults/default-profile.jpg"
         }
       })
     });
@@ -150,51 +199,100 @@ export default class IndividualEvent extends Component {
   render(){
     return (
       <div style={styles.background}>
-        <Image
-          src={this.state.eventInfo.image}
-          size='large'
-          style={styles.image}
-          bordered
-          centered/>
+
         <Grid padded>
-          <Grid.Row>
-            <Grid.Column stretched computer={11} tablet={11} mobile={16} >
+          <Grid.Row style={styles.row}>
+            <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column} >
               <Segment>
-                <Header as='h2'>
-                  {this.state.eventInfo.name}
-                </Header>
+                <Image
+                  src={this.state.eventInfo.image}
+                  size='medium'
+                  style={styles.image}
+                  bordered
+                  centered/>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row style={styles.row} verticalAlign='bottom'>
+            <Grid.Column width={16} style={styles.column}>
+              <Header as='h2' attached='top'>
+                {this.state.eventInfo.name}
+                <br />
                 {this.renderCategories()}
-                <br /><br />
-                <span>
-                  {this.state.eventInfo.description}
-                </span>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column computer={5} tablet={5} mobile={16} >
-              <Segment padded>
-                {this.renderDetails()}
+              </Header>
+              <Segment attached>
+                {this.state.eventInfo.description}
               </Segment>
             </Grid.Column>
 
           </Grid.Row>
-          <Grid.Row>
-            <Grid.Column stretched computer={11} tablet={11} mobile={16} >
-              <Segment>
-                <Header as='h2'>Updates</Header>
-              </Segment>
+          <Grid.Row style={styles.row}>
+            <Grid.Column  computer={11} tablet={11} mobile={16} style={styles.column} stretched>
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='announcement'/>
+                      Updates
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    <Comment.Group>
+                      {this.renderUpdates()}
+                    </Comment.Group>
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='comments'/>
+                      Reviews
+                      <Rating icon='star' defaultRating={3} maxRating={5} />
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    <Comment.Group>
+                      {this.renderReviews()}
+                    </Comment.Group>
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+
             </Grid.Column>
-            <Grid.Column computer={5} tablet={5} mobile={16} floated='right'>
-              <Segment>
-                <List>
-                  {this.renderInterestedUsers()}
-                </List>
-              </Segment>
+            <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column} >
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='search' />
+                      Details
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    {this.renderDetails()}
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='users'/>
+                      Interested
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    <List>
+                      {this.renderInterestedUsers()}
+                    </List>
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
             </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
 
           </Grid.Row>
-
         </Grid>
       </div>
     );
@@ -259,6 +357,66 @@ IndividualEvent.defaultProps = {
   ]
 };
 
+const updates = [
+  {
+    id: 1,
+    title: 'Title of the Update',
+    text: 'Update 1',
+    timestamp: 'Time'
+  },
+  {
+    id: 2,
+    title: 'Title of the Update',
+    text: 'Update 2',
+    timestamp: 'Time'
+  },
+  {
+    id: 3,
+    title: 'Title of the Update',
+    text: 'Update 3',
+    timestamp: 'Time'
+  },
+  {
+    id: 4,
+    title: 'Title of the Update',
+    text: 'Update 4',
+    timestamp: 'Time'
+  }
+];
+
+const reviews = [
+  {
+    id: 1,
+    firstName: 'Joe',
+    lastName: 'Doe',
+    image: 'http://semantic-ui.com/images/avatar/small/joe.jpg',
+    comment: 'Thats Pretty Good!',
+    timestamp: 'Time',
+    stars: 5,
+    userId: 1
+  },
+  {
+    id: 2,
+    firstName: 'Christian',
+    lastName: 'Hendrix',
+    image: 'http://semantic-ui.com/images/avatar/small/christian.jpg',
+    comment: 'It was aight...',
+    timestamp: 'Time',
+    stars: 3,
+    userId: 2
+  },
+  {
+    id: 3,
+    firstName: 'Jenny',
+    lastName: 'Murphy',
+    image: 'http://semantic-ui.com/images/avatar/small/jenny.jpg',
+    comment: 'It suuucked!',
+    timestamp: 'Time',
+    stars: 0,
+    userId: 3
+  }
+];
+
 const interested = [
   {
     firstName: 'Maria',
@@ -273,16 +431,34 @@ const interested = [
     id: 2,
   },
   {
+    firstName: 'Joe',
+    lastName: 'Doe',
+    image: 'http://semantic-ui.com/images/avatar/small/joe.jpg',
+    id: 3
+  },
+  {
     firstName: 'Elliot',
     lastName: 'Fu',
     image: 'http://semantic-ui.com/images/avatar/small/elliot.jpg',
-    id: 3
+    id: 4
   },
   {
     firstName: 'Paola',
     lastName: 'Xiau',
     image: 'http://semantic-ui.com/images/avatar/small/stevie.jpg',
-    id: 4
+    id: 5
+  },
+  {
+    firstName: 'Christian',
+    lastName: 'Hendrix',
+    image: 'http://semantic-ui.com/images/avatar/small/christian.jpg',
+    id: 6
+  },
+  {
+    firstName: 'Jenny',
+    lastName: 'Murphy',
+    image: 'http://semantic-ui.com/images/avatar/small/jenny.jpg',
+    id: 7
   }
 ];
 

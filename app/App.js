@@ -22,7 +22,7 @@ import AdministratorTableEvents from './components/administrator-table-events';
 import ProfileAssociation from './components/profile-association';
 import CreateEventForm from './components/create-event-form';
 
-import Etest from './components/events-individual'
+import EventsIndividual from './components/events-individual'
 
 import Settings from './components/settings'
 
@@ -43,7 +43,7 @@ export default class App extends Component {
             <Route path="/profile" component={Profile}></Route>
             <Route path="/signup-student" component={UserReg}></Route>
             <Route path="/signup-association" component={AssoReg}></Route>
-            <Route path="/events/:eventID" component ={Etest}></Route>
+            <Route path="/events/:eventID" component ={EventsIndividual}></Route>
             <Route path="/associations/:associationID" component={ProfileAssociation}></Route>
             <Route path="/create-event" component={CreateEventForm}></Route>
             <Route path="/settings" component={Settings}></Route>
