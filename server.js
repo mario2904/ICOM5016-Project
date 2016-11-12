@@ -525,37 +525,65 @@ console.log("test" + id);
 //        registrationLink: string
 app.get('/api/event/all', (req, res) => {
   const response = [];
+
+  db1.any("SELECT event_id, E.event_name, A.associationname, A.associationid, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+            FROM events as E, associations as A, images as I, location as L \
+            WHERE E.associationid = A.associationid and E.image_id = I.image_id and E.location_id = L.location_id", [true])
+      .then(function (data) {
+          // success;
+          console.log(data);
+          for (let i = 0; i<data.length;i++) {
+
+              // Destructure association information
+
+              const { event_id, event_name, associationid, associationname, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = data[i];
+              // TODO: Get extra information from the db
+              //
+              // Get extra information from the Testing db (other tables)
+              // The list of students interested of going.
+
+              const singleEvent = {
+                id: event_id,
+                name: event_name,
+                associationId: associationid ,
+                associationName: associationname,
+                startDate: start_date,
+                endDate: end_date,
+                startTime: start_time,
+                endTime: end_time,
+                location: room,
+                image: image_path,
+                description: description,
+                registrationLink: registration_link
+              }
+
+              response.push(singleEvent);
+
+
+          }
+
+            // Send Event Information
+            console.log('Success: Get Event Information');
+            res.json({events: response});
+          //console.log(data[0])
+          console.log('worked')
+      })
+      .catch(function (error) {
+          // error;
+          console.log('no function')
+      });
+
+
+
+
+
   for (var id in db.event) {
-    if (db.event.hasOwnProperty(id)) {
+
       // Destructure event information
-      const { name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = db.event[id];
-      // TODO: Get extra information from the db
-      //
-      // Get extra information from the Testing db (other tables)
-      // The list of students interested of going.
 
-      const singleEvent = {
-        id,
-        name,
-        associationId,
-        associationName,
-        startDate,
-        endDate,
-        startTime,
-        endTime,
-        location,
-        image,
-        description,
-        registrationLink
-      }
 
-      response.push(singleEvent);
-    }
   }
 
-  // Send Event Information
-  console.log('Success: Get Event Information');
-  res.json({events: response});
 });
 
 // GET - Event Information
