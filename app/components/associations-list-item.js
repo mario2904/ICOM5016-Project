@@ -7,7 +7,7 @@ export default class AssociationsListItem extends Component {
   render () {
     const { id, name, initials, profileImage } = this.props.item;
     return (
-      <Grid.Column mobile={16} tablet={8} computer={4}>
+      <Grid.Column mobile={16} tablet={8} computer={5}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
         {/* object-fit will accept: fill, contain, cover, none, scale-down */}
         <Segment color="blue">
@@ -16,9 +16,9 @@ export default class AssociationsListItem extends Component {
          <Item style={{margin:"10px 0px 10px 0px"}}>
           <Image style={{width:"150px", height:"150px"}} src={profileImage}/>
           <Item.Content>
-        <Item.Header>{initials}</Item.Header>
+        <h5 style={nameStyle}>{initials}</h5>
           <Item.Meta style={nameStyle}>{name}</Item.Meta>
-        <Item.Description><Icon name="user" color="blue"></Icon>followers: #
+        <Item.Description><Icon name="user" color="blue"></Icon>#
     </Item.Description>
        </Item.Content>
         </Item>
@@ -33,5 +33,6 @@ export default class AssociationsListItem extends Component {
 const nameStyle = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
-  textOverflow: 'ellipsis'
+  textOverflow: 'ellipsis',
+  color: 'black'
 }

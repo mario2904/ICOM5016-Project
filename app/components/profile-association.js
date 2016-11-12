@@ -90,7 +90,7 @@ export default class ProfileAssociation extends Component{
     return(
     <Grid.Row style={{paddingTop:"10px", paddingBottom:"100px"}}>
       <Segment style={{borderRadius:0, width:"100%", paddingBottom:"100px"}}>
-        <h2><strong>About</strong></h2>
+        <h2><strong><Icon name="info circle" size="large"></Icon>About</strong></h2>
         <Divider></Divider>
         <p><strong>Email</strong>: {this.state.associationInfo.email}</p>
         <p><strong>Location</strong>: {this.state.associationInfo.location}</p>
@@ -102,16 +102,32 @@ export default class ProfileAssociation extends Component{
 
   };
   renderMyCurrentEvents = () => {
-    return  <GridList items={this.state.activeEvents} ListItem={EventsListItem}/>;
+
+    return (
+    <Segment><h2><strong><Icon size="large"name="checked calendar">
+    </Icon>Current Events</strong></h2>
+      <Divider/>
+     <GridList items={this.state.activeEvents} ListItem={EventsListItem}/>
+     </Segment>);
 
   };
 
   renderMyPastEvents = () => {
-    return <GridList items={this.props.events} ListItem={EventsListItem}/>;
+    return(
+      <Segment><h2><strong><Icon size="large" name="delete calendar">
+      </Icon>Past Events</strong></h2>
+        <Divider/>
+    <GridList items={this.props.events} ListItem={EventsListItem}/>
+  </Segment>);
   };
 
   renderSponsors = () => {
-    return  <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>;
+      return(
+        <Segment><h2><strong><Icon size="large" name="hand spock">
+        </Icon>Sponsors</strong></h2>
+          <Divider/>
+    <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>
+    </Segment>);
   };
 
 
@@ -168,7 +184,7 @@ export default class ProfileAssociation extends Component{
         {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
         {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
         {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
-        {(this.state.activeItem === 'sponsors') ? <Grid centered padded>{this.renderSponsors()}</Grid>: null}
+        {(this.state.activeItem === 'sponsors') ? <Grid padded>{this.renderSponsors()}</Grid>: null}
         {(this.state.activeItem === 'edit profile') ?
           <h1 style={{textAlign:"center"}}>Nothing to Show Here<Icon name="meh" size="huge"></Icon></h1> : null}
       </Segment>

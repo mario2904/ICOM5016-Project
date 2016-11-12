@@ -19,7 +19,7 @@ export default class EventsListItem extends Component {
           <Card.Description style={nameStyle}> {startDate} {startDate === endDate ? null: ' - ' + endDate}
             {startTime + ' - ' + endTime}</Card.Description>
         </Card.Content>
-        <Card.Content extra style={{backgroundColor:"rgb(177, 244, 233)"}}>
+        <Card.Content extra style={{backgroundColor:"rgb(246, 253, 255)"}}>
           <Card.Description style={nameStyle}><Icon name="marker"></Icon>{location}</Card.Description>
         </Card.Content>
 
