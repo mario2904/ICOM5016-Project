@@ -1,31 +1,30 @@
 import React, { Component } from 'react';
-import { Col, Thumbnail } from 'react-bootstrap';
 import { Link } from 'react-router';
+import {Grid, Card, Image, Icon} from 'semantic-ui-react';
 
 export default class EventsListItem extends Component {
   render () {
     const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
-      <Col sm={6} md={3}>
-        {/* Small hack to have fixed sized images (height) inside Thumbnail */}
-        {/* object-fit will accept: fill, contain, cover, none, scale-down */}
-        <style type="text/css">{`
-        .thumbnail img {
-            height: 200px;
-            width: 500px;
-            object-fit: fill;
-        }
-        `}</style>
-      <Thumbnail href={"/events/" + id} src={image} alt={name}
-        style= {{backgroundColor:"rgb(247, 247, 247)"}}>
-          <hr/>
-          <h3 style={nameStyle} ><strong>{name}</strong></h3>
-          <h4 style={nameStyle}><em>{associationName}</em></h4>
-          <h6>{startDate} {startDate === endDate ? null: ' - ' + endDate}</h6>
-          <h6>{startTime + ' - ' + endTime}</h6>
-          <h6 style={nameStyle} >{location}</h6>
-        </Thumbnail>
-      </Col>
+      <Grid.Column mobile={16} tablet={8} computer={4}>
+      <Card color="black"
+        as={Link} to={"/events/" + id}
+        alt={name}
+        centered
+        style= {{backgroundColor:"rgb(255, 255, 255)", width:"100%"}}>
+        <Image style={{ width:"500px", height:"200px"}} src={image}></Image>
+        <Card.Content>
+          <Card.Header style={nameStyle}><strong>{name}</strong></Card.Header>
+          <Card.Meta style={nameStyle}><em>{associationName}</em></Card.Meta>
+          <Card.Description style={nameStyle}> {startDate} {startDate === endDate ? null: ' - ' + endDate}
+            {startTime + ' - ' + endTime}</Card.Description>
+        </Card.Content>
+        <Card.Content extra style={{backgroundColor:"rgb(246, 253, 255)"}}>
+          <Card.Description style={nameStyle}><Icon name="marker"></Icon>{location}</Card.Description>
+        </Card.Content>
+
+        </Card>
+      </Grid.Column>
     );
   }
 }

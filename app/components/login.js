@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
-import { Form, FormGroup, FormControl, Grid, Col, Checkbox, Button, ControlLabel, Row, Panel } from 'react-bootstrap';
+import { FormGroup, FormControl,Col, ControlLabel, Row, Panel } from 'react-bootstrap';
 import axios from 'axios';
+import { Button, Form, Grid, Icon,Input, Image, Checkbox } from 'semantic-ui-react'
 
 export default class Login extends Component {
   constructor () {
@@ -46,84 +47,62 @@ export default class Login extends Component {
 
   render () {
     return (
-      <Grid>
-        <h1 style={{textAlign:"center"}}><strong>Sign In</strong></h1>
-        <Form horizontal >
+  <Grid padded stackable columns={2}>
+    <Grid.Row centered>
+      <Grid.Column color="blue" width={8} style={{padding:"200px 0px 200px 0px"}}>
+        <h1><strong>Sign In</strong><Icon name="user" size="large"></Icon></h1>
 
-        <Col lg={6} lgOffset={3}>
-          <Panel header={"   "} bsStyle="primary">
+          <Form.Group>
+              <Form.Field type="email" control="email" label = "Email"></Form.Field>
+                <Form.Input
+                  type="email"
+                  placeholder="email@upr.edu"
+                  value={this.state.email}
+                  onChange={(e) => {this.setState({email: e.target.value})}}/>
+            </Form.Group>
 
+          <Form.Group style={{padding:"15px 0px 0px 0px"}}>
 
-          <FormGroup  style={{textAlign:"center"}} controlId="formHorizontalEmail" >
-            <Col sm={6} lgOffset={3}>
-            <ControlLabel>Email</ControlLabel>
-              <FormControl
-                type="email"
-                placeholder="Email"
-                value={this.state.email}
-                onChange={(e) => {this.setState({email: e.target.value})}}
-                />
-            </Col>
-          </FormGroup>
-
-          <FormGroup style={{textAlign:"center"}} controlId="formHorizontalPassword">
-            <Col sm={6} lgOffset={3}>
-              <ControlLabel>Password</ControlLabel>
-              <FormControl
-                type="password"
-                placeholder="Password"
-                value={this.state.password}
-                onChange={(e) => {this.setState({password: e.target.value})}}
-                />
-            </Col>
-          </FormGroup>
+            <Form.Field label="Password"></Form.Field>
+             <Form.Input
+               type="password"
+               placeholder="Password"
+               value={this.state.password}
+               onChange={(e) => {this.setState({password: e.target.value})}}
+               />
+             </Form.Group>
 
 
-          <FormGroup>
-            <Col sm={6} lgOffset={3}>
-              <Checkbox>Remember me</Checkbox>
-            </Col>
-          </FormGroup>
+            <Form.Field style={{padding:"10px 70px 10px 0px"}}>
+              <input type="checkbox"></input>
+              <label> Remember me?</label>
+            </Form.Field>
 
-          <FormGroup>
-            <Col sm={6} lgOffset={3}>
-            <ControlLabel style={{display:"block", textAlign:"left"}}>Type Of User: </ControlLabel>
-              <div style={radio1}>
-                <p><input id="one" type="radio" name="optradio"/> Association</p>
-              </div>
-            <div style={radioStyle}>
-                <p><input id="two" type="radio" name="optradio"/> Student</p>
-          </div>
-            </Col>
-          </FormGroup>
+         <Button.Group>
+             <Button color="teal" type="submit" onClick={this.submit}>
+               <Icon name="student"></Icon> Student
+             </Button>
+             <Button.Or/>
+             <Button color ="black"> <Icon name="university"></Icon> Association</Button>
+        </Button.Group>
+      </Grid.Column>
 
-          <FormGroup>
-
-            <Col sm={6} lgOffset={3}>
-
-              <div style={{display:"block"}} >
-              <Button style={{margin:"0px 0px 10px 0px"}}type="submit" bsStyle="danger" onClick={this.submit}>
-                Sign in
+      <Grid.Column color="teal" width={8} style={{padding:"200px 0px 200px 0px"}}>
+        <h1 style={{color:"black"}}><strong>Sign Up</strong></h1>
+        <Icon name="pointing right"  color= "black" size="huge"/>
+          <Button.Group>
+              <Button color="blue" type="submit" onClick={this.signup}>
+                <Icon name="student"></Icon> Student
               </Button>
-              </div>
+              <Button.Or/>
+            <Button color ="black" onClick={this.signupAssociation}> <Icon name="university"></Icon> Association</Button>
 
-              <div style={{display:"inline-block"}}>
+         </Button.Group>
+      </Grid.Column>
+    </Grid.Row>
 
-              <p>Create an Account: <a href="#" onClick={this.signup} > Student? </a></p>
 
-              <a href="#" onClick={this.signupAssociation} > Association?</a>
-              </div>
-
-            </Col>
-          </FormGroup>
-
-        </Panel>
-
-      </Col>
-
-        </Form>
-
-      </Grid>
+  </Grid>
     );
   }
 }

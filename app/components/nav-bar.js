@@ -1,42 +1,89 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem, Badge } from 'react-bootstrap';
+import { Link } from 'react-router'
+import { Menu, Segment, Icon, Grid, Dropdown } from 'semantic-ui-react';
+
+const styles = {
+  navbar: {
+    borderRadius: 0,
+    margin: 0
+  }
+}
 
 export default class NavBar extends Component {
-  render () {
+
+  state = { activeItem: 'E-Spotter' };
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  render() {
+    const { activeItem } = this.state;
     return (
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <a href="/home">E-Spotter</a>
-          </Navbar.Brand>
-          <Navbar.Toggle/>
-        </Navbar.Header>
-        <Navbar.Collapse>
-        <Nav>
-          <NavItem eventKey={1} href="/associations">Associations</NavItem>
-          <NavItem eventKey={2} href="/events">Events</NavItem>
-        </Nav>
-        <Nav pullRight>
-          <NavDropdown
-            eventKey={1}
-            title={<div style={{display: "inline-block"}}>Notifications <Badge style={{backgroundColor:"rgb(70, 73, 74)"}}>2</Badge></div>}
-            id="notifications-nav-dropdown"
-            >
-            <MenuItem eventKey={1.1}>Event Update: Idea Platform's Smash Bros Tournament is tomorrow</MenuItem>
-            <MenuItem divider/>
-            <MenuItem eventKey={1.2}>Suggestion: You should buy your ticket for HackPR's Hackathon!</MenuItem>
-          </NavDropdown>
-          <NavDropdown eventKey={2} title="Account" id="basic-nav-dropdown">
-            <MenuItem eventKey={2.1} href="/profile">Profile</MenuItem>
-            <MenuItem eventKey={2.2} href="/settings">Settings</MenuItem>
-            <MenuItem eventKey={2.3} href="/associations/:associationID">Association Profile</MenuItem>
-            <MenuItem eventKey={2.4} href="/create-event">{"Create Event"}</MenuItem>
-            <MenuItem eventKey={2.5} href="/administrator">Admin</MenuItem>
-            <MenuItem eventKey={2.6} href="/">Log Out</MenuItem>
-          </NavDropdown>
-        </Nav>
-      </Navbar.Collapse>
-      </Navbar>
-    );
+      <Segment inverted style={styles.navbar}>
+        <Grid>
+          <Grid.Row only='computer'>
+            <Menu inverted pointing secondary fluid >
+              <Menu.Item
+                fitted
+                name='E-Spotter'
+                as={Link} to='/home'
+                active={activeItem === 'E-Spotter'}
+                icon='marker'
+                onClick={this.handleItemClick} />
+
+              <Menu.Item
+                fitted
+                name='associations'
+                as={Link} to='/associations'
+                active={activeItem === 'associations'}
+                icon='university'
+                onClick={this.handleItemClick}>
+              </Menu.Item>
+
+
+              <Menu.Item
+                fitted
+                name='events'
+                as={Link} to='/events'
+                active={activeItem === 'events'}
+                icon='calendar outline'
+                onClick={this.handleItemClick} />
+              <Menu.Menu position='right' >
+                <Menu.Item
+                  fitted
+                  name='account'
+                  as={Link} to='/#'
+                  active={activeItem === 'account'}
+                  icon='user'
+                  onClick={this.handleItemClick} />
+              </Menu.Menu>
+            </Menu>
+          </Grid.Row>
+          <Grid.Row only='tablet mobile'>
+            <Dropdown trigger={<span><Icon name='content' /> E-Spotter</span>} icon={null}>
+              <Dropdown.Menu>
+                <Dropdown.Item
+                  text='Home'
+                  as={Link} to='/home'
+                  icon='marker' />
+                <Dropdown.Item
+                  text='Associations'
+                  as={Link} to='/associations'
+                  icon='university' />
+                <Dropdown.Item
+                  text='Events'
+                  as={Link} to='/events'
+                  icon='calendar outline' />
+                <Dropdown.Divider></Dropdown.Divider>
+                <Dropdown.Item
+                  text='Account'
+                  as={Link} to='/#'
+                  icon='user' />
+
+              </Dropdown.Menu>
+            </Dropdown>
+          </Grid.Row>
+        </Grid>
+      </Segment>
+    )
   }
 }

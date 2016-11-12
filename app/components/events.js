@@ -6,6 +6,8 @@ import EventsSearchBar from './events-search-bar';
 import EventsListItem from './events-list-item';
 import GridList from './grid-list';
 
+import {Form, Grid, Icon,Input, Image } from 'semantic-ui-react'
+
 export default class Events extends Component {
   constructor () {
     super();
@@ -25,11 +27,14 @@ export default class Events extends Component {
   }
   render () {
     return (
-      <div>
-        <PageHeader style={{textAlign:"center"}}><strong>Search any Event on Campus</strong></PageHeader>
-        <EventsSearchBar />
+      <Grid style={{backgroundColor:"rgb(247, 247, 247)"}}centered>
+        <Grid.Row style={{padding:"50px 0px 50px 0px"}}>
+        <h1 style={{textAlign:"center"}}>
+          <Icon color="teal" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
+        </Grid.Row>
+        <EventsSearchBar/>
         <GridList items={this.state.events} ListItem={EventsListItem}/>
-      </div>
+      </Grid>
     );
   }
 }
@@ -93,7 +98,7 @@ Events.defaultProps = {
       startHour: "6:00 pm",
       endHour: "9:00 pm",
       location: "University of Puerto Rico, Mayaguez Campus - S-228",
-      img: "https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14500634_881246661977335_7362168074202245899_o.jpg",
+      img: "http://1u88jj3r4db2x4txp44yqfj1.wpengine.netdna-cdn.com/wp-content/uploads/2016/03/smashmelee.jpg",
       id: "5",
       interested: 65
     }

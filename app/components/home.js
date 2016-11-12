@@ -1,16 +1,53 @@
 import React, { Component } from 'react';
-import { Button, PageHeader, Jumbotron, Image} from 'react-bootstrap';
+import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed } from 'semantic-ui-react';
+
+const { Content, Description, Group, Header, Image, Meta } = Item;
+
 import axios from 'axios';
 
 import HomeSearchBar from './home-search-bar';
 import GridList from './grid-list';
 import EventsListItem from './events-list-item';
+import AssociationsListItem from './associations-list-item';
+const banner = '/images/banner/Deer-overlooking-a-lake-at-sunset.jpg';
+
+const styles = {
+  title: {
+    textAlign: 'center',
+    color: 'white',
+    paddingTop:"100px"
+  },
+  // Fixes Oversizing of the Thumbnail if the name is too long.
+  overflow: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  banner: {
+    width: '100%',
+    backgroundImage: `url(${banner})`,
+    height:'500px',
+    backgroundPosition: 'center',
+    backgroundSize: '100% 100%'
+  },
+  menubar: {
+    borderRadius: 0
+  }
+}
 
 export default class Home extends Component {
-  constructor () {
-    super();
-    this.state = {events: []};
+  constructor(props) {
+    super(props);
+    this.state = {
+        events: [],
+        associations: [],
+        activeItem: 'news feed'
+      };
+    this.handleItemClick = this.handleItemClick.bind(this);
+    this.renderMyAssociations = this.renderMyAssociations.bind(this);
+    this.renderMyFeeds = this.renderMyFeeds.bind(this);
   }
+
   componentWillMount() {
     const tick = this;
     // Get Events Data to render
@@ -22,15 +59,79 @@ export default class Home extends Component {
     .catch(function (error) {
       console.log(error);
     });
+
+    // Get Associations Data to render
+    axios.get('/api/association/all')
+    .then(function (response) {
+      console.log(response);
+      tick.setState({associations: response.data.associations})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
+  renderMyEvents = () => {
+    return this.state.events.map((event) => {
+      const { id, name, associationName, startDate, endDate, startTime, endTime, location, image, description } = event;
+
+      return (
+
+        <Item key={id}>
+          <Image size='small' src={image} />
+          <Content>
+            <Header>{name}</Header>
+            <Meta>
+              <span>{associationName}</span>
+            </Meta>
+            <Description>{description}</Description>
+          </Content>
+        </Item>
+      );
+    });
+  };
+
+  renderMyAssociations = () => {
+    return  <GridList items={this.state.associations} ListItem={AssociationsListItem}/>;
+
+  }
+
+  renderMyFeeds = () => <Feed events={this.props.feeds} />;
+
   render () {
+    const { activeItem } = this.state;
+
     return (
       <div>
-
-          <Image responsive style={picStyle} src="http://nceft.org/wp-content/uploads/2014/12/calendar-graphic-wide.jpg"/>
-          <h3 style={{textAlign: "center", fontSize:"4em"}}><strong>Interested Events</strong></h3>
-          <HomeSearchBar />
-          <GridList items={this.state.events} ListItem={EventsListItem}/>
+        <div style={styles.banner}>
+          <h2 style={styles.title}>Welcome Back!<Icon size="large" name="smile"></Icon></h2>
+        </div>
+        <div>
+          <Menu pointing style={styles.menubar}>
+            <Menu.Item
+              name='news feed'
+              icon='feed'
+              active={activeItem === 'news feed'}
+              onClick={this.handleItemClick} />
+            <Menu.Item
+              name='events'
+              icon='calendar'
+              active={activeItem === 'events'}
+              onClick={this.handleItemClick} />
+            <Menu.Item
+              name='associations'
+              icon='university'
+              active={activeItem === 'associations'}
+              onClick={this.handleItemClick} />
+          </Menu>
+          <Segment style={{backgroundColor:"rgb(247, 247, 247)"}} padded>
+            {(this.state.activeItem === 'events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
+            {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
+            {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
+          </Segment>
+        </div>
       </div>
     );
   }
@@ -99,7 +200,38 @@ Home.defaultProps = {
       id: "5",
       interested: 65
     }
-  ]
+  ],
+  feeds: [{
+    date: '1 Hour Ago',
+    image: 'http://semantic-ui.com/images/avatar/small/elliot.jpg',
+    meta: '4 Likes',
+    summary: 'Elliot Fu added you as a friend',
+  }, {
+    date: '4 days ago',
+    image: 'http://semantic-ui.com/images/avatar/small/helen.jpg',
+    meta: '1 Like',
+    summary: 'Helen Troy added 2 new illustrations',
+    extraImages: [
+      'http://semantic-ui.com/images/wireframe/image.png',
+      'http://semantic-ui.com/images/wireframe/image.png',
+    ],
+  }, {
+    date: '3 days ago',
+    image: 'http://semantic-ui.com/images/avatar/small/joe.jpg',
+    meta: '8 Likes',
+    summary: 'Joe Henderson posted on his page',
+    extraText: "Ours is a life of constant reruns. We're always circling back to where we'd we started.",
+  }, {
+    date: '4 days ago',
+    image: 'http://semantic-ui.com/images/avatar/small/justen.jpg',
+    meta: '41 Likes',
+    summary: 'Justen Kitsune added 2 new photos of you',
+    extraText: 'Look at these fun pics I found from a few years ago. Good times.',
+    extraImages: [
+      'http://semantic-ui.com/images/wireframe/image.png',
+      'http://semantic-ui.com/images/wireframe/image.png',
+    ],
+  }]
 };
 
 const homeStyle={

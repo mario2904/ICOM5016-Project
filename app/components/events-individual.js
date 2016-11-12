@@ -1,25 +1,151 @@
 import React, { Component } from 'react';
-import { Sparklines, SparklinesLine, SparklinesBars } from 'react-sparklines';
-import {Grid, Col, Button, Panel, Row, Label, Tab, Tabs,ListGroup, ListGroupItem, FormGroup, ControlLabel,FormControl} from 'react-bootstrap';
+import { Link } from 'react-router'
+import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon } from 'semantic-ui-react';
+
+
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
 import axios from 'axios';
 
+
+const styles = {
+  image: {
+    // marginTop: '-10%'
+  },
+  background: {
+    backgroundColor:"rgb(247, 247, 247)"
+  },
+  label: {
+    marginTop: '2px'
+  },
+  column: {
+    paddingTop: '.5rem',
+    paddingBottom: '.5rem'
+  },
+  row: {
+    paddingTop: 0,
+    paddingBottom: 0
+  }
+}
+
 export default class IndividualEvent extends Component {
-  renderUpdateItems () {
-    return this.props.updates.map(function(update1, i) {
-      return <ReviewUpdateItem name={update1.udpateHeader} key={i} review={update1.updateBody}/>;
+
+  renderInterestedUsers() {
+    if(!this.state.eventInfo.interested) {
+      return null;
+    }
+    return this.state.eventInfo.interested.map((user) => {
+      return (
+        <List.Item key={user.id}>
+          <Image avatar src={user.image}/>
+          <List.Content>
+            <List.Header
+              as={Link} to={'/student/' + user.id} >
+              {user.firstName + ' ' + user.lastName}
+            </List.Header>
+          </List.Content>
+        </List.Item>
+      );
+    })
+  }
+
+  renderDetails() {
+    if(!this.state.eventInfo) {
+      return null;
+    }
+    const { associationName, startDate, endDate, startTime, endTime, location, registrationLink } = this.state.eventInfo;
+    return (
+      <List>
+        <List.Item
+          icon='users'
+          content={associationName} />
+        <List.Item
+          icon='wait'
+          content={startTime + ' - ' + endTime} />
+        <List.Item
+          icon='calendar'
+          content={startDate + ((startDate === endDate) ? '': ' - ' + endDate)} />
+        <List.Item
+          icon='marker'
+          content={location} />
+        {(registrationLink === '')? null:
+          <List.Item
+            icon='linkify'
+            content={<a href={registrationLink}>Registration</a>} />
+        }
+      </List>
+
+    );
+  }
+
+  renderCategories() {
+    if(!this.state.eventInfo.categories) {
+      return null;
+    }
+    console.log(this.state.eventInfo.categories);
+    return this.state.eventInfo.categories.map((cat) => {
+      return (
+        <Label
+          style={styles.label}
+          icon={categories[cat].icon}
+          color={categories[cat].color}
+          key={cat}
+          content={cat} />
+      );
     });
   }
-  renderReviewItems () {
-    return this.props.reviews.map(function(review1, i) {
-      return <ReviewUpdateItem name={review1.reviewName} key={i} review={review1.reviewBody}/>;
+
+  renderUpdates() {
+    if(!this.state.eventInfo.updates) {
+      return null;
+    }
+    return this.state.eventInfo.updates.map((update) => {
+      const { id, title, text, timestamp } = update;
+      return (
+        <Comment key={id}>
+          <Comment.Avatar src={this.state.eventInfo.associationImage} />
+          <Comment.Content>
+            <Comment.Author as='span'>{title}</Comment.Author>
+            <Comment.Metadata>
+              <span>{timestamp}</span>
+            </Comment.Metadata>
+            <Comment.Text>
+              <span>{text}</span>
+            </Comment.Text>
+          </Comment.Content>
+        </Comment>
+      );
     });
+  }
+
+  renderReviews() {
+    if(!this.state.eventInfo.reviews) {
+      return null;
+    }
+    return this.state.eventInfo.reviews.map((review) => {
+      const { id, firstName, lastName, image, comment, timestamp, stars, userId } = review;
+      return (
+        <Comment key={id}>
+          <Comment.Avatar src={image} />
+          <Comment.Content>
+            <Comment.Author as={Link} to={'/students/' + userId}>{firstName + ' ' + lastName}</Comment.Author>
+            <Comment.Metadata>
+              <span>{timestamp}</span>
+            </Comment.Metadata>
+            <Comment.Text>
+              <Rating icon='star' defaultRating={stars} maxRating={5} />
+              <br />
+              <span>{comment}</span>
+            </Comment.Text>
+          </Comment.Content>
+        </Comment>
+      );
+    })
   }
 
   constructor () {
     super();
-    this.state = {eventInfo: []};
+    this.state = {eventInfo: {}};
   }
   componentWillMount() {
     const tick = this;
@@ -27,12 +153,19 @@ export default class IndividualEvent extends Component {
     axios.get('/api/event/'+this.props.params.eventID)
     .then(function (response) {
       console.log(response);
-      tick.setState({eventInfo: response.data})
+      const temp = response.data;
+      temp.interested = interested;
+      temp.categories = eventCategories;
+      temp.updates = updates;
+      temp.reviews = reviews;
+      temp.associationImage = "/images/defaults/default-profile.jpg";
+      tick.setState({eventInfo: temp})
     })
     .catch(function (error) {
       console.log(error);
       tick.setState(
-        {eventInfo:{
+        {
+          eventInfo:{
           name: "Hackathon",
           eventID: "1",
           associationName: "HackPR",
@@ -50,164 +183,273 @@ export default class IndividualEvent extends Component {
             as a  visitors to participate in our job fair, \
             exhibitors area, workshops and final hacks (projects) \
             presentation at the end of the event. ",
-          registrationLink:"google.com"
+          registrationLink:"google.com",
+          interested: interested,
+          categories: eventCategories,
+          updates: updates,
+          reviews: reviews,
+          associationImage: "/images/defaults/default-profile.jpg"
         }
-        }
-      )
+      })
     });
   }
 
-
   render(){
-    console.log(this.props.params.eventID);
     return (
-      <Grid>
-        <div>
-          <Panel header={this.state.eventInfo.associationName} bsStyle="primary">
-            <div>
-              <Panel>
-                <div>
-                  <img style={photoBanner} src={this.state.eventInfo.image} />
-                </div>
-              </Panel>
-            </div>
-            <div>
-              <Row>
-                <Col xs={3} >
-                  <p style={eventNameSize}> <strong>{this.state.eventInfo.name}</strong>  </p>
-                </Col>
-
-                <Col xs={1} xsOffset ={5} smOffset ={6} mdOffset={6}lgOffset={7} >
-
-
-                    <Button type="submit" bsStyle="danger" onClick={this.submit}>
+      <div style={styles.background}>
+        <Grid padded>
+          <Grid.Row style={styles.row}>
+            <Grid.Column style={styles.column} >
+              <Segment>
+                <Image
+                  src={this.state.eventInfo.image}
+                  size='big'
+                  style={styles.image}
+                  bordered
+                  centered/>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row style={styles.row} verticalAlign='bottom'>
+            <Grid.Column width={16} style={styles.column}>
+              <Header as='h2' attached='top'>
+                {this.state.eventInfo.name}
+                <br />
+                {this.renderCategories()}
+              </Header>
+              <Segment attached>
+                {this.state.eventInfo.description}
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row style={styles.row}>
+            <Grid.Column  computer={11} tablet={11} mobile={16} stretched>
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='announcement'/>
+                      Updates
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    <Comment.Group>
+                      {this.renderUpdates()}
+                    </Comment.Group>
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='comments'/>
+                      Reviews
+                      <Rating icon='star' defaultRating={3} maxRating={5} />
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    <Comment.Group>
+                      {this.renderReviews()}
+                    </Comment.Group>
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid.Column>
+            <Grid.Column computer={5} tablet={5} mobile={16} >
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='search' />
+                      Details
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    {this.renderDetails()}
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row style={styles.row}>
+                <Grid.Column width={16} style={styles.column}>
+                  <Header as='h2' attached='top'>
+                    <span>
+                      <Icon name='users'/>
                       Interested
-                    </Button>
-
-                </Col>
-              </Row>
-                <Label bsStyle="primary">Competition</Label>
-                <Label bsStyle="primary">Paying Event</Label>
-                <Label></Label>
-              <Row> <p> </p></Row>
-            </div>
-            <div>
-              <Panel>
-                <Row>
-                  <ul>
-                    <p><strong>Event Date</strong>:{this.state.eventInfo.startDate} - {this.state.eventInfo.endDate}</p>
-                    <p><strong>Event Time</strong>:{this.state.eventInfo.startTime} - {this.state.eventInfo.endTime}</p>
-                    <p><strong>Location</strong>: {this.state.eventInfo.location}</p>
-                    <p><strong>Registration Link: </strong> <a href={this.state.eventInfo.registrationLink}>{"Link"}</a></p>
-                    <p><strong>Event Info: </strong>{this.state.eventInfo.description} </p>
-                  </ul>
-                </Row>
-              </Panel>
-            </div>
-            <div>
-              <Panel>
-                <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
-                  <Tab eventKey={1} title="Reviews" style={contentStyle}>
-                    {this.renderReviewItems()}
-                    <ListGroup >
-                      <ListGroupItem>
-
-                          <FormGroup controlId="formHorizontalAname" >
-
-                              <ControlLabel>Chewbacca</ControlLabel>
-                              <FormControl
-                                type="text"
-                                placeholder="Enter Review"
-
-                              />
-
-                          </FormGroup>
-                          <Button type="submit" bsStyle="primary" onClick={this.submit}>
-                            Submit
-                          </Button>
-                      </ListGroupItem>
-
-                    </ListGroup>
-                  </Tab>
-                  <Tab eventKey={2} title="Updates" style={contentStyle}>
-                    {this.renderUpdateItems()}
-                  </Tab>
-                  <Tab eventKey={3} title="Interested List" style={contentStyle}>
-                    <div style={divStyle}>
-                      <InterestedList></InterestedList>
-                    </div>
-                  </Tab>
-                  <Tab eventKey={4} title="Stats" >
-                    <h3>Interested over Time</h3>
-                    <Sparklines data={[5, 10, 20, 5, 20, 25, 15, 20, 30, 50]} width={50} height={20} >
-                      <SparklinesBars color="blue" />
-                    </Sparklines>
-                  </Tab>
-                </Tabs>
-              </Panel>
-            </div>
-          </Panel>
-        </div>
-      </Grid>
-    )
+                    </span>
+                  </Header>
+                  <Segment attached>
+                    <List>
+                      {this.renderInterestedUsers()}
+                    </List>
+                  </Segment>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    );
   }
 }
 
-const eventNameSize = {
-  fontSize: "30px"
-}
-const photoBanner = {
-  height: "100%",
-  width: "100%"
-}
-const contentStyle = {
-  margin: "30px 0px 0px 0px"
-}
-const divStyle = {
-    overflow: "auto"
-}
-IndividualEvent.defaultProps = {
-  eventData:
-    {
-      name: "Hackathon",
-      eventID: "1",
-      associationName: "HackPR",
-      associationID: "45239847",
-      image: "http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png",
-      startDate: "Oct. 15, 2016",
-      endDate: "Oct. 16, 2016",
-      startTime: "9:00 am",
-      endTime: "5:00 pm",
-      location: "Roberto Clemente",
-      description: "HackPR 2016 is the perfect \
-        meeting place for the hacker and technology innovation \
-        community in Puerto Rico. Join us as a student or \
-        professional hacker to win more than {'5k'} in prizes or \
-        as a  visitors to participate in our job fair, \
-        exhibitors area, workshops and final hacks (projects) \
-        presentation at the end of the event. ",
-      registrationLink:"google.com"
+const updates = [
+  {
+    id: 1,
+    title: 'Title of the Update',
+    text: 'Update 1',
+    timestamp: 'Time'
+  },
+  {
+    id: 2,
+    title: 'Title of the Update',
+    text: 'Update 2',
+    timestamp: 'Time'
+  },
+  {
+    id: 3,
+    title: 'Title of the Update',
+    text: 'Update 3',
+    timestamp: 'Time'
+  },
+  {
+    id: 4,
+    title: 'Title of the Update',
+    text: 'Update 4',
+    timestamp: 'Time'
+  }
+];
 
-    },
-  reviews:[
-    {
-      reviewName: "Carlos Ojeda",
-      reviewBody: " Critics Consensus: Ambitious and refreshing, Atlanta \
-          offers a unique vehicle for star and series creator Donald Glover's \
-          eccentric brand of humor -- as well as a number of \
-          timely, trenchant observations."
+const reviews = [
+  {
+    id: 1,
+    firstName: 'Joe',
+    lastName: 'Doe',
+    image: 'http://semantic-ui.com/images/avatar/small/joe.jpg',
+    comment: 'Thats Pretty Good!',
+    timestamp: 'Time',
+    stars: 5,
+    userId: 1
+  },
+  {
+    id: 2,
+    firstName: 'Christian',
+    lastName: 'Hendrix',
+    image: 'http://semantic-ui.com/images/avatar/small/christian.jpg',
+    comment: 'It was aight...',
+    timestamp: 'Time',
+    stars: 3,
+    userId: 2
+  },
+  {
+    id: 3,
+    firstName: 'Jenny',
+    lastName: 'Murphy',
+    image: 'http://semantic-ui.com/images/avatar/small/jenny.jpg',
+    comment: 'It suuucked!',
+    timestamp: 'Time',
+    stars: 0,
+    userId: 3
+  }
+];
 
-    },
-    {
-      reviewName: "Harambe",
-      reviewBody: " Harambe LIVES!!!! He'll be back with a vengeance.OUT FOR HARAMBE!"
+const interested = [
+  {
+    firstName: 'Maria',
+    lastName: 'Jimenez',
+    image: 'http://semantic-ui.com/images/avatar/small/helen.jpg',
+    id: 1
+  },
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    image: 'http://semantic-ui.com/images/avatar/small/daniel.jpg',
+    id: 2,
+  },
+  {
+    firstName: 'Joe',
+    lastName: 'Doe',
+    image: 'http://semantic-ui.com/images/avatar/small/joe.jpg',
+    id: 3
+  },
+  {
+    firstName: 'Elliot',
+    lastName: 'Fu',
+    image: 'http://semantic-ui.com/images/avatar/small/elliot.jpg',
+    id: 4
+  },
+  {
+    firstName: 'Paola',
+    lastName: 'Xiau',
+    image: 'http://semantic-ui.com/images/avatar/small/stevie.jpg',
+    id: 5
+  },
+  {
+    firstName: 'Christian',
+    lastName: 'Hendrix',
+    image: 'http://semantic-ui.com/images/avatar/small/christian.jpg',
+    id: 6
+  },
+  {
+    firstName: 'Jenny',
+    lastName: 'Murphy',
+    image: 'http://semantic-ui.com/images/avatar/small/jenny.jpg',
+    id: 7
+  }
+];
 
-    }
-  ],
-  updates: [
-    {
-    udpateHeader: "Cambio de Salon",
-    updateBody:   "Saludos, el salon a cambiado al S113"
-    }
-  ]
+const eventCategories = [
+  'Food',
+  'Music',
+  'Fundraiser',
+  'Arts',
+  'Social',
+  'Educational',
+  'Business',
+  'Sport',
+  'Competition',
+  'Other'
+];
+
+const categories = {
+  Food: {
+    color: 'red',
+    icon: 'food'// food or spoon
+  },
+  Music: {
+    color: 'blue',
+    icon: 'music'// music or unmute or sound
+  },
+  Fundraiser: {
+    color: 'violet',
+    icon: 'ticket' // ticket or money
+  },
+  Arts: {
+    color: 'teal',
+    icon: 'paint brush'
+  },
+  Social: {
+    color: 'green',
+    icon: 'users'
+  },
+  Educational: {
+    color: 'orange',
+    icon: 'student' // student or book
+  },
+  Business: {
+    color: 'yellow',
+    icon: 'travel'
+  },
+  Sport: {
+    color: 'black',
+    icon: 'soccer'
+  },
+  Competition: {
+    color: 'purple',
+    icon: 'trophy'
+  },
+  Other: {
+    color: 'grey',
+    icon: 'idea'
+  }
 };
