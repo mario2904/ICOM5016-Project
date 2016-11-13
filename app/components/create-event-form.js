@@ -20,8 +20,8 @@ export default class CreateEventForm extends Component {
     return (
       <div style={{padding:100}}>
 
-        <Header as='h2' attached='top'>
-        <Icon name="write square" size="large"></Icon>Create Event</Header>
+        <Header as='h2' attached='top' >
+        <Icon name="write square" size="large" circular></Icon>Create Event</Header>
 
         <Segment attached>
           <Form>

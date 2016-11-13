@@ -9,7 +9,7 @@ export default class GridList extends Component {
   }
   render () {
     return (
-      <Grid padded>
+      <Grid style={{width:"100%"}} padded>
           {this.renderListItems()}
       </Grid>
     );

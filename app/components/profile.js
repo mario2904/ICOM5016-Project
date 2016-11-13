@@ -40,7 +40,7 @@ export default class Profile extends Component{
 };
   renderMyAssociations = () => {
 
-    return (<Segment><h2><strong><Icon size="large"name="university">
+    return (<Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="university">
     </Icon>Associations</strong></h2>
   <Divider/>
   <GridList items={this.props.associations} ListItem={AssociationsListItem}/></Segment>);
@@ -48,7 +48,7 @@ export default class Profile extends Component{
 
   renderMyEvents = () => {
 
-    return (<Segment><h2><strong><Icon size="large"name="calendar">
+    return (<Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="calendar">
   </Icon>Events</strong></h2>
 <Divider/>
   <GridList items={this.props.events} ListItem={EventsListItem}/>

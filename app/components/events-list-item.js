@@ -6,7 +6,7 @@ export default class EventsListItem extends Component {
   render () {
     const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
-      <Grid.Column mobile={16} tablet={8} computer={4}>
+      <Grid.Column mobile={14} tablet={8} computer={4}>
       <Card color="black"
         as={Link} to={"/events/" + id}
         alt={name}

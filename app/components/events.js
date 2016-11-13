@@ -27,7 +27,7 @@ export default class Events extends Component {
   }
   render () {
     return (
-      <Grid style={{backgroundColor:"rgb(247, 247, 247)"}}centered>
+      <Grid padded style={{backgroundColor:"rgb(247, 247, 247)"}}centered>
         <Grid.Row style={{padding:"50px 0px 50px 0px"}}>
         <h1 style={{textAlign:"center"}}>
           <Icon color="teal" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
