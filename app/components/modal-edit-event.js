@@ -21,7 +21,8 @@ export default class ModalEditEvent extends Component {
   }
 
   render() {
-    const button = this.props.button;
+    if(!this.props.eventInfo.categories)
+      return null;
     const { name, id, associationName, associationId, image, startDate, endDate, startTime, endTime, location, description, registrationLink } = this.props.eventInfo;
     const trigger = (
       <Button
@@ -56,9 +57,9 @@ export default class ModalEditEvent extends Component {
             <Icon name="map pin"></Icon>
             <Form.Input label="Location" name='location' placeholder="Where is your event going to be at?" defaultValue={location}/>
             <Icon name="checked calendar"></Icon>
-            <Form.Input label="Start Date" name='startDate' placeholder="mm/dd/yyyy" type="date" defaultValue={startDate}/> // yyyy/mm/dd
+            <Form.Input label="Start Date" name='startDate' placeholder="mm/dd/yyyy" type="date" defaultValue={startDate}/> {/* yyyy/mm/dd */}
             <Icon name="wait" flipped="horizontally"></Icon>
-            <Form.Input label="Start Time" name="startTime" type="time" placeholder="--:-- --" defaultValue={startTime}/>  // 24 hr format
+            <Form.Input label="Start Time" name="startTime" type="time" placeholder="--:-- --" defaultValue={startTime}/>  {/* 24 hr format */}
             <Icon name="delete calendar"></Icon>
             <Form.Input label="End Date" name='endDate' placeholder="mm/dd/yyyy" type="date" defaultValue={endDate}/>
               <Icon name="wait"></Icon>
