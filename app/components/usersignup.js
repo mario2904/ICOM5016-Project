@@ -63,6 +63,7 @@ export default class Usignup extends Component {
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' />
             <Form.Input label='Re-enter Password' name='rePassword' placeholder='Re-enter Password' type='password' />
+            <Form.Input label='Birthday' name='birthday' placeholder='Birthday' type='date' />
             <Form.Field>
               <label>Gender</label>
               <Form.Group inline>

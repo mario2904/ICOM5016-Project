@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon } from 'semantic-ui-react';
+import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon, Button, Modal } from 'semantic-ui-react';
+
+import ModalEditEvent from './modal-edit-event';
 
 import InterestedList from './interestedList';
 import ReviewUpdateItem from './review-item';
@@ -24,7 +26,7 @@ const styles = {
     paddingTop: 0,
     paddingBottom: 0
   }
-}
+};
 
 export default class IndividualEvent extends Component {
 
@@ -164,9 +166,9 @@ export default class IndividualEvent extends Component {
         {
           eventInfo:{
           name: "Hackathon",
-          eventID: "1",
+          id: "1",
           associationName: "HackPR",
-          associationID: "45239847",
+          associationId: "45239847",
           image: "http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png",
           startDate: "Oct. 15, 2016",
           endDate: "Oct. 16, 2016",
@@ -210,7 +212,10 @@ export default class IndividualEvent extends Component {
           <Grid.Row style={styles.row} verticalAlign='bottom'>
             <Grid.Column width={16} style={styles.column}>
               <Header as='h2' attached='top'>
-                {this.state.eventInfo.name}
+                <span>
+                  {this.state.eventInfo.name} {' '}
+                  <ModalEditEvent eventInfo={this.state.eventInfo} />
+                </span>
                 <br />
                 {this.renderCategories()}
               </Header>
