@@ -86,6 +86,7 @@ export default class Home extends Component {
             <Meta>
               <span>{associationName}</span>
             </Meta>
+            <Button color="blue">Edit</Button>
             <Description>{description}</Description>
           </Content>
         </Item>
