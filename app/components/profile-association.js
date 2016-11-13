@@ -8,7 +8,7 @@ import SponsorsListItem from './sponsors-list-item';
 import ProfileAssociationForm from './profile-association-form';
 import axios from 'axios';
 
-import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider } from 'semantic-ui-react'
+import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider,Button } from 'semantic-ui-react'
 
 const banner = '/images/banner/mountains.png';
 
@@ -21,7 +21,10 @@ export default class ProfileAssociation extends Component{
       activeEvents: [],
       sponsors:[],
       pastEvents: [],
-      activeItem: 'about'
+      activeItem: 'about',
+      color: "blue",
+      content:"follow"
+
 
     };
   }
@@ -61,30 +64,32 @@ export default class ProfileAssociation extends Component{
     .catch(function (error) {
       console.log(error);
 
-      // tick.setState(
-      //   {
-      //     associationInfo:{
-      //     name: 'Neuro-RUM / Club Literario en Neurociencias',
-      //     initials: 'Neuro-RUM',
-      //     location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
-      //     link: 'http://neurorum.wordpress.com/',
-      //     email: 'neuro_rum@uprm.edu',
-      //     password: 'password',
-      //     profileImage: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751',
-      //     bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, \
-      //     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-      //     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris \
-      //     nisi ut aliquip exea commodo consequat. Duis aute irure dolor in \
-      //     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
-      //     pariatur. Excepteur sint occaecatcupidatat non proident, sunt in culpa\
-      //      qui officia deserunt mollit anim id est laborum.'
-      //
-      //   }
-      //   }
-      // )
+      tick.setState(
+        {
+          associationInfo:{
+          name: 'Neuro-RUM / Club Literario en Neurociencias',
+          initials: 'Neuro-RUM',
+          location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
+          link: 'http://neurorum.wordpress.com/',
+          email: 'neuro_rum@uprm.edu',
+          password: 'password',
+          profileImage: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751',
+          bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, \
+          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris \
+          nisi ut aliquip exea commodo consequat. Duis aute irure dolor in \
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
+          pariatur. Excepteur sint occaecatcupidatat non proident, sunt in culpa\
+           qui officia deserunt mollit anim id est laborum.'
+
+        }
+        }
+      )
     });
   }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  handleOnClick = (e) => this.setState({ color:(this.state.color === "red" ? "blue": "red"),
+    content:(this.state.content === "unfollow" ? "follow": "unfollow" )});
 
   renderAbout = () => {
     return(
@@ -104,7 +109,7 @@ export default class ProfileAssociation extends Component{
   renderMyCurrentEvents = () => {
 
     return (
-    <Segment><h2><strong><Icon size="large"name="checked calendar">
+    <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="checked calendar">
     </Icon>Current Events</strong></h2>
       <Divider/>
      <GridList items={this.state.activeEvents} ListItem={EventsListItem}/>
@@ -114,7 +119,7 @@ export default class ProfileAssociation extends Component{
 
   renderMyPastEvents = () => {
     return(
-      <Segment><h2><strong><Icon size="large" name="delete calendar">
+      <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="delete calendar">
       </Icon>Past Events</strong></h2>
         <Divider/>
     <GridList items={this.props.events} ListItem={EventsListItem}/>
@@ -123,7 +128,7 @@ export default class ProfileAssociation extends Component{
 
   renderSponsors = () => {
       return(
-        <Segment><h2><strong><Icon size="large" name="hand spock">
+        <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="hand spock">
         </Icon>Sponsors</strong></h2>
           <Divider/>
     <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>
@@ -151,7 +156,21 @@ export default class ProfileAssociation extends Component{
 
           <Grid.Row style={{paddingBottom:0}}>
           <Segment style={{borderRadius:0, width:"100%"}}>
-            <h1><strong>{this.state.associationInfo.name}</strong></h1>
+
+            <h1 style={{display: 'inline'}}><strong>{this.state.associationInfo.name}</strong>{ ' ' }
+              <div style={{display:"inline", float:"right"}}>
+              <Button
+                style={{verticalAlign: 'middle'}}
+                color={this.state.color}
+                content={this.state.content}
+                icon='user'
+                size="tiny"
+                onClick={this.handleOnClick}
+                label={{ basic: true, color:this.state.color, pointing: 'left', content: '100' }}/>
+              </div>
+            </h1>
+
+
           </Segment>
           </Grid.Row>
 
