@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Tab, Tabs} from 'react-bootstrap';
 import ModalOverlay from "./modal-overlay";
 import Associations from "./associations";
 import GridList from "./grid-list";
@@ -10,7 +9,7 @@ import ProfileForm from './profile-form'
 import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider } from 'semantic-ui-react'
 const banner = '/images/banner/867870-minimalist-iphone-5.jpg';
 
-
+import ModalEditStudentProfile from './modal-edit-student-profile';
 
 export default class Profile extends Component{
   constructor () {
@@ -77,6 +76,7 @@ export default class Profile extends Component{
           <Grid.Row style={{paddingBottom:0}}>
           <Segment style={{borderRadius:0, width:"100%"}}>
             <h1><strong>{this.props.profile.name}</strong></h1>
+            <ModalEditStudentProfile studentProfile={this.props.profile}/>
           </Segment>
           </Grid.Row>
 
@@ -112,64 +112,8 @@ export default class Profile extends Component{
            </Grid.Row>
 
       </Grid>
-
-      // <Grid>
-      //   <Row>
-      //
-      //     <Col lg={4} xs={5}>
-      //       <Image style={imgStyle} src={this.props.profile.pic}
-      //        responsive thumbnail/>
-      //     </Col>
-      //
-      //     <Col lg={8} xs={7}>
-      //       <h1 style={txt}><strong> {this.props.profile.name}</strong></h1>
-      //     </Col>
-      //   </Row>
-      //
-      //   <Row>
-      //     <Col xs={12}>
-      //       <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
-      //         <Tab eventKey={1} title="About" style={contentStyle}>
-      //           <p><strong>Email</strong>: {this.props.profile.email}</p>
-      //           <p><strong>Gender</strong>: {this.props.profile.gender}</p>
-      //           <p><strong>Hometown</strong>: {this.props.profile.hometown} </p>
-      //           <p><strong>College</strong>: {this.props.profile.college}</p>
-      //           <p><strong>Major</strong>: {this.props.profile.major}</p>
-      //
-      //           <p><strong>Bio</strong>: {this.props.profile.bio}</p>
-      //
-      //         </Tab>
-      //         <Tab eventKey={2} title="My Associations" style={contentStyle}>
-      //           <GridList items={this.props.associations} ListItem={AssociationsListItem}/></Tab>
-      //         <Tab eventKey={3} title="My Events" style={contentStyle}>
-      //           <GridList items={this.props.events} ListItem={EventsListItem}/></Tab>
-      //         <Tab eventKey={4} title="Edit Profile" style={contentStyle}>
-      //         <ProfileForm></ProfileForm></Tab>
-      //       </Tabs>
-      //     </Col>
-      //
-      //   </Row>
-      // </Grid>
     );
   }
-}
-
-const txt={
-  fontSize:"40px"
-}
-
-const imgStyle = {
-
-  margin: "0px 0px 30px 0px"
-
-}
-const contentStyle = {
-  margin: "30px 0px 0px 0px"
-}
-
-const tabStyle = {
-  color: "red",
-  backgroundColor: "yellow"
 }
 
 Profile.defaultProps = {

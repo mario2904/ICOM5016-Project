@@ -10,16 +10,16 @@ export default class Settings extends Component {
 
     // If successful, go to prof page
   browserHistory.push('/home');
+  }
 
   state = { serializedForm: {} };
 
   handleDecisionChange = (e, { value }) => this.setState({ decision: value });
 
   handleSubmit = (e, serializedForm) => {
-    e.preventDefault()
-    this.setState({ serializedForm })
-    }
-  }
+    e.preventDefault();
+    this.setState({ serializedForm });
+  };
 
   checkPasswordLength(string1){
     var integer = string1.length;

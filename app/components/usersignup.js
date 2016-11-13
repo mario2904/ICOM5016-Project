@@ -75,7 +75,7 @@ export default class Usignup extends Component {
             <Form.Input label='Hometown' name='hometown' placeholder='Hometown' />
             <Form.Select label='College' name='college' options={colleges} placeholder='College' />
             <Form.Select label='Major' name='major' options={majors} placeholder='Major' />
-
+            <Form.TextArea label='Bio' name='bio' placeholder='Tell me more about you...' />
             <Form.Field>
               <Checkbox label='I agree to the Terms and Conditions' />
             </Form.Field>
