@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { PageHeader } from 'react-bootstrap';
+import { Form, Grid, Icon,Input, Image } from 'semantic-ui-react';
 import axios from 'axios';
 
 import EventsSearchBar from './events-search-bar';
 import EventsListItem from './events-list-item';
 import GridList from './grid-list';
 
-import {Form, Grid, Icon,Input, Image } from 'semantic-ui-react'
 
 export default class Events extends Component {
   constructor () {

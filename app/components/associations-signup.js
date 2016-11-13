@@ -1,6 +1,7 @@
-import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
+
 import axios from 'axios';
 
 export default class Asignup extends Component {
@@ -11,7 +12,7 @@ export default class Asignup extends Component {
     e.preventDefault()
     this.setState({ serializedForm })
   }
-  
+
   checkPasswordLength(string1){
     var integer = string1.length;
     if(integer>=8){return true};

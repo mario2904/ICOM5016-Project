@@ -4,8 +4,6 @@ import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon,
 
 import ModalEditEvent from './modal-edit-event';
 
-import InterestedList from './interestedList';
-import ReviewUpdateItem from './review-item';
 import axios from 'axios';
 
 const styles = {

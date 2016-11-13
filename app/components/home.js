@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed } from 'semantic-ui-react';
+import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button } from 'semantic-ui-react';
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
 
