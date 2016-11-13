@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+
 import Associations from "./associations";
 import GridList from "./grid-list";
 import AssociationsListItem from './associations-list-item';
 import EventsListItem from './events-list-item';
 import SponsorsListItem from './sponsors-list-item';
+import ModalEditAssociationProfile from './modal-edit-association-profile';
+
 import axios from 'axios';
 
-import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider,Button } from 'semantic-ui-react'
+import { Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider,Button } from 'semantic-ui-react'
 
 const banner = '/images/banner/mountains.png';
 
@@ -167,6 +170,7 @@ export default class ProfileAssociation extends Component{
                 label={{ basic: true, color:this.state.color, pointing: 'left', content: '100' }}/>
               </div>
             </h1>
+            <ModalEditAssociationProfile associationProfile={this.state.associationInfo}/>
 
 
           </Segment>

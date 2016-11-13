@@ -36,7 +36,7 @@ export default class ModalEditEvent extends Component {
       <Modal trigger={trigger}>
         <Header icon='edit' content='Edit Event' />
         <Modal.Content>
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
 
 
             <Icon name="idea"></Icon>

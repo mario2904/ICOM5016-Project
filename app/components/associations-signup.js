@@ -56,8 +56,9 @@ export default class Asignup extends Component {
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' />
             <Form.Input label='Re-enter Password' name='rePassword' placeholder='Re-enter Password' type='password' />
-            <Form.Select label='Main Office Location' name='location' options={location} placeholder='Main Office Location' />
+            <Form.Select label='Main Office Location' name='location' options={locations} placeholder='Main Office Location' />
             <Form.Input label='Association Link' name='link' placeholder='Association Link' />
+            <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' />
             <Form.Field>
               <Checkbox label='I agree to the Terms and Conditions' />
             </Form.Field>
@@ -69,7 +70,7 @@ export default class Asignup extends Component {
   }
 }
 
-const location = [
+const locations = [
   { text: 'Stefani', value: 'stefani' },
   { text: 'Ingenieria Quimica', value: 'ingenieria_quimica' },
   { text: 'Edificio de Civil', value: 'edificio_de_civil' },
