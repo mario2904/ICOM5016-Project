@@ -34,7 +34,7 @@ export default class ModalEditEvent extends Component {
     );
     return (
       <Modal trigger={trigger}>
-        <Header icon='edit' content='Edit Event' />
+        <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}icon='edit' content='Edit Event' />
         <Modal.Content>
           <Form>
 

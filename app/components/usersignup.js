@@ -1,4 +1,4 @@
-import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment,Label } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import axios from 'axios';
@@ -52,11 +52,15 @@ export default class Usignup extends Component {
     const { serializedForm, gender } = this.state;
 
     return (
-      <div>
-        <Header as='h2' attached='top'>
-          Student Sign-up
+      <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
+      <Grid style={{width:"70%", height:"80%", margin:"auto", paddingTop:75,
+      paddingBottom:75}}>
+        <Grid.Row>
+        <Header style={{width:"100%", textAlign:"center",
+          backgroundColor:"rgb(35, 37, 40)", color:"white"}} as='h2' attached='top'>
+          <Icon name="student" color="blue"></Icon>Student Sign-up
         </Header>
-        <Segment attached>
+        <Segment attached style={{width:"100%"}}>
           <Form onSubmit={this.handleSubmit}>
             <Form.Input label='First Name' name='firstName' placeholder='First Name'/>
             <Form.Input label='Last Name' name='lastName' placeholder='Last Name' />
@@ -79,9 +83,18 @@ export default class Usignup extends Component {
             <Form.Field>
               <Checkbox label='I agree to the Terms and Conditions' />
             </Form.Field>
-            <Button type='submit'>Submit</Button>
+            <Button animated color="blue"type='submit'>
+              <Button.Content visible>
+              Submit
+            </Button.Content>
+            <Button.Content hidden>
+              <Icon name="smile"></Icon>
+            </Button.Content>
+            </Button>
           </Form>
         </Segment>
+        </Grid.Row>
+      </Grid>
       </div>
     );
   }

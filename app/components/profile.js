@@ -81,7 +81,7 @@ export default class Profile extends Component{
           </Grid.Row>
 
           <Grid.Row style={{paddingTop: 0}}>
-            <Menu fluid pointing widths={4} style={{borderRadius: 0}}>
+            <Menu inverted fluid pointing widths={4} style={{borderRadius: 0}}>
                <Menu.Item icon="info circle"
                  name='about'
                  active={activeItem === 'about'}
@@ -101,7 +101,7 @@ export default class Profile extends Component{
          </Grid.Row>
 
          <Grid.Row style={{paddingBottom:"50px"}}>
-         <Segment style={{backgroundColor:"rgb(236, 238, 238)", borderRadius: 0, width:"100%"}} padded>
+         <Segment inverted style={{ backgroundColor:"rgb(48, 50, 51)", borderRadius: 0, width:"100%"}} padded>
            {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
            {(this.state.activeItem === 'myAssociations') ? <div>{this.renderMyAssociations()}</div>: null}
            {(this.state.activeItem === 'myEvents') ? <Grid padded>{this.renderMyEvents()}</Grid>: null}

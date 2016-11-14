@@ -31,7 +31,7 @@ export default class Settings extends Component {
     const { serializedForm, decision } = this.state;
     return (
         <div style={{padding:100}}>
-          <Header style={{paddingBottom:"50px"}} as='h1' icon textAlign="center">
+          <Header style={{ paddingBottom:"50px"}} as='h1' icon textAlign="center">
           <Icon name="settings" size="large"></Icon>
           <Header.Content>Settings</Header.Content>
           </Header>
@@ -41,7 +41,7 @@ export default class Settings extends Component {
 
           <Grid.Column>
           <Header as='h2' inverted attached='top' style={{width:"100%",
-          borderRadius:0}}>
+          borderRadius:0,backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
           <Icon color="teal"name="write" size="large"></Icon>Name</Header>
 
           <Segment attached style={{width:"100%", marginBottom:"25px"}}>
@@ -59,7 +59,8 @@ export default class Settings extends Component {
           </Grid.Column>
 
           <Grid.Column>
-            <Header inverted color="black" as='h2' attached='top' style={{width:"100%",borderRadius:0}}>
+            <Header inverted color="black" as='h2' attached='top'
+              style={{width:"100%",borderRadius:0, backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
             <Icon color="yellow"name="unlock alternate" size="large"></Icon>Password</Header>
 
             <Segment attached style={{width:"100%",marginBottom:"25px"}}>
@@ -83,7 +84,7 @@ export default class Settings extends Component {
 
           <Grid.Column>
             <Header inverted color="black" as='h2' attached='top' style={{width:"100%",
-            borderRadius:0}}>
+            borderRadius:0, backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
             <Icon color="blue"name="mail" size="large"></Icon>Email</Header>
 
             <Segment attached style={{width:"100%",marginBottom:"25px"}}>
@@ -103,7 +104,7 @@ export default class Settings extends Component {
 
           <Grid.Column>
             <Header inverted color="black" as='h2' attached='top' style={{width:"100%",
-            borderRadius:0}}>
+            borderRadius:0, backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
             <Icon color="red"name="talk" size="large"></Icon>Receive Push Notifications?</Header>
 
           <Segment attached style={{width:"100%"}}>

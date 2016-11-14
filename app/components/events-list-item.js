@@ -7,7 +7,7 @@ export default class EventsListItem extends Component {
     const { id, name, associationName, startDate, endDate, startTime, endTime, location, image } = this.props.item;
     return (
       <Grid.Column mobile={14} tablet={8} computer={4}>
-      <Card color="black"
+      <Card
         as={Link} to={"/events/" + id}
         alt={name}
         centered
@@ -19,8 +19,8 @@ export default class EventsListItem extends Component {
           <Card.Description style={nameStyle}> {startDate} {startDate === endDate ? null: ' - ' + endDate}
             {startTime + ' - ' + endTime}</Card.Description>
         </Card.Content>
-        <Card.Content extra style={{backgroundColor:"rgb(246, 253, 255)"}}>
-          <Card.Description style={nameStyle}><Icon name="marker"></Icon>{location}</Card.Description>
+        <Card.Content extra style={{backgroundColor:"rgb(35, 37, 40)"}}>
+          <Card.Description style={descriptionStyle}><Icon name="marker"></Icon>{location}</Card.Description>
         </Card.Content>
 
         </Card>
@@ -34,6 +34,13 @@ const nameStyle = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis'
+}
+
+const descriptionStyle = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  color: "white"
 }
 
 const imgStyle = {

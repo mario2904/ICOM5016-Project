@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button } from 'semantic-ui-react';
+import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button, Label,
+       Link, Rating} from 'semantic-ui-react';
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
 
@@ -9,7 +10,7 @@ import HomeSearchBar from './home-search-bar';
 import GridList from './grid-list';
 import EventsListItem from './events-list-item';
 import AssociationsListItem from './associations-list-item';
-const banner = '/images/banner/Deer-overlooking-a-lake-at-sunset.jpg';
+const banner = '/images/banner/zl8K2Hy.png';
 
 const styles = {
   title: {
@@ -73,24 +74,31 @@ export default class HomeAssociation extends Component{
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
+
   renderMyEvents = () => {
     return this.state.events.map((event) => {
       const { id, name, associationName, startDate, endDate, startTime, endTime, location, image, description } = event;
 
       return (
-
-        <Item key={id}>
+      <Grid.Column key={id} mobile={16} tablet={8} computer={6}>
+        <Segment>
+          <Label color='black' ribbon><Icon name="user"></Icon>100 followers</Label>
+          <Item.Group>
+        <Item>
           <Image size='small' src={image} />
           <Content>
-            <Header>{name}</Header>
-            <Meta>
+            <h3 style={nameStyle}>{name}</h3>
+            <Meta style={nameStyle}>
               <span>{associationName}</span>
-              <Button color="blue">hghjgkjhgjh</Button>
             </Meta>
-
-            <Description>{description}</Description>
+            <a href={"/events/" + id}><Button color="blue"><Icon name="write"></Icon>Edit</Button></a>
+            <Button color="teal"><Icon name="line chart"></Icon>Stats</Button>
+            <Rating style={{paddingTop: 10}}icon='star' defaultRating={4} maxRating={5} />
           </Content>
         </Item>
+        </Item.Group>
+        </Segment>
+      </Grid.Column>
       );
     });
   };
@@ -108,10 +116,10 @@ export default class HomeAssociation extends Component{
     return (
       <div>
         <div style={styles.banner}>
-          <h2 style={styles.title}>Welcome Back Association!<Icon size="large" name="smile"></Icon></h2>
+          <h2 style={styles.title}>Welcome Back Fellow Association!<Icon size="large" name="smile"></Icon></h2>
         </div>
         <div>
-          <Menu pointing style={styles.menubar}>
+          <Menu inverted widths={3} pointing style={styles.menubar}>
             <Menu.Item
               name='news feed'
               icon='feed'
@@ -129,7 +137,7 @@ export default class HomeAssociation extends Component{
               onClick={this.handleItemClick} />
           </Menu>
           <Segment style={{backgroundColor:"rgb(247, 247, 247)"}} padded>
-            {(this.state.activeItem === 'events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
+            {(this.state.activeItem === 'events') ? <Grid divided>{this.renderMyEvents()}</Grid>: null}
             {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
             {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
           </Segment>
@@ -250,6 +258,11 @@ export default class HomeAssociation extends Component{
     margin: "-25px 0px 0px 0px",
     padding: "0px 0px 0px 0px",
     display:"inline-block" /*Inline block is life*/
+  }
 
-
+  const nameStyle = {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    color: 'black'
   }

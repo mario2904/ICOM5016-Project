@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed } from 'semantic-ui-react';
+import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button } from 'semantic-ui-react';
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
 
@@ -86,7 +86,6 @@ export default class Home extends Component {
             <Meta>
               <span>{associationName}</span>
             </Meta>
-            <Button color="blue">Edit</Button>
             <Description>{description}</Description>
           </Content>
         </Item>
@@ -110,7 +109,7 @@ export default class Home extends Component {
           <h2 style={styles.title}>Welcome Back!<Icon size="large" name="smile"></Icon></h2>
         </div>
         <div>
-          <Menu pointing style={styles.menubar}>
+          <Menu inverted widths={3} pointing style={styles.menubar}>
             <Menu.Item
               name='news feed'
               icon='feed'

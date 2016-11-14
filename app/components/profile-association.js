@@ -175,7 +175,7 @@ export default class ProfileAssociation extends Component{
           </Grid.Row>
 
        <Grid.Row style={{paddingTop: 0}}>
-         <Menu fluid pointing widths={5} style={{borderRadius: 0}}>
+         <Menu inverted fluid pointing widths={5} style={{borderRadius: 0}}>
             <Menu.Item icon="info circle"
               name='about'
               active={activeItem === 'about'}
@@ -199,7 +199,7 @@ export default class ProfileAssociation extends Component{
       </Grid.Row>
 
       <Grid.Row style={{paddingBottom:"50px"}}>
-      <Segment style={{backgroundColor:"rgb(236, 238, 238)", borderRadius: 0, width:"100%"}} padded>
+      <Segment inverted style={{ borderRadius: 0, width:"100%", backgroundColor:"rgb(48, 50, 51)"}} padded>
         {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
         {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
         {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
