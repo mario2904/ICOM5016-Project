@@ -4,8 +4,6 @@ import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon,
 
 import ModalEditEvent from './modal-edit-event';
 
-import InterestedList from './interestedList';
-import ReviewUpdateItem from './review-item';
 import axios from 'axios';
 
 const styles = {
@@ -27,6 +25,8 @@ const styles = {
     paddingBottom: 0
   }
 };
+
+
 
 export default class IndividualEvent extends Component {
 
@@ -73,6 +73,52 @@ export default class IndividualEvent extends Component {
             icon='linkify'
             content={<a href={registrationLink}>Registration</a>} />
         }
+        <Modal trigger={<Button color="teal">Entrance Fee</Button>}>
+    <Modal.Header style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>Event Payment <Icon name="payment"></Icon></Modal.Header>
+    <Modal.Content>
+      <Form>
+
+        <Form.Group widths="equal">
+           <Form.Input label='Credit Card Number' name='creditCard'
+             placeholder='Card Number' />
+           <Form.Input label="Expiration Date" name='expirationDate'
+             placeholder='MM/YYYY'/>
+           <Form.Input label="Security Code (CCV)" name="securityCode"
+             placeholder="123"></Form.Input>
+         </Form.Group>
+
+       <Form.Group widths="equal">
+         <Form.Input label="First Name" name="firstName" placeholder="First Name"/>
+         <Form.Input label="Last Name" name="lastName" placeholder="Last Name"/>
+       </Form.Group>
+
+
+       <Form.Input label="Billing Address" name="addressLine1"
+         placeholder="Address Line 1"/>
+       <Form.Input name="addressLine2"
+         placeholder="Address Line 2"/>
+
+       <Form.Group widths="equal">
+         <Form.Input label="City" name="city" placeholder="City"/>
+         <Form.Input label="State" name="state" placeholder="State"/>
+       </Form.Group>
+
+       <Form.Group widths="equal">
+         <Form.Input label="Post Code" name="postCode" placeholder="Post Code"/>
+         <Form.Select label="Country" name="country"/>
+       </Form.Group>
+
+      </Form>
+      <Modal.Description>
+        <Header>Proceed to Checkout</Header>
+      </Modal.Description>
+    </Modal.Content>
+    <Modal.Actions style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
+      <Button primary>
+        Proceed <Icon name='right chevron' />
+      </Button>
+    </Modal.Actions>
+  </Modal>
       </List>
     );
   }
@@ -203,7 +249,7 @@ export default class IndividualEvent extends Component {
                 <Image
                   src={this.state.eventInfo.image}
                   size='big'
-                  style={styles.image}
+                  style={{width:"90%", marginTop:10, marginBottom:10}}
                   bordered
                   centered/>
               </Segment>
@@ -211,7 +257,8 @@ export default class IndividualEvent extends Component {
           </Grid.Row>
           <Grid.Row style={styles.row} verticalAlign='bottom'>
             <Grid.Column width={16} style={styles.column}>
-              <Header as='h2' attached='top'>
+              <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
+                 as='h2' attached='top'>
                 <span>
                   {this.state.eventInfo.name} {' '}
                   <ModalEditEvent eventInfo={this.state.eventInfo} />
@@ -228,9 +275,10 @@ export default class IndividualEvent extends Component {
             <Grid.Column  computer={11} tablet={11} mobile={16} stretched>
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
-                  <Header as='h2' attached='top'>
+                  <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
+                     as='h2' attached='top'>
                     <span>
-                      <Icon name='announcement'/>
+                      <Icon color="red"name='announcement'/>
                       Updates
                     </span>
                   </Header>
@@ -243,9 +291,10 @@ export default class IndividualEvent extends Component {
               </Grid.Row>
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
-                  <Header as='h2' attached='top'>
+                  <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
+                     as='h2' attached='top'>
                     <span>
-                      <Icon name='comments'/>
+                      <Icon color="blue"name='comments'/>
                       Reviews
                       <Rating icon='star' defaultRating={3} maxRating={5} />
                     </span>
@@ -261,9 +310,10 @@ export default class IndividualEvent extends Component {
             <Grid.Column computer={5} tablet={5} mobile={16} >
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
-                  <Header as='h2' attached='top'>
+                  <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
+                     as='h2' attached='top'>
                     <span>
-                      <Icon name='search' />
+                      <Icon color="teal"name='search' />
                       Details
                     </span>
                   </Header>
@@ -274,9 +324,10 @@ export default class IndividualEvent extends Component {
               </Grid.Row>
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
-                  <Header as='h2' attached='top'>
+                  <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
+                     as='h2' attached='top'>
                     <span>
-                      <Icon name='users'/>
+                      <Icon color="yellow"name='users'/>
                       Interested
                     </span>
                   </Header>
@@ -443,7 +494,7 @@ const categories = {
     icon: 'travel'
   },
   Sports: {
-    color: 'black',
+    color: 'grey',
     icon: 'soccer'
   },
   Competition: {
@@ -451,7 +502,7 @@ const categories = {
     icon: 'trophy'
   },
   Other: {
-    color: 'grey',
+    color: 'olive',
     icon: 'idea'
   }
 };

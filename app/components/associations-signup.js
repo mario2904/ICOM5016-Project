@@ -1,6 +1,7 @@
-import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
+
 import axios from 'axios';
 
 export default class Asignup extends Component {
@@ -11,7 +12,7 @@ export default class Asignup extends Component {
     e.preventDefault()
     this.setState({ serializedForm })
   }
-  
+
   checkPasswordLength(string1){
     var integer = string1.length;
     if(integer>=8){return true};
@@ -44,9 +45,12 @@ export default class Asignup extends Component {
 }
   render() {
     return (
-      <div>
-        <Header as='h2' attached='top'>
-          Association Sign-up
+      <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
+        <Grid style={{width:"70%", height:"80%", margin:"auto", paddingTop:75,
+        paddingBottom:75}}>
+        <Header style={{width:"100%", textAlign:"center",
+          backgroundColor:"rgb(35, 37, 40)", color:"white"}} as='h2' attached='top'>
+          <Icon name="university" color="teal"></Icon>Association Sign-up
         </Header>
         <Segment attached>
           <Form onSubmit={this.handleSubmit}>
@@ -55,20 +59,29 @@ export default class Asignup extends Component {
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' />
             <Form.Input label='Re-enter Password' name='rePassword' placeholder='Re-enter Password' type='password' />
-            <Form.Select label='Main Office Location' name='location' options={location} placeholder='Main Office Location' />
+            <Form.Select label='Main Office Location' name='location' options={locations} placeholder='Main Office Location' />
             <Form.Input label='Association Link' name='link' placeholder='Association Link' />
+            <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' />
             <Form.Field>
               <Checkbox label='I agree to the Terms and Conditions' />
             </Form.Field>
-            <Button type='submit'>Submit</Button>
+            <Button animated color="teal"type='submit'>
+              <Button.Content visible>
+              Submit
+            </Button.Content>
+            <Button.Content hidden>
+              <Icon name="smile"></Icon>
+            </Button.Content>
+            </Button>
           </Form>
         </Segment>
+      </Grid>
       </div>
     );
   }
 }
 
-const location = [
+const locations = [
   { text: 'Stefani', value: 'stefani' },
   { text: 'Ingenieria Quimica', value: 'ingenieria_quimica' },
   { text: 'Edificio de Civil', value: 'edificio_de_civil' },

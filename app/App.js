@@ -22,9 +22,10 @@ import AdministratorTableEvents from './components/administrator-table-events';
 import ProfileAssociation from './components/profile-association';
 import CreateEventForm from './components/create-event-form';
 
-import EventsIndividual from './components/events-individual'
+import EventsIndividual from './components/events-individual';
 
-import Settings from './components/settings'
+import Settings from './components/settings';
+import HomeAssociation from './components/home-association';
 
 
 const createStoreWithMiddleware = applyMiddleware()(createStore);
@@ -51,6 +52,7 @@ export default class App extends Component {
             <Route path="/administrator/associations" component={AdministratorTableAssociations}></Route>
             <Route path="/administrator/students" component={AdministratorTableStudents}></Route>
             <Route path="/administrator/events" component={AdministratorTableEvents}></Route>
+            <Route path="/home-association" component={HomeAssociation}></Route>
           </Route>
         </Router>
       </Provider>

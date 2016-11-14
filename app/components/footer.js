@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-
 import { Menu, Segment, Icon, Grid, Dropdown } from 'semantic-ui-react';
 
 export default class Footer extends Component {

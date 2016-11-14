@@ -21,13 +21,15 @@ export default class AssociationsListItem extends Component {
       <Grid.Column mobile={16} tablet={8} computer={5}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
         {/* object-fit will accept: fill, contain, cover, none, scale-down */}
-        <Segment color="blue">
+        <Segment color="black">
         <Item.Group>
          <Item style={{margin:"10px 0px 10px 0px"}}>
-          <Image as={Link} to={"/associations/" + id} style={{width:"150px", height:"150px"}} src={profileImage}/>
+          <Image
+            style={{width:"150px", height:"150px"}} src={profileImage}/>
           <Item.Content>
         <a href={"/associations/" + id}><h5 style={nameStyle}>{initials}</h5></a>
-          <Item.Meta style={nameStyle}>{name}</Item.Meta>
+        <a href={"/associations/" + id}><Item.Meta style={nameStyle}>{name}</Item.Meta>
+        </a>
         <Item.Description>
           <div>
           <Button

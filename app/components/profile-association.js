@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import ModalOverlay from "./modal-overlay";
+
 import Associations from "./associations";
 import GridList from "./grid-list";
 import AssociationsListItem from './associations-list-item';
 import EventsListItem from './events-list-item';
 import SponsorsListItem from './sponsors-list-item';
-import ProfileAssociationForm from './profile-association-form';
+import ModalEditAssociationProfile from './modal-edit-association-profile';
+
 import axios from 'axios';
 
-import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider,Button } from 'semantic-ui-react'
+import { Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider,Button } from 'semantic-ui-react'
 
 const banner = '/images/banner/mountains.png';
 
@@ -169,13 +170,14 @@ export default class ProfileAssociation extends Component{
                 label={{ basic: true, color:this.state.color, pointing: 'left', content: '100' }}/>
               </div>
             </h1>
+            <ModalEditAssociationProfile associationProfile={this.state.associationInfo}/>
 
 
           </Segment>
           </Grid.Row>
 
        <Grid.Row style={{paddingTop: 0}}>
-         <Menu fluid pointing widths={5} style={{borderRadius: 0}}>
+         <Menu fluid pointing widths={4} style={{borderRadius: 0}}>
             <Menu.Item icon="info circle"
               name='about'
               active={activeItem === 'about'}
@@ -191,84 +193,25 @@ export default class ProfileAssociation extends Component{
               name='sponsors'
               active={activeItem === 'sponsors'}
               onClick={this.handleItemClick} />
-            <Menu.Item icon="write"
-              name='edit profile'
-              active={activeItem === 'edit profile'}
-              onClick={this.handleItemClick} />
+
          </Menu>
       </Grid.Row>
 
       <Grid.Row style={{paddingBottom:"50px"}}>
-      <Segment style={{backgroundColor:"rgb(236, 238, 238)", borderRadius: 0, width:"100%"}} padded>
+      <Segment  style={{ borderRadius: 0, width:"100%"}} padded>
         {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
         {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
         {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
         {(this.state.activeItem === 'sponsors') ? <Grid padded>{this.renderSponsors()}</Grid>: null}
-        {(this.state.activeItem === 'edit profile') ?
-          <h1 style={{textAlign:"center"}}>Nothing to Show Here<Icon name="meh" size="huge"></Icon></h1> : null}
+
       </Segment>
         </Grid.Row>
 
     </Grid>
-      // <Grid>
-      //   <Row>
-      //
-      //     <Col lg={4} xs={5}>
-      //
-      //       <Image style={imgStyle} src={this.state.associationInfo.profileImage} responsive thumbnail/>
-      //
-      //     </Col>
-      //
-      //     <Col lg={8} xs={7}>
-      //       <h1 style={txt}><strong> {this.state.associationInfo.name}</strong></h1>
-      //     </Col>
-      //   </Row>
-      //
-      //   <Row>
-      //     <Col xs={12}>
-      //       <Tabs defaultActiveKey={1} id="pTabs" bsStyle= "pills">
-      //         <Tab eventKey={1} title="About" style={contentStyle}>
-      //           <p><strong>Email</strong>: {this.state.associationInfo.email}</p>
-      //           <p><strong>Location</strong>: {this.state.associationInfo.location}</p>
-      //           <p><strong>Page Link</strong>: {this.state.associationInfo.link} </p>
-      //           <p><strong>Description</strong>: {this.state.associationInfo.bio}</p>
-      //         </Tab>
-      //
-      //         <Tab eventKey={2} title="Live/Future Events" style={contentStyle}>
-      //           <GridList items={this.state.activeEvents} ListItem={EventsListItem}/></Tab>
-      //         <Tab eventKey={3} title="Past Events" style={contentStyle}>
-      //           <GridList items={this.props.events} ListItem={EventsListItem}/></Tab>
-      //         <Tab eventKey={4} title="Sponsors" style={contentStyle}>
-      //           <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>
-      //         </Tab>
-      //         <Tab eventKey={5} title="Edit Profile" style={contentStyle}>
-      //         <ProfileAssociationForm></ProfileAssociationForm></Tab>
-      //       </Tabs>
-      //     </Col>
-      //
-      //   </Row>
-      // </Grid>
     );
   }
 }
 
-const txt={
-  fontSize:"40px"
-}
-
-const imgStyle = {
-
-  margin: "0px 0px 30px 0px"
-
-}
-const contentStyle = {
-  margin: "30px 0px 0px 0px"
-}
-
-const tabStyle = {
-  color: "red",
-  backgroundColor: "yellow"
-}
 
 ProfileAssociation.defaultProps = {
 

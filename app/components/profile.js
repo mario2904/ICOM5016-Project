@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Tab, Tabs} from 'react-bootstrap';
-import ModalOverlay from "./modal-overlay";
 import Associations from "./associations";
 import GridList from "./grid-list";
 import AssociationsListItem from './associations-list-item';
-import EventsListItem from './events-list-item'
-import ProfileForm from './profile-form'
+import EventsListItem from './events-list-item';
+import axios from 'axios';
 
-import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider } from 'semantic-ui-react'
+import { Form, Grid, Icon, Input, Image, Segment, Item, Menu, Divider } from 'semantic-ui-react';
 const banner = '/images/banner/867870-minimalist-iphone-5.jpg';
 
 
@@ -16,9 +14,31 @@ export default class Profile extends Component{
   constructor () {
     super();
     this.state = {
-      activeItem: 'about'
+      activeItem: 'about',
+      profileInfo: {}
     };
   }
+
+  componentWillMount() {
+    const tick = this;
+    // Get Events Data to render
+    axios.get('/api/student/'+this.props.params.eventID)
+    .then(function (response) {
+      console.log(response);
+      const temp = response.data;
+
+      tick.setState({profileInfo: temp})
+    })
+    .catch(function (error) {
+      console.log(error);
+
+    });
+  }
+
+
+
+
+
   state = { activeItem: 'about' }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
