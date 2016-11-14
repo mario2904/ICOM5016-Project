@@ -319,35 +319,86 @@ app.get('/api/student/:id', (req, res) => {
   // Destructure params
   const { id } = req.params;
   // TODO: Check if it is in the db...
+  const responseDB = {};
   //
+  db1.one("SELECT first_name, last_name, gender, hometown, college, major, image_path, bio \
+            FROM students natural join account natural join images \
+            WHERE user_id = ${idused}", {idused: id})
+      .then(function (data) {
+          // success;
+          responseDB.eventInfo = data;
+          db1.any("SELECT event_id, event_name, associationname, start_date, end_date, start_time, end_time, room, image_path \
+                    FROM interested natural join events natural join images natural join location, associations \
+                    WHERE user_id = ${idused} and events.associationid = associations.associationid", {idused: id})
+              .then(function (data) {
+                  // success;
+                  responseDB.interestedEvents = data;
+                  db1.any("SELECT associationid, associationname, initials, image_path \
+                            FROM followed_associations natural join associations natural join images \
+                            WHERE user_id = ${idused}", {idused: id})
+                      .then(function (data) {
+                          // success;
+                          responseDB.followedAssociations = data;
+                          const { first_name, last_name, gender, hometown, college, major, image_path, bio } = responseDB.eventInfo;
+                          const response = {
+                            firstName: first_name,
+                            lastName: last_name,
+                            gender: gender,
+                            hometown,
+                            college,
+                            major,
+                            profileImage: image_path,
+                            bio,
+                            interestedEvents: responseDB.interestedEvents,
+                            followedAssociations: responseDB.followedAssociations
+                          };
+                          // Send Student Information
+                          console.log('Success: Get Student Information');
+                          res.json(response);
+
+
+                          console.log('worked');
+                      })
+                      .catch(function (error) {
+                          // error;
+                          console.log('no function')
+                      });
+
+                  console.log('worked');
+              })
+              .catch(function (error) {
+                  // error;
+                  console.log('no function')
+              });
+
+          console.log('worked');
+      })
+      .catch(function (error) {
+          // error;
+          console.log('no function')
+      });
+
+
+
+
+
+
+
+
+
   // Check if it is in the Testing db
-  const student = db.student[id];
-  if (student === undefined)
-    return res.status(400).send('Error: Student not found in the DB.');
+  // const student = db.student[id];
+  // if (student === undefined)
+  //   return res.status(400).send('Error: Student not found in the DB.');
   // Destructure student information
-  const { firstName, lastName, age, gender, hometown, college, major, profileImage, bio } = student;
+
   // TODO: Get extra information from the db
   //
   // Get extra information from the Testing db (other tables)
   const interestedEvents = db.interestedEvents[id];
   const followedAssociations = db.followedAssociations[id];
 
-  const response = {
-    firstName,
-    lastName,
-    age,
-    gender,
-    hometown,
-    college,
-    major,
-    profileImage,
-    bio,
-    interestedEvents,
-    followedAssociations
-  };
-  // Send Student Information
-  console.log('Success: Get Student Information');
-  res.json(response);
+
 });
 
 // GET - All Associations Information
@@ -573,17 +624,6 @@ app.get('/api/event/all', (req, res) => {
           console.log('no function')
       });
 
-
-
-
-
-  for (var id in db.event) {
-
-      // Destructure event information
-
-
-  }
-
 });
 
 // GET - Event Information
@@ -605,36 +645,138 @@ app.get('/api/event/:id', (req, res) => {
   console.log(req.params);
   // Destructure params
   const { id } = req.params;
+  const responseDB = {};
+  const eventInfo = {};
   // TODO: Check if it is in the db...
   //
+
+  db1.one("SELECT event_id, E.event_name, A.associationname, A.associationid, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+            FROM events as E, associations as A, images as I, location as L \
+            WHERE E.associationid = A.associationid and E.image_id = I.image_id and E.location_id = L.location_id and event_id=${idused}", {idused: id})
+      .then(function (data) {
+        //console.log(data);
+        responseDB.eventInfo = {};
+        responseDB.eventInfo = data;
+
+        db1.any("SELECT first_name, last_name, user_id, image_path \
+            FROM interested natural join students natural join images \
+            WHERE event_id=${idused}", {idused: id})
+            .then(function (data) {
+              responseDB.interestedResponse = data;
+
+              db1.any("SELECT notification_id, notification_text, notification_name,date_sent \
+                        FROM notifications \
+                        WHERE event_id=${idused}", {idused: id})
+                  .then(function (data) {
+                    responseDB.updateResponse = data;
+                    db1.any("SELECT review_id, first_name, last_name, image_path, review, date_created, rating, user_id \
+                              FROM review natural join students natural join images \
+                              WHERE event_id=${idused}", {idused: id})
+                        .then(function (data) {
+                          responseDB.reviewResponse = data;
+
+                          db1.any("SELECT category_name \
+                                    FROM events_categories natural join category \
+                                    WHERE event_id=${idused}", {idused: id})
+                              .then(function (data) {
+                                responseDB.categoriesResponse = data;
+
+
+                                const { event_id, event_name, associationid, associationname, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = responseDB.eventInfo;
+                                var  concatenatedCategories = data.map((category) => category.category_name);
+
+                                const response = {
+                                  id: event_id,
+                                  name: event_name,
+                                  associationId: associationid ,
+                                  associationName: associationname,
+                                  startDate: start_date,
+                                  endDate: end_date,
+                                  startTime: start_time,
+                                  endTime: end_time,
+                                  location: room,
+                                  image: image_path,
+                                  description: description,
+                                  registrationLink: registration_link,
+                                  interested: responseDB.interestedResponse,
+                                  updates: responseDB.updateResponse,
+                                  reviews: responseDB.reviewResponse,
+                                  categories: concatenatedCategories
+                                  //Le Falta
+                                  //interested = array = [firstName, lastName, userImage, userID]
+                                  //updates = array = [id, title, text, timestamp]
+                                  //review  = array = [reviewID, firstName, LastName, UserImage, comment, timestamp, rating, userId]
+                                  //categories [array]
+
+                                }
+
+
+                                // Send Event Information
+                                console.log('Success: Get Event Information');
+                                res.json(response);
+
+
+
+
+
+
+
+                              })
+                              .catch(function (error) {
+                                  // error;
+                                  console.log('Individual Event: categories failed.')
+                              });
+                        })
+                        .catch(function (error) {
+                            // error;
+                            console.log('Individual Event: review failed.')
+                        });
+
+                  })
+                  .catch(function (error) {
+                      // error;
+                      console.log('Individual Event: update failed.')
+                  });
+            })
+            .catch(function (error) {
+                // error;
+                console.log('Individual Event: interested failed.')
+            });
+
+      })
+      .catch(function (error) {
+          // error;
+          console.log('Individual Event Info Failed')
+      });
+
+
+
+
+
+
+  // console.log(eventInfo);
+  // console.log(interestedResponse);
+  // console.log(updateResponse);
+  // console.log(reviewResponse);
+  // console.log(categoriesResponse);
+
+
+
+
   // Check if it is in the Testing db
-  const event = db.event[id];
-  if (event === undefined)
-    return res.status(400).send('Error: Event not found in the DB.');
+  // const event = db.event[id];
+  // if (event === undefined)
+  //   return res.status(400).send('Error: Event not found in the DB.');
   // Destructure event information
-  const { name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = event;
+
+
   // TODO: Get extra information from the db
   //
   // Get extra information from the Testing db (other tables)
   // The list of students interested of going.
 
-  const response = {
-    id,
-    name,
-    associationId,
-    associationName,
-    startDate,
-    endDate,
-    startTime,
-    endTime,
-    location,
-    image,
-    description,
-    registrationLink
-  }
-  // Send Event Information
-  console.log('Success: Get Event Information');
-  res.json(response);
+
+
 });
 
 app.get('/api/sponsors/:id', (req, res) => {

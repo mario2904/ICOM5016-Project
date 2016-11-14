@@ -36,12 +36,12 @@ export default class IndividualEvent extends Component {
     }
     return this.state.eventInfo.interested.map((user) => {
       return (
-        <List.Item key={user.id}>
-          <Image avatar src={user.image}/>
+        <List.Item key={user.user_id}>
+          <Image avatar src={user.image_path}/>
           <List.Content>
             <List.Header
-              as={Link} to={'/student/' + user.id} >
-              {user.firstName + ' ' + user.lastName}
+              as={Link} to={'/student/' + user.user_id} >
+              {user.first_name + ' ' + user.last_name}
             </List.Header>
           </List.Content>
         </List.Item>
@@ -99,17 +99,17 @@ export default class IndividualEvent extends Component {
       return null;
     }
     return this.state.eventInfo.updates.map((update) => {
-      const { id, title, text, timestamp } = update;
+      const { notification_id, notification_name, notification_text, date_sent } = update;
       return (
-        <Comment key={id}>
-          <Comment.Avatar src={this.state.eventInfo.associationImage} />
+        <Comment key={notification_id}>
+          <Comment.Avatar src={this.state.eventInfo.image_path} />
           <Comment.Content>
-            <Comment.Author as='span'>{title}</Comment.Author>
+            <Comment.Author as='span'>{notification_name}</Comment.Author>
             <Comment.Metadata>
-              <span>{timestamp}</span>
+              <span>{date_sent}</span>
             </Comment.Metadata>
             <Comment.Text>
-              <span>{text}</span>
+              <span>{notification_text}</span>
             </Comment.Text>
           </Comment.Content>
         </Comment>
@@ -121,20 +121,20 @@ export default class IndividualEvent extends Component {
     if(!this.state.eventInfo.reviews) {
       return null;
     }
-    return this.state.eventInfo.reviews.map((review) => {
-      const { id, firstName, lastName, image, comment, timestamp, stars, userId } = review;
+    return this.state.eventInfo.reviews.map((reviews) => {
+      const { review_id, first_name, last_name, image_path, review, date_created, rating, user_id } = reviews;
       return (
-        <Comment key={id}>
-          <Comment.Avatar src={image} />
+        <Comment key={review_id}>
+          <Comment.Avatar src={image_path} />
           <Comment.Content>
-            <Comment.Author as={Link} to={'/students/' + userId}>{firstName + ' ' + lastName}</Comment.Author>
+            <Comment.Author as={Link} to={'/students/' + user_id}>{first_name + ' ' + last_name}</Comment.Author>
             <Comment.Metadata>
-              <span>{timestamp}</span>
+              <span>{date_created}</span>
             </Comment.Metadata>
             <Comment.Text>
-              <Rating icon='star' defaultRating={stars} maxRating={5} />
+              <Rating icon='star' defaultRating={rating} maxRating={5} />
               <br />
-              <span>{comment}</span>
+              <span>{review}</span>
             </Comment.Text>
           </Comment.Content>
         </Comment>
@@ -153,10 +153,10 @@ export default class IndividualEvent extends Component {
     .then(function (response) {
       console.log(response);
       const temp = response.data;
-      temp.interested = interested;
-      temp.categories = eventCategories;
-      temp.updates = updates;
-      temp.reviews = reviews;
+      // temp.interested = interested;
+      // temp.categories = eventCategories;
+      // temp.updates = updates;
+      // temp.reviews = reviews;
       temp.associationImage = "/images/defaults/default-profile.jpg";
       tick.setState({eventInfo: temp})
     })
@@ -408,7 +408,7 @@ const eventCategories = [
   'Social',
   'Educational',
   'Business',
-  'Sport',
+  'Sports',
   'Competition',
   'Other'
 ];
@@ -442,7 +442,7 @@ const categories = {
     color: 'yellow',
     icon: 'travel'
   },
-  Sport: {
+  Sports: {
     color: 'black',
     icon: 'soccer'
   },
