@@ -247,7 +247,7 @@ export default class IndividualEvent extends Component {
             <Grid.Column style={styles.column} >
               <Segment>
                 <Image
-                  src={this.state.eventInfo.image}
+                  src={this.state.eventInfo.image_path}
                   size='big'
                   style={{width:"90%", marginTop:10, marginBottom:10}}
                   bordered
