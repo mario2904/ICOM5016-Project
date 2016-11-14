@@ -65,27 +65,27 @@ export default class ProfileAssociation extends Component{
     .catch(function (error) {
       console.log(error);
 
-      tick.setState(
-        {
-          associationInfo:{
-          name: 'Neuro-RUM / Club Literario en Neurociencias',
-          initials: 'Neuro-RUM',
-          location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
-          link: 'http://neurorum.wordpress.com/',
-          email: 'neuro_rum@uprm.edu',
-          password: 'password',
-          profileImage: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751',
-          bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, \
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris \
-          nisi ut aliquip exea commodo consequat. Duis aute irure dolor in \
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
-          pariatur. Excepteur sint occaecatcupidatat non proident, sunt in culpa\
-           qui officia deserunt mollit anim id est laborum.'
-
-        }
-        }
-      )
+      // tick.setState(
+      //   {
+      //     associationInfo:{
+      //     name: 'Neuro-RUM / Club Literario en Neurociencias',
+      //     initials: 'Neuro-RUM',
+      //     location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
+      //     link: 'http://neurorum.wordpress.com/',
+      //     email: 'neuro_rum@uprm.edu',
+      //     password: 'password',
+      //     profileImage: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751',
+      //     bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, \
+      //     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
+      //     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris \
+      //     nisi ut aliquip exea commodo consequat. Duis aute irure dolor in \
+      //     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
+      //     pariatur. Excepteur sint occaecatcupidatat non proident, sunt in culpa\
+      //      qui officia deserunt mollit anim id est laborum.'
+      //
+      //   }
+      //   }
+      // )
     });
   }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -99,8 +99,8 @@ export default class ProfileAssociation extends Component{
         <h2><strong><Icon name="info circle" size="large"></Icon>About</strong></h2>
         <Divider></Divider>
         <p><strong>Email</strong>: {this.state.associationInfo.email}</p>
-        <p><strong>Location</strong>: {this.state.associationInfo.location}</p>
-        <p><strong>Page Link</strong>: {this.state.associationInfo.link} </p>
+        <p><strong>Location</strong>: {this.state.associationInfo.room}</p>
+        <p><strong>Page Link</strong>: {this.state.associationInfo.page_link} </p>
         <p><strong>Description</strong>: {this.state.associationInfo.bio}</p>
       </Segment>
     </Grid.Row>
@@ -147,7 +147,7 @@ export default class ProfileAssociation extends Component{
 
         <Grid.Column style={{padding:"0px", margin: 0}} width={4}>
           <Image style={{width:"100%", height:"250px", padding: 0}}
-            src={this.state.associationInfo.profileImage}></Image>
+            src={this.state.associationInfo.image_path}></Image>
 
         </Grid.Column>
           <Grid.Column style={{padding:"0px"}}width={12}>
@@ -158,7 +158,7 @@ export default class ProfileAssociation extends Component{
           <Grid.Row style={{paddingBottom:0}}>
           <Segment style={{borderRadius:0, width:"100%"}}>
 
-            <h1 style={{display: 'inline'}}><strong>{this.state.associationInfo.name}</strong>{ ' ' }
+            <h1 style={{display: 'inline'}}><strong>{this.state.associationInfo.association_name}</strong>{ ' ' }
               <div style={{display:"inline", float:"right"}}>
               <Button
                 style={{verticalAlign: 'middle'}}
@@ -177,7 +177,7 @@ export default class ProfileAssociation extends Component{
           </Grid.Row>
 
        <Grid.Row style={{paddingTop: 0}}>
-         <Menu fluid pointing widths={4} style={{borderRadius: 0}}>
+         <Menu inverted fluid pointing widths={4} style={{borderRadius: 0}}>
             <Menu.Item icon="info circle"
               name='about'
               active={activeItem === 'about'}
@@ -198,7 +198,7 @@ export default class ProfileAssociation extends Component{
       </Grid.Row>
 
       <Grid.Row style={{paddingBottom:"50px"}}>
-      <Segment  style={{ borderRadius: 0, width:"100%"}} padded>
+      <Segment  style={{ backgroundColor: "rgb(236,238,238)", borderRadius: 0, width:"100%"}} padded>
         {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
         {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
         {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
