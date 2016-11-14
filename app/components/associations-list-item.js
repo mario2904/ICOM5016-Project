@@ -16,7 +16,7 @@ export default class AssociationsListItem extends Component {
   content:(this.state.content === "unfollow" ? "follow": "unfollow" )});
 
   render () {
-    const { id, name, initials, profileImage } = this.props.item;
+    const { association_id, association_name, initials, image_path } = this.props.item;
     return (
       <Grid.Column mobile={16} tablet={8} computer={5}>
         {/* Small hack to have fixed sized images (height) inside Thumbnail */}
@@ -25,10 +25,10 @@ export default class AssociationsListItem extends Component {
         <Item.Group>
          <Item style={{margin:"10px 0px 10px 0px"}}>
           <Image
-            style={{width:"150px", height:"150px"}} src={profileImage}/>
+            style={{width:"150px", height:"150px"}} src={image_path}/>
           <Item.Content>
-        <a href={"/associations/" + id}><h5 style={nameStyle}>{initials}</h5></a>
-        <a href={"/associations/" + id}><Item.Meta style={nameStyle}>{name}</Item.Meta>
+        <a href={"/associations/" + association_id}><h5 style={nameStyle}>{initials}</h5></a>
+        <a href={"/associations/" + association_id}><Item.Meta style={nameStyle}>{association_name}</Item.Meta>
         </a>
         <Item.Description>
           <div>

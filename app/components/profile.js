@@ -101,7 +101,7 @@ export default class Profile extends Component{
           </Grid.Row>
 
           <Grid.Row style={{paddingTop: 0}}>
-            <Menu fluid pointing widths={4} style={{borderRadius: 0}}>
+            <Menu inverted fluid pointing widths={4} style={{borderRadius: 0}}>
                <Menu.Item icon="info circle"
                  name='about'
                  active={activeItem === 'about'}

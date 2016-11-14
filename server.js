@@ -438,14 +438,16 @@ app.get('/api/association/all', (req, res) => {
               // const followers = db.followers[id];
 
               const singleAssociation = {
-                id: association_id,
-                name: association_name,
-                initials: initials,
-                location: room,
-                link: page_link,
-                email: email,
-                profileImage: image_path,
-                bio: bio
+
+                association_id,
+                association_name,
+                initials,
+                room,
+                page_link,
+                email,
+                image_path,
+                bio
+
               }
               response.push(singleAssociation);
 
@@ -510,13 +512,15 @@ console.log("test" + id);
 
 
               const response = {
-                name: association_name,
-                initials: initials,
-                location: room,
-                link: page_link,
-                email: email,
-                profileImage: image_path,
-                bio: bio
+
+                association_name,
+                initials,
+                room,
+                page_link,
+                email,
+                image_path,
+                bio
+
               }
 
 
@@ -594,18 +598,20 @@ app.get('/api/event/all', (req, res) => {
               // The list of students interested of going.
 
               const singleEvent = {
-                id: event_id,
-                name: event_name,
-                associationId: association_id ,
-                associationName: association_name,
-                startDate: start_date,
-                endDate: end_date,
-                startTime: start_time,
-                endTime: end_time,
-                location: room,
-                image: image_path,
-                description: description,
-                registrationLink: registration_link
+
+                event_id,
+                event_name,
+                association_id ,
+                association_name,
+                start_date,
+                end_date,
+                start_time,
+                end_time,
+                room,
+                image_path,
+                description,
+                registration_link
+
               }
 
               response.push(singleEvent);
@@ -686,18 +692,19 @@ app.get('/api/event/:id', (req, res) => {
                                 var  concatenatedCategories = data.map((category) => category.category_name);
 
                                 const response = {
-                                  id: event_id,
-                                  name: event_name,
-                                  associationId: association_id ,
-                                  associationName: association_name,
-                                  startDate: start_date,
-                                  endDate: end_date,
-                                  startTime: start_time,
-                                  endTime: end_time,
-                                  location: room,
-                                  image: image_path,
-                                  description: description,
-                                  registrationLink: registration_link,
+
+                                  event_id,
+                                  event_name,
+                                  association_id ,
+                                  association_name,
+                                  start_date,
+                                  end_date,
+                                  start_time,
+                                  end_time,
+                                  room,
+                                  image_path,
+                                  description,
+                                  registration_link,
                                   interested: responseDB.interestedResponse,
                                   updates: responseDB.updateResponse,
                                   reviews: responseDB.reviewResponse,
