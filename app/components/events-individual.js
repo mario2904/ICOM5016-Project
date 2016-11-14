@@ -53,25 +53,25 @@ export default class IndividualEvent extends Component {
     if(!this.state.eventInfo) {
       return null;
     }
-    const { associationName, startDate, endDate, startTime, endTime, location, registrationLink } = this.state.eventInfo;
+    const { association_name, start_date, end_date, start_time, end_time, room, registration_link } = this.state.eventInfo;
     return (
       <List>
         <List.Item
           icon='users'
-          content={associationName} />
+          content={association_name} />
         <List.Item
           icon='wait'
-          content={startTime + ' - ' + endTime} />
+          content={start_time + ' - ' + end_time} />
         <List.Item
           icon='calendar'
-          content={startDate + ((startDate === endDate) ? '': ' - ' + endDate)} />
+          content={start_date + ((start_date === end_date) ? '': ' - ' + end_date)} />
         <List.Item
           icon='marker'
-          content={location} />
-        {(registrationLink === '')? null:
+          content={room} />
+        {(registration_link === '')? null:
           <List.Item
             icon='linkify'
-            content={<a href={registrationLink}>Registration</a>} />
+            content={<a href={registration_link}>Registration</a>} />
         }
         <Modal trigger={<Button color="teal">Entrance Fee</Button>}>
     <Modal.Header style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>Event Payment <Icon name="payment"></Icon></Modal.Header>

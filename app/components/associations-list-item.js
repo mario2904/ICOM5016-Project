@@ -27,8 +27,8 @@ export default class AssociationsListItem extends Component {
           <Image
             style={{width:"150px", height:"150px"}} src={image_path}/>
           <Item.Content>
-        <a href={"/associations/" + id}><h5 style={nameStyle}>{initials}</h5></a>
-        <a href={"/associations/" + id}><Item.Meta style={nameStyle}>{association_name}</Item.Meta>
+        <a href={"/associations/" + association_id}><h5 style={nameStyle}>{initials}</h5></a>
+        <a href={"/associations/" + association_id}><Item.Meta style={nameStyle}>{association_name}</Item.Meta>
         </a>
         <Item.Description>
           <div>
