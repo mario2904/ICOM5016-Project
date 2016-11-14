@@ -650,9 +650,9 @@ app.get('/api/event/:id', (req, res) => {
   // TODO: Check if it is in the db...
   //
 
-  db1.one("SELECT event_id, E.event_name, A.associationname, A.associationid, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+  db1.one("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
             FROM events as E, associations as A, images as I, location as L \
-            WHERE E.associationid = A.associationid and E.image_id = I.image_id and E.location_id = L.location_id and event_id=${idused}", {idused: id})
+            WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and event_id=${idused}", {idused: id})
       .then(function (data) {
         //console.log(data);
         responseDB.eventInfo = {};
@@ -682,22 +682,22 @@ app.get('/api/event/:id', (req, res) => {
                                 responseDB.categoriesResponse = data;
 
 
-                                const { event_id, event_name, associationid, associationname, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = responseDB.eventInfo;
+                                const { event_id, event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = responseDB.eventInfo;
                                 var  concatenatedCategories = data.map((category) => category.category_name);
 
                                 const response = {
-                                  id: event_id,
-                                  name: event_name,
-                                  associationId: associationid ,
-                                  associationName: associationname,
-                                  startDate: start_date,
-                                  endDate: end_date,
-                                  startTime: start_time,
-                                  endTime: end_time,
-                                  location: room,
-                                  image: image_path,
-                                  description: description,
-                                  registrationLink: registration_link,
+                                  event_id,
+                                  event_name,
+                                  association_id ,
+                                  association_name,
+                                  start_date,
+                                  end_date,
+                                  start_time,
+                                  end_time,
+                                  room,
+                                  image_path,
+                                  description,
+                                  registration_link,
                                   interested: responseDB.interestedResponse,
                                   updates: responseDB.updateResponse,
                                   reviews: responseDB.reviewResponse,

@@ -247,7 +247,7 @@ export default class IndividualEvent extends Component {
             <Grid.Column style={styles.column} >
               <Segment>
                 <Image
-                  src={this.state.eventInfo.image}
+                  src={this.state.eventInfo.image_path}
                   size='big'
                   style={{width:"90%", marginTop:10, marginBottom:10}}
                   bordered
@@ -260,7 +260,7 @@ export default class IndividualEvent extends Component {
               <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
                  as='h2' attached='top'>
                 <span>
-                  {this.state.eventInfo.name} {' '}
+                  {this.state.eventInfo.event_name} {' '}
                   <ModalEditEvent eventInfo={this.state.eventInfo} />
                 </span>
                 <br />
