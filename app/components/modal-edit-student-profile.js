@@ -28,7 +28,7 @@ export default class ModalEditStudentProfile extends Component {
 
     return (
       <Modal trigger={trigger}>
-        <Header icon='edit' content='Edit Student Profile' />
+        <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}} icon='edit' content='Edit Student Profile' />
         <Modal.Content>
           <Form onSubmit={this.handleSubmit}>
 

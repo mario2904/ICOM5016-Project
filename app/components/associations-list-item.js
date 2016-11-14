@@ -24,10 +24,12 @@ export default class AssociationsListItem extends Component {
         <Segment color="black">
         <Item.Group>
          <Item style={{margin:"10px 0px 10px 0px"}}>
-          <Image as={Link} to={"/associations/" + id} style={{width:"150px", height:"150px"}} src={profileImage}/>
+          <Image
+            style={{width:"150px", height:"150px"}} src={profileImage}/>
           <Item.Content>
         <a href={"/associations/" + id}><h5 style={nameStyle}>{initials}</h5></a>
-          <Item.Meta style={nameStyle}>{name}</Item.Meta>
+        <a href={"/associations/" + id}><Item.Meta style={nameStyle}>{name}</Item.Meta>
+        </a>
         <Item.Description>
           <div>
           <Button

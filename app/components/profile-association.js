@@ -177,7 +177,7 @@ export default class ProfileAssociation extends Component{
           </Grid.Row>
 
        <Grid.Row style={{paddingTop: 0}}>
-         <Menu inverted fluid pointing widths={5} style={{borderRadius: 0}}>
+         <Menu inverted fluid pointing widths={4} style={{borderRadius: 0}}>
             <Menu.Item icon="info circle"
               name='about'
               active={activeItem === 'about'}
@@ -193,10 +193,7 @@ export default class ProfileAssociation extends Component{
               name='sponsors'
               active={activeItem === 'sponsors'}
               onClick={this.handleItemClick} />
-            <Menu.Item icon="write"
-              name='edit profile'
-              active={activeItem === 'edit profile'}
-              onClick={this.handleItemClick} />
+
          </Menu>
       </Grid.Row>
 
@@ -206,8 +203,7 @@ export default class ProfileAssociation extends Component{
         {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
         {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
         {(this.state.activeItem === 'sponsors') ? <Grid padded>{this.renderSponsors()}</Grid>: null}
-        {(this.state.activeItem === 'edit profile') ?
-          <h1 style={{textAlign:"center"}}>Nothing to Show Here<Icon name="meh" size="huge"></Icon></h1> : null}
+
       </Segment>
         </Grid.Row>
 

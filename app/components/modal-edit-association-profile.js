@@ -24,7 +24,7 @@ export default class ModalEditAssociationProfile extends Component {
     );
     return (
       <Modal trigger={trigger}>
-        <Header icon='edit' content='Edit Association Profile' />
+        <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}} icon='edit' content='Edit Association Profile' />
         <Modal.Content>
           <Form onSubmit={this.handleSubmit}>
 

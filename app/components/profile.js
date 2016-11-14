@@ -79,7 +79,7 @@ export default class Profile extends Component{
           </Grid.Row>
 
           <Grid.Row style={{paddingTop: 0}}>
-            <Menu inverted fluid pointing widths={4} style={{borderRadius: 0}}>
+            <Menu inverted fluid pointing widths={3} style={{borderRadius: 0}}>
                <Menu.Item icon="info circle"
                  name='about'
                  active={activeItem === 'about'}
@@ -91,10 +91,6 @@ export default class Profile extends Component{
                  name='myEvents'
                  active={activeItem === 'myEvents'}
                  onClick={this.handleItemClick} />
-               <Menu.Item icon="write"
-                 name='edit profile'
-                 active={activeItem === 'edit profile'}
-                 onClick={this.handleItemClick} />
             </Menu>
          </Grid.Row>
 
@@ -104,8 +100,7 @@ export default class Profile extends Component{
            {(this.state.activeItem === 'myAssociations') ? <div>{this.renderMyAssociations()}</div>: null}
            {(this.state.activeItem === 'myEvents') ? <Grid padded>{this.renderMyEvents()}</Grid>: null}
            {(this.state.activeItem === 'sponsors') ? <Grid centered padded>{this.renderSponsors()}</Grid>: null}
-           {(this.state.activeItem === 'edit profile') ?
-             <h1 style={{textAlign:"center"}}>Nothing to Show Here<Icon name="meh" size="huge"></Icon></h1> : null}
+
          </Segment>
            </Grid.Row>
 
