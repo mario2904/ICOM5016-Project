@@ -36,7 +36,7 @@ export default class ModalEditEvent extends Component {
       <Modal trigger={trigger}>
         <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}icon='edit' content='Edit Event' />
         <Modal.Content>
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
 
 
             <Icon name="idea"></Icon>
@@ -65,7 +65,7 @@ export default class ModalEditEvent extends Component {
               <Icon name="wait"></Icon>
             <Form.Input label="End Time" name="endTime" type="time" placeholder="--:-- --" defaultValue={endTime}/>
             <Form.TextArea label='Reasons' name='reasons' placeholder='Tell us more of the reasons for this change...' />
-            <Button color="teal"type='submit'>Submit</Button>
+            <Button color="teal" type='submit'>Submit</Button>
 
 
           </Form>

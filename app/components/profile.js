@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import ModalOverlay from "./modal-overlay";
 import Associations from "./associations";
 import GridList from "./grid-list";
 import AssociationsListItem from './associations-list-item';
-import EventsListItem from './events-list-item'
-import ProfileForm from './profile-form'
+import EventsListItem from './events-list-item';
 
-import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider } from 'semantic-ui-react'
+import { Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider } from 'semantic-ui-react'
 const banner = '/images/banner/867870-minimalist-iphone-5.jpg';
 
 import ModalEditStudentProfile from './modal-edit-student-profile';

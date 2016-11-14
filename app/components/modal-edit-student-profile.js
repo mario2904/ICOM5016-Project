@@ -30,11 +30,11 @@ export default class ModalEditStudentProfile extends Component {
       <Modal trigger={trigger}>
         <Header icon='edit' content='Edit Student Profile' />
         <Modal.Content>
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
 
 
             <Form.Input label="Profile picture" name='image' type="file" />
-            <Form.Input label='Birthday' name='birthday' placeholder='Birthday' type='date' />
+            <Form.Input label='Birthday' name='birthday' placeholder='Birthday' type='date' defaultValue={birthday}/>
             <Form.Field>
               <label>Gender</label>
               <Form.Group inline>
@@ -43,10 +43,10 @@ export default class ModalEditStudentProfile extends Component {
                 <Form.Radio label='Other' name='gender' value='other' checked={genderControl === 'other'} onChange={this.handleGenderChange} />
               </Form.Group>
             </Form.Field>
-            <Form.Input label='Hometown' name='hometown' placeholder='Hometown' />
+            <Form.Input label='Hometown' name='hometown' placeholder='Hometown' defaultValue={hometown} />
             <Form.Select label='College' name='college' options={colleges} placeholder='College' />
             <Form.Select label='Major' name='major' options={majors} placeholder='Major' />
-            <Form.TextArea label='Bio' name='bio' placeholder='Tell me more about you...' />
+            <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about you...' defaultValue={bio}/>
 
             <Button color="teal" type='submit'>Submit</Button>
 
