@@ -327,13 +327,13 @@ app.get('/api/student/:id', (req, res) => {
       .then(function (data) {
           // success;
           responseDB.eventInfo = data;
-          db1.any("SELECT event_id, event_name, associationname, start_date, end_date, start_time, end_time, room, image_path \
+          db1.any("SELECT event_id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path \
                     FROM interested natural join events natural join images natural join location, associations \
-                    WHERE user_id = ${idused} and events.associationid = associations.associationid", {idused: id})
+                    WHERE user_id = ${idused} and events.association_id = associations.association_id", {idused: id})
               .then(function (data) {
                   // success;
                   responseDB.interestedEvents = data;
-                  db1.any("SELECT associationid, associationname, initials, image_path \
+                  db1.any("SELECT association_id, association_name, initials, image_path \
                             FROM followed_associations natural join associations natural join images \
                             WHERE user_id = ${idused}", {idused: id})
                       .then(function (data) {
@@ -418,7 +418,7 @@ app.get('/api/student/:id', (req, res) => {
 //        followers: [] uuid
 app.get('/api/association/all', (req, res) => {
   const response = [];
-  db1.any("SELECT associationid, associationname, initials, room, pagelink, email, image_path, bio \
+  db1.any("SELECT association_id, association_name, initials, room, page_link, email, image_path, bio \
           FROM associations natural join account natural join images natural join location", [true])
       .then(function (data) {
           // success;
@@ -426,7 +426,7 @@ app.get('/api/association/all', (req, res) => {
           for (let i = 0; i<data.length;i++) {
 
               // Destructure association information
-              const { associationid, associationname, initials, room, pagelink, email, image_path, bio } = data[i];
+              const { association_id, association_name, initials, room, page_link, email, image_path, bio } = data[i];
               // TODO: Get extra information from the db
               //
               // Get extra information from the Testing db (other tables)
@@ -438,11 +438,11 @@ app.get('/api/association/all', (req, res) => {
               // const followers = db.followers[id];
 
               const singleAssociation = {
-                id: associationid,
-                name: associationname,
+                id: association_id,
+                name: association_name,
                 initials: initials,
                 location: room,
-                link: pagelink,
+                link: page_link,
                 email: email,
                 profileImage: image_path,
                 bio: bio
@@ -487,9 +487,9 @@ app.get('/api/association/:id', (req, res) => {
   //
 console.log("test" + id);
 
-  db1.one("SELECT associationname, initials, room, pagelink, email, image_path, bio \
+  db1.one("SELECT association_name, initials, room, page_link, email, image_path, bio \
           FROM associations natural join account natural join images natural join location\
-          WHERE associationid = ${idused}", {idused: id})
+          WHERE association_id = ${idused}", {idused: id})
       .then(function (data) {
           // success;
           console.log("queried")
@@ -497,7 +497,7 @@ console.log("test" + id);
 
 
               // Destructure association information
-              const { associationname, initials, room, pagelink, email, image_path, bio } = data;
+              const { association_name, initials, room, page_link, email, image_path, bio } = data;
               // TODO: Get extra information from the db
               //
               // Get extra information from the Testing db (other tables)
@@ -510,10 +510,10 @@ console.log("test" + id);
 
 
               const response = {
-                name: associationname,
+                name: association_name,
                 initials: initials,
                 location: room,
-                link: pagelink,
+                link: page_link,
                 email: email,
                 profileImage: image_path,
                 bio: bio
@@ -577,9 +577,9 @@ console.log("test" + id);
 app.get('/api/event/all', (req, res) => {
   const response = [];
 
-  db1.any("SELECT event_id, E.event_name, A.associationname, A.associationid, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+  db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
             FROM events as E, associations as A, images as I, location as L \
-            WHERE E.associationid = A.associationid and E.image_id = I.image_id and E.location_id = L.location_id", [true])
+            WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id", [true])
       .then(function (data) {
           // success;
           console.log(data);
@@ -587,7 +587,7 @@ app.get('/api/event/all', (req, res) => {
 
               // Destructure association information
 
-              const { event_id, event_name, associationid, associationname, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = data[i];
+              const { event_id, event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = data[i];
               // TODO: Get extra information from the db
               //
               // Get extra information from the Testing db (other tables)
@@ -596,8 +596,8 @@ app.get('/api/event/all', (req, res) => {
               const singleEvent = {
                 id: event_id,
                 name: event_name,
-                associationId: associationid ,
-                associationName: associationname,
+                associationId: association_id ,
+                associationName: association_name,
                 startDate: start_date,
                 endDate: end_date,
                 startTime: start_time,
@@ -650,9 +650,9 @@ app.get('/api/event/:id', (req, res) => {
   // TODO: Check if it is in the db...
   //
 
-  db1.one("SELECT event_id, E.event_name, A.associationname, A.associationid, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+  db1.one("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
             FROM events as E, associations as A, images as I, location as L \
-            WHERE E.associationid = A.associationid and E.image_id = I.image_id and E.location_id = L.location_id and event_id=${idused}", {idused: id})
+            WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and event_id=${idused}", {idused: id})
       .then(function (data) {
         //console.log(data);
         responseDB.eventInfo = {};
@@ -682,14 +682,14 @@ app.get('/api/event/:id', (req, res) => {
                                 responseDB.categoriesResponse = data;
 
 
-                                const { event_id, event_name, associationid, associationname, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = responseDB.eventInfo;
+                                const { event_id, event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link } = responseDB.eventInfo;
                                 var  concatenatedCategories = data.map((category) => category.category_name);
 
                                 const response = {
                                   id: event_id,
                                   name: event_name,
-                                  associationId: associationid ,
-                                  associationName: associationname,
+                                  associationId: association_id ,
+                                  associationName: association_name,
                                   startDate: start_date,
                                   endDate: end_date,
                                   startTime: start_time,
