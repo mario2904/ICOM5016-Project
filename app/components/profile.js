@@ -25,7 +25,7 @@ export default class Profile extends Component{
     axios.get('/api/student/'+this.props.params.userID)
     .then(function (response) {
       console.log(response);
-      console.log("Entered!!!!!!")
+  
       // const temp = response.data;
       // profileInfo.first_name = temp.first_name;
 
