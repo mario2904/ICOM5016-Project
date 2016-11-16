@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button, Label,
-       Link, Rating} from 'semantic-ui-react';
+       Link, Rating, Statistic } from 'semantic-ui-react';
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
 
@@ -16,6 +16,10 @@ const styles = {
   title: {
     textAlign: 'center',
     color: 'white',
+    paddingTop:"100px"
+  },
+  followers: {
+    textAlign: 'center',
     paddingTop:"100px"
   },
   // Fixes Oversizing of the Thumbnail if the name is too long.
@@ -117,6 +121,12 @@ export default class HomeAssociation extends Component{
       <div>
         <div style={styles.banner}>
           <h2 style={styles.title}>Welcome Back Fellow Association!<Icon size="large" name="smile"></Icon></h2>
+          <div style={styles.followers}>
+            <Statistic size='huge' inverted>
+              <Statistic.Label>Followers</Statistic.Label>
+              <Statistic.Value>40,509</Statistic.Value>
+            </Statistic>
+          </div>
         </div>
         <div>
           <Menu inverted widths={3} pointing style={styles.menubar}>
@@ -210,7 +220,8 @@ export default class HomeAssociation extends Component{
         interested: 65
       }
     ],
-    feeds: [{
+    feeds: [
+    {
       date: '1 Hour Ago',
       image: 'http://semantic-ui.com/images/avatar/small/elliot.jpg',
       meta: '4 Likes',

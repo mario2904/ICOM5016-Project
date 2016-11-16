@@ -108,33 +108,34 @@ export default class ProfileAssociation extends Component{
 
   };
   renderMyCurrentEvents = () => {
-
     return (
-    <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="checked calendar">
-    </Icon>Current Events</strong></h2>
-      <Divider/>
-     <GridList items={this.state.activeEvents} ListItem={EventsListItem}/>
-     </Segment>);
-
+      <Segment style={{borderRadius:0, width:"100%"}}>
+        <h2><strong><Icon size="large"name="checked calendar"></Icon>Current Events</strong></h2>
+        <Divider/>
+        <GridList items={this.state.activeEvents} ListItem={EventsListItem}/>
+      </Segment>
+    );
   };
 
   renderMyPastEvents = () => {
-    return(
-      <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="delete calendar">
-      </Icon>Past Events</strong></h2>
+    return (
+      <Segment style={{borderRadius:0, width:"100%"}}>
+        <h2><strong><Icon size="large" name="delete calendar"></Icon>Past Events</strong></h2>
         <Divider/>
-    <GridList items={this.props.events} ListItem={EventsListItem}/>
-  </Segment>);
+        <GridList items={this.props.events} ListItem={EventsListItem}/>
+      </Segment>
+    );
   };
 
   renderSponsors = () => {
-      return(
-        <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="hand spock">
-        </Icon>Sponsors</strong></h2>
-          <Divider/>
-    <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>
-    </Segment>);
-  };
+      return (
+        <Segment style={{borderRadius:0, width:"100%"}}>
+          <h2><strong><Icon size="large" name="hand spock"></Icon>Sponsors</strong></h2>
+          <Divider />
+          <GridList items={this.state.sponsors} ListItem={SponsorsListItem} />
+        </Segment>
+      );
+    };
 
 
   render(){

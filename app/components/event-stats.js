@@ -203,7 +203,7 @@ export default class EventStats extends Component {
           </Grid.Column>
         </Grid.Row>
         <Grid.Row style={styles.row} centered>
-          <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column} >
+          <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column}>
             <Header as='h2' attached='top'>
               Gender
             </Header>
@@ -271,8 +271,6 @@ export default class EventStats extends Component {
             </Header>
             <Segment attached>
               <ResponsiveContainer aspect={2} >
-
-
                 <BarChart data={colleges}>
                  <XAxis label="Height" dataKey="name" hide/>
                  <YAxis label="Student count"/>
@@ -280,20 +278,15 @@ export default class EventStats extends Component {
                  <Tooltip/>
                  <Bar dataKey="students" fill="#82ca9d" />
                 </BarChart>
-
-
               </ResponsiveContainer>
             </Segment>
           </Grid.Column>
-
           <Grid.Column stretched computer={8} tablet={8} mobile={16} style={styles.column}>
             <Header as='h2' attached='top'>
               Majors
             </Header>
             <Segment attached>
               <ResponsiveContainer aspect={2} >
-
-
                 <BarChart data={majors}>
                  <XAxis label="Height" dataKey="name" hide/>
                  <YAxis label="Student count"/>
@@ -301,8 +294,6 @@ export default class EventStats extends Component {
                  <Tooltip/>
                  <Bar dataKey="students" fill="#82ca9d" />
                 </BarChart>
-
-
               </ResponsiveContainer>
             </Segment>
           </Grid.Column>
