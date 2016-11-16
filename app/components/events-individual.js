@@ -40,7 +40,7 @@ export default class IndividualEvent extends Component {
           <Image avatar src={user.image_path}/>
           <List.Content>
             <List.Header
-              as={Link} to={'/student/' + user.user_id} >
+              as={Link} to={'/students/' + user.user_id} >
               {user.first_name + ' ' + user.last_name}
             </List.Header>
           </List.Content>

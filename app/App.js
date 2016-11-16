@@ -42,7 +42,7 @@ export default class App extends Component {
             <Route path="/home" component={Home}></Route>
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
-            <Route path="/profile" component={Profile}></Route>
+            <Route path="/students/:userID" component={Profile}></Route>
             <Route path="/signup-student" component={UserReg}></Route>
             <Route path="/signup-association" component={AssoReg}></Route>
             <Route path="/events/:eventID" component={EventsIndividual}></Route>

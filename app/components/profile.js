@@ -22,16 +22,18 @@ export default class Profile extends Component{
   componentWillMount() {
     const tick = this;
     // Get Events Data to render
-    axios.get('/api/student/'+this.props.params.eventID)
+    axios.get('/api/student/'+this.props.params.userID)
     .then(function (response) {
       console.log(response);
-      const temp = response.data;
+      console.log("Entered!!!!!!")
+      // const temp = response.data;
+      // profileInfo.first_name = temp.first_name;
 
-      tick.setState({profileInfo: temp})
+      tick.setState({profileInfo: response.data})
     })
     .catch(function (error) {
       console.log(error);
-
+      console.log("e")
     });
   }
 
@@ -48,12 +50,12 @@ export default class Profile extends Component{
       <Segment style={{borderRadius:0, width:"100%", paddingBottom:"100px"}}>
         <h2><strong><Icon size="large"name="info circle"></Icon>About</strong></h2>
         <Divider></Divider>
-        <p><strong>Email</strong>: {this.props.profile.email}</p>
-        <p><strong>Gender</strong>: {this.props.profile.gender}</p>
-        <p><strong>Hometown Link</strong>: {this.props.profile.hometown} </p>
-        <p><strong>College</strong>: {this.props.profile.college}</p>
-        <p><strong>Major</strong>: {this.props.profile.major}</p>
-        <p><strong>Bio</strong>: {this.props.profile.bio}</p>
+        <p><strong>Email</strong>: {this.state.profileInfo.email}</p>
+        <p><strong>Gender</strong>: {this.state.profileInfo.gender}</p>
+        <p><strong>Hometown Link</strong>: {this.state.profileInfo.hometown} </p>
+        <p><strong>College</strong>: {this.state.profileInfo.college}</p>
+        <p><strong>Major</strong>: {this.state.profileInfo.major}</p>
+        <p><strong>Bio</strong>: {this.state.profileInfo.bio}</p>
       </Segment>
     </Grid.Row>
   );
@@ -63,7 +65,7 @@ export default class Profile extends Component{
     return (<Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="university">
     </Icon>Associations</strong></h2>
   <Divider/>
-  <GridList items={this.props.associations} ListItem={AssociationsListItem}/></Segment>);
+  <GridList items={this.state.profileInfo.followedAssociations} ListItem={AssociationsListItem}/></Segment>);
   };
 
   renderMyEvents = () => {
@@ -71,7 +73,7 @@ export default class Profile extends Component{
     return (<Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="calendar">
   </Icon>Events</strong></h2>
 <Divider/>
-  <GridList items={this.props.events} ListItem={EventsListItem}/>
+  <GridList items={this.state.profileInfo.interestedEvents} ListItem={EventsListItem}/>
 </Segment>);
   };
 
@@ -86,7 +88,7 @@ export default class Profile extends Component{
 
         <Grid.Column style={{padding:"0px", margin: 0}} width={4}>
           <Image style={{width:"100%", height:"250px", padding: 0}}
-            src={this.props.profile.pic}></Image>
+            src={this.state.profileInfo.image_path}></Image>
 
         </Grid.Column>
           <Grid.Column style={{padding:"0px"}}width={12}>
@@ -96,7 +98,7 @@ export default class Profile extends Component{
 
           <Grid.Row style={{paddingBottom:0}}>
           <Segment style={{borderRadius:0, width:"100%"}}>
-            <h1><strong>{this.props.profile.name}</strong></h1>
+            <h1><strong>{this.state.profileInfo.first_name + " "+ this.state.profileInfo.last_name}</strong></h1>
           </Segment>
           </Grid.Row>
 

@@ -354,6 +354,9 @@ app.get('/api/student/:id', (req, res) => {
                           };
                           // Send Student Information
                           console.log('Success: Get Student Information');
+                          console.log("DB");
+                          console.log(response);
+
                           res.json(response);
 
 
@@ -361,21 +364,21 @@ app.get('/api/student/:id', (req, res) => {
                       })
                       .catch(function (error) {
                           // error;
-                          console.log('no function')
+                          console.log('Error: Followed Associations')
                       });
 
                   console.log('worked');
               })
               .catch(function (error) {
                   // error;
-                  console.log('no function')
+                  console.log('Error: Interested Events')
               });
 
           console.log('worked');
       })
       .catch(function (error) {
           // error;
-          console.log('no function')
+          console.log('Error Student Information')
       });
 
 
