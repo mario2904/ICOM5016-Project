@@ -341,13 +341,13 @@ app.get('/api/student/:id', (req, res) => {
                           responseDB.followedAssociations = data;
                           const { first_name, last_name, gender, hometown, college, major, image_path, bio } = responseDB.eventInfo;
                           const response = {
-                            firstName: first_name,
-                            lastName: last_name,
-                            gender: gender,
+                            first_name,
+                            last_name,
+                            gender,
                             hometown,
                             college,
                             major,
-                            profileImage: image_path,
+                            image_path,
                             bio,
                             interestedEvents: responseDB.interestedEvents,
                             followedAssociations: responseDB.followedAssociations
