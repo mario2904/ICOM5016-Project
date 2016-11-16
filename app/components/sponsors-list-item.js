@@ -7,8 +7,8 @@ export default class SponsorsListItem extends Component {
     return (
       <Grid.Column mobile={16} tablet={8} computer={4}>
       <Segment color="black">
-       <Image style={{width:"150px", height:"125px", margin:"auto"}} src={image}/>
-       <h5>{name}</h5>
+       <Image style={{width:"150px", height:"125px", margin:"auto"}} src={image_path}/>
+       <h5>{sponsor_name}</h5>
       </Segment>
       </Grid.Column>
 

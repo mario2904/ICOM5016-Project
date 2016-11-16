@@ -490,78 +490,88 @@ app.get('/api/association/:id', (req, res) => {
   const { id } = req.params;
   // TODO: Check if it is in the db...
   //
-console.log("test" + id);
+const responseDB = {};
 
   db1.one("SELECT association_name, initials, room, page_link, email, image_path, bio \
           FROM associations natural join account natural join images natural join location\
           WHERE association_id = ${idused}", {idused: id})
       .then(function (data) {
           // success;
-          console.log("queried")
-          console.log(data)
+          responseDB.associationInfo = data
+          db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+            FROM events as E, associations as A, images as I, location as L \
+            WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id = ${idused} and is_live = 'yes'", {idused: id})
+              .then(function (data) {
+                responseDB.activeEvents = data;
+
+                db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+                  FROM events as E, associations as A, images as I, location as L \
+                  WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id = ${idused} and is_live = 'no'", {idused: id})
+                    .then(function (data) {
+                      responseDB.pastEvents = data;
+                      db1.any("SELECT sponsor_name, image_path \
+                          FROM association_sponsors natural join sponsors natural join images\
+                          WHERE association_id = ${idused}", {idused: id})
+                          .then(function (data) {
+                            responseDB.sponsors = data;
+                            db1.one("SELECT count(user_id) \
+                                      FROM followed_associations \
+                                      WHERE association_id = ${idused}", {idused: id})
+                                .then(function (data) {
+                                  responseDB.amountFollowed = data
+
+                                  const { association_name, initials, room, page_link, email, image_path, bio } = responseDB.associationInfo;
+                                  const response = {
+
+                                    association_name,
+                                    initials,
+                                    room,
+                                    page_link,
+                                    email,
+                                    image_path,
+                                    bio,
+                                    activeEvents: responseDB.activeEvents,
+                                    pastEvents: responseDB.pastEvents,
+                                    sponsors: responseDB.sponsors,
+                                    followers: responseDB.amountFollowed
+
+                                  }
+
+                                  console.log('Success: Get All Associations Information');
+                                  console.log(response);
+                                  res.json(response);
+                                  console.log('worked');
+                                })
+                                .catch(function (error) {
+                                    // error;
+                                    console.log('Error: Followers')
+                                });
+
+                          })
+                          .catch(function (error) {
+                              // error;
+                              console.log('Error: Sponsors')
+                          });
+
+                    })
+                    .catch(function (error) {
+                        // error;
+                        console.log('Error: PastEvents')
+                    });
+
+              })
+              .catch(function (error) {
+                  // error;
+                  console.log('Error: LiveEvents')
+              });
 
 
-              // Destructure association information
-              const { association_name, initials, room, page_link, email, image_path, bio } = data;
-              // TODO: Get extra information from the db
-              //
-              // Get extra information from the Testing db (other tables)
-
-
-              // const sponsors = db.associationSponsors[id];
-              // const activeEvents = db.activeEvents[id];
-              // const pastEvents = db.pastEvents[id];
-              // const followers = db.followers[id];
-
-
-              const response = {
-
-                association_name,
-                initials,
-                room,
-                page_link,
-                email,
-                image_path,
-                bio
-
-              }
-
-
-
-
-          // Send All Associations Information
-          console.log('Success: Get All Associations Information');
-          console.log(response);
-          res.json(response);
-          //console.log(data[0])
-          console.log('worked');
       })
       .catch(function (error) {
           // error;
-          console.log('no function')
+          console.log('Error: Get AssociationInfo')
       });
 
-
-
-
-
-
-
-
-
-  // Check if it is in the Testing db
-  //const association = db.association[id];
-  //if (association === undefined)
-    //return res.status(400).send('Error: Association not found in the DB.');
-  // Destructure association information
-  //const { name, initials, location, link, email, profileImage, bio } = association;
-  // TODO: Get extra information from the db
-  //
-  // Get extra information from the Testing db (other tables)
-  // const sponsors = db.associationSponsors[id];
-  // const activeEvents = db.activeEvents[id];
-  // const pastEvents = db.pastEvents[id];
-  // const followers = db.followers[id];
 
 
 });
