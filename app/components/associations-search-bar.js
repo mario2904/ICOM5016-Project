@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap';
-import {Form, Grid,Input, Item, Select } from 'semantic-ui-react'
+import { Form, Grid, Input, Item, Select } from 'semantic-ui-react';
 
 export default class AssociationsSearchBar extends Component {
   render () {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { PageHeader } from 'react-bootstrap';
 import axios from 'axios';
 
 import AssociationsSearchBar from './associations-search-bar';

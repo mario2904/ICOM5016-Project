@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
-import { FormGroup, FormControl,Col, ControlLabel, Row, Panel } from 'react-bootstrap';
 import axios from 'axios';
 import { Button, Form, Grid, Icon,Input, Image, Checkbox } from 'semantic-ui-react'
 

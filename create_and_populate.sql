@@ -1,11 +1,11 @@
-﻿--
+--
 -- PostgreSQL database dump
 --
 
 -- Dumped from database version 9.4.10
 -- Dumped by pg_dump version 9.5.4
 
--- Started on 2016-11-12 20:06:18 AST
+-- Started on 2016-11-15 20:38:51 AST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,8 +16,8 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 2141 (class 1262 OID 12141)
--- Dependencies: 2140
+-- TOC entry 2167 (class 1262 OID 12141)
+-- Dependencies: 2166
 -- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
 --
 
@@ -26,16 +26,16 @@ COMMENT ON DATABASE postgres IS 'default administrative connection database';
 
 --
 -- TOC entry 2 (class 3079 OID 11861)
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2144 (class 0 OID 0)
+-- TOC entry 2170 (class 0 OID 0)
 -- Dependencies: 2
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -43,16 +43,16 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 --
 -- TOC entry 1 (class 3079 OID 16384)
--- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2145 (class 0 OID 0)
+-- TOC entry 2171 (class 0 OID 0)
 -- Dependencies: 1
--- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
@@ -73,8 +73,8 @@ CREATE TABLE account (
     account_id integer NOT NULL,
     email character varying(35) NOT NULL,
     password character varying(20) NOT NULL,
-    datecreated character varying(30) NOT NULL,
-    receivenotifications character varying(5)
+    date_created character varying(30) NOT NULL,
+    receive_notifications character varying(5)
 );
 
 
@@ -96,7 +96,7 @@ CREATE SEQUENCE account_accountid_seq
 ALTER TABLE account_accountid_seq OWNER TO postgres;
 
 --
--- TOC entry 2146 (class 0 OID 0)
+-- TOC entry 2172 (class 0 OID 0)
 -- Dependencies: 174
 -- Name: account_accountid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -110,9 +110,9 @@ ALTER SEQUENCE account_accountid_seq OWNED BY account.account_id;
 --
 
 CREATE TABLE associations (
-    associationid integer NOT NULL,
-    associationname character varying(60) NOT NULL,
-    pagelink character varying(30) NOT NULL,
+    association_id integer NOT NULL,
+    association_name character varying(60) NOT NULL,
+    page_link character varying(30) NOT NULL,
     initials character varying(10) NOT NULL,
     bio character varying(400),
     account_id bigint NOT NULL,
@@ -139,12 +139,12 @@ CREATE SEQUENCE associations_associationid_seq
 ALTER TABLE associations_associationid_seq OWNER TO postgres;
 
 --
--- TOC entry 2147 (class 0 OID 0)
+-- TOC entry 2173 (class 0 OID 0)
 -- Dependencies: 176
 -- Name: associations_associationid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE associations_associationid_seq OWNED BY associations.associationid;
+ALTER SEQUENCE associations_associationid_seq OWNED BY associations.association_id;
 
 
 --
@@ -176,7 +176,7 @@ CREATE SEQUENCE category_category_id_seq
 ALTER TABLE category_category_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2148 (class 0 OID 0)
+-- TOC entry 2174 (class 0 OID 0)
 -- Dependencies: 195
 -- Name: category_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -191,7 +191,7 @@ ALTER SEQUENCE category_category_id_seq OWNED BY category.category_id;
 
 CREATE TABLE events (
     event_id integer NOT NULL,
-    associationid bigint,
+    association_id bigint,
     event_name character varying(100) NOT NULL,
     is_live character varying(3) NOT NULL,
     category character varying(15),
@@ -210,6 +210,44 @@ CREATE TABLE events (
 ALTER TABLE events OWNER TO postgres;
 
 --
+-- TOC entry 199 (class 1259 OID 16583)
+-- Name: events_categories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE events_categories (
+    ec_id integer NOT NULL,
+    event_id bigint,
+    category_id bigint
+);
+
+
+ALTER TABLE events_categories OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 16581)
+-- Name: events_categories_ec_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE events_categories_ec_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE events_categories_ec_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2175 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: events_categories_ec_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE events_categories_ec_id_seq OWNED BY events_categories.ec_id;
+
+
+--
 -- TOC entry 182 (class 1259 OID 16436)
 -- Name: events_event_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
@@ -225,12 +263,50 @@ CREATE SEQUENCE events_event_id_seq
 ALTER TABLE events_event_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2149 (class 0 OID 0)
+-- TOC entry 2176 (class 0 OID 0)
 -- Dependencies: 182
 -- Name: events_event_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE events_event_id_seq OWNED BY events.event_id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 16601)
+-- Name: followed_associations; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE followed_associations (
+    fe_id integer NOT NULL,
+    association_id bigint,
+    user_id bigint
+);
+
+
+ALTER TABLE followed_associations OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16599)
+-- Name: followed_associations_fe_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE followed_associations_fe_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE followed_associations_fe_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2177 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: followed_associations_fe_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE followed_associations_fe_id_seq OWNED BY followed_associations.fe_id;
 
 
 --
@@ -263,7 +339,7 @@ CREATE SEQUENCE images_image_id_seq
 ALTER TABLE images_image_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2150 (class 0 OID 0)
+-- TOC entry 2178 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: images_image_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -301,7 +377,7 @@ CREATE SEQUENCE interested_interested_id_seq
 ALTER TABLE interested_interested_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2151 (class 0 OID 0)
+-- TOC entry 2179 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: interested_interested_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -340,7 +416,7 @@ CREATE SEQUENCE location_locationid_seq
 ALTER TABLE location_locationid_seq OWNER TO postgres;
 
 --
--- TOC entry 2152 (class 0 OID 0)
+-- TOC entry 2180 (class 0 OID 0)
 -- Dependencies: 180
 -- Name: location_locationid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -358,7 +434,7 @@ CREATE TABLE notifications (
     notification_name character varying(25),
     date_sent date,
     event_id bigint,
-    review_text character varying(300)
+    notification_text character varying(300)
 );
 
 
@@ -380,7 +456,7 @@ CREATE SEQUENCE notifications_notification_id_seq
 ALTER TABLE notifications_notification_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2153 (class 0 OID 0)
+-- TOC entry 2181 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: notifications_notification_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -421,7 +497,7 @@ CREATE SEQUENCE review_review_id_seq
 ALTER TABLE review_review_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2154 (class 0 OID 0)
+-- TOC entry 2182 (class 0 OID 0)
 -- Dependencies: 186
 -- Name: review_review_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -435,9 +511,9 @@ ALTER SEQUENCE review_review_id_seq OWNED BY review.review_id;
 --
 
 CREATE TABLE sponsors (
-    sponsorid integer NOT NULL,
-    sponsorname character varying(30) NOT NULL,
-    pagelink character varying(30) NOT NULL
+    sponsor_id integer NOT NULL,
+    sponsor_name character varying(30) NOT NULL,
+    page_link character varying(30) NOT NULL
 );
 
 
@@ -459,12 +535,12 @@ CREATE SEQUENCE sponsors_sponsorid_seq
 ALTER TABLE sponsors_sponsorid_seq OWNER TO postgres;
 
 --
--- TOC entry 2155 (class 0 OID 0)
+-- TOC entry 2183 (class 0 OID 0)
 -- Dependencies: 178
 -- Name: sponsors_sponsorid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE sponsors_sponsorid_seq OWNED BY sponsors.sponsorid;
+ALTER SEQUENCE sponsors_sponsorid_seq OWNED BY sponsors.sponsor_id;
 
 
 --
@@ -505,7 +581,7 @@ CREATE SEQUENCE students_user_id_seq
 ALTER TABLE students_user_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2156 (class 0 OID 0)
+-- TOC entry 2184 (class 0 OID 0)
 -- Dependencies: 184
 -- Name: students_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -544,7 +620,7 @@ CREATE SEQUENCE transactions_transaction_id_seq
 ALTER TABLE transactions_transaction_id_seq OWNER TO postgres;
 
 --
--- TOC entry 2157 (class 0 OID 0)
+-- TOC entry 2185 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: transactions_transaction_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -553,7 +629,7 @@ ALTER SEQUENCE transactions_transaction_id_seq OWNED BY transactions.transaction
 
 
 --
--- TOC entry 1954 (class 2604 OID 16398)
+-- TOC entry 1966 (class 2604 OID 16398)
 -- Name: account_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -561,15 +637,15 @@ ALTER TABLE ONLY account ALTER COLUMN account_id SET DEFAULT nextval('account_ac
 
 
 --
--- TOC entry 1955 (class 2604 OID 16406)
--- Name: associationid; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 1967 (class 2604 OID 16406)
+-- Name: association_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY associations ALTER COLUMN associationid SET DEFAULT nextval('associations_associationid_seq'::regclass);
+ALTER TABLE ONLY associations ALTER COLUMN association_id SET DEFAULT nextval('associations_associationid_seq'::regclass);
 
 
 --
--- TOC entry 1965 (class 2604 OID 16554)
+-- TOC entry 1977 (class 2604 OID 16554)
 -- Name: category_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -577,7 +653,7 @@ ALTER TABLE ONLY category ALTER COLUMN category_id SET DEFAULT nextval('category
 
 
 --
--- TOC entry 1958 (class 2604 OID 16441)
+-- TOC entry 1970 (class 2604 OID 16441)
 -- Name: event_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -585,7 +661,23 @@ ALTER TABLE ONLY events ALTER COLUMN event_id SET DEFAULT nextval('events_event_
 
 
 --
--- TOC entry 1962 (class 2604 OID 16488)
+-- TOC entry 1978 (class 2604 OID 16586)
+-- Name: ec_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY events_categories ALTER COLUMN ec_id SET DEFAULT nextval('events_categories_ec_id_seq'::regclass);
+
+
+--
+-- TOC entry 1979 (class 2604 OID 16604)
+-- Name: fe_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY followed_associations ALTER COLUMN fe_id SET DEFAULT nextval('followed_associations_fe_id_seq'::regclass);
+
+
+--
+-- TOC entry 1974 (class 2604 OID 16488)
 -- Name: image_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -593,7 +685,7 @@ ALTER TABLE ONLY images ALTER COLUMN image_id SET DEFAULT nextval('images_image_
 
 
 --
--- TOC entry 1964 (class 2604 OID 16569)
+-- TOC entry 1976 (class 2604 OID 16569)
 -- Name: interested_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -601,7 +693,7 @@ ALTER TABLE ONLY interested ALTER COLUMN interested_id SET DEFAULT nextval('inte
 
 
 --
--- TOC entry 1957 (class 2604 OID 16425)
+-- TOC entry 1969 (class 2604 OID 16425)
 -- Name: location_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -609,7 +701,7 @@ ALTER TABLE ONLY location ALTER COLUMN location_id SET DEFAULT nextval('location
 
 
 --
--- TOC entry 1963 (class 2604 OID 16496)
+-- TOC entry 1975 (class 2604 OID 16496)
 -- Name: notification_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -617,7 +709,7 @@ ALTER TABLE ONLY notifications ALTER COLUMN notification_id SET DEFAULT nextval(
 
 
 --
--- TOC entry 1960 (class 2604 OID 16462)
+-- TOC entry 1972 (class 2604 OID 16462)
 -- Name: review_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -625,15 +717,15 @@ ALTER TABLE ONLY review ALTER COLUMN review_id SET DEFAULT nextval('review_revie
 
 
 --
--- TOC entry 1956 (class 2604 OID 16417)
--- Name: sponsorid; Type: DEFAULT; Schema: public; Owner: postgres
+-- TOC entry 1968 (class 2604 OID 16417)
+-- Name: sponsor_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY sponsors ALTER COLUMN sponsorid SET DEFAULT nextval('sponsors_sponsorid_seq'::regclass);
+ALTER TABLE ONLY sponsors ALTER COLUMN sponsor_id SET DEFAULT nextval('sponsors_sponsorid_seq'::regclass);
 
 
 --
--- TOC entry 1959 (class 2604 OID 16454)
+-- TOC entry 1971 (class 2604 OID 16454)
 -- Name: user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -641,7 +733,7 @@ ALTER TABLE ONLY students ALTER COLUMN user_id SET DEFAULT nextval('students_use
 
 
 --
--- TOC entry 1961 (class 2604 OID 16480)
+-- TOC entry 1973 (class 2604 OID 16480)
 -- Name: transaction_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -649,12 +741,12 @@ ALTER TABLE ONLY transactions ALTER COLUMN transaction_id SET DEFAULT nextval('t
 
 
 --
--- TOC entry 2113 (class 0 OID 16395)
+-- TOC entry 2135 (class 0 OID 16395)
 -- Dependencies: 175
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY account (account_id, email, password, datecreated, receivenotifications) FROM stdin;
+COPY account (account_id, email, password, date_created, receive_notifications) FROM stdin;
 1	shpe@upr.edu	password	today	no
 2	wie@uprm.edu	password1	today	no
 3	graciany.lebron@upr.edu	password12	today	no
@@ -664,7 +756,7 @@ COPY account (account_id, email, password, datecreated, receivenotifications) FR
 
 
 --
--- TOC entry 2158 (class 0 OID 0)
+-- TOC entry 2186 (class 0 OID 0)
 -- Dependencies: 174
 -- Name: account_accountid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -673,19 +765,19 @@ SELECT pg_catalog.setval('account_accountid_seq', 5, true);
 
 
 --
--- TOC entry 2115 (class 0 OID 16403)
+-- TOC entry 2137 (class 0 OID 16403)
 -- Dependencies: 177
 -- Data for Name: associations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY associations (associationid, associationname, pagelink, initials, bio, account_id, location_id, image_id) FROM stdin;
+COPY associations (association_id, association_name, page_link, initials, bio, account_id, location_id, image_id) FROM stdin;
 1	Society of Hispanic Professional Engineers	http://shpeuprm.tumblr.com/	SHPE	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \\\rdo eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad \\\rminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex\\\rea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate \\\rvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\\\rcupidatat non proident, sunt	1	1	1
 2	IEEE Women in Engineering - UPRM	http://wie.uprm.edu/	WIE	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \\\rdo eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad \\\rminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex\\\rea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate \\\rvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\\\rcupidatat non proident, sunt	2	2	2
 \.
 
 
 --
--- TOC entry 2159 (class 0 OID 0)
+-- TOC entry 2187 (class 0 OID 0)
 -- Dependencies: 176
 -- Name: associations_associationid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -694,7 +786,7 @@ SELECT pg_catalog.setval('associations_associationid_seq', 4, true);
 
 
 --
--- TOC entry 2134 (class 0 OID 16551)
+-- TOC entry 2156 (class 0 OID 16551)
 -- Dependencies: 196
 -- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -713,7 +805,7 @@ COPY category (category_id, category_name) FROM stdin;
 
 
 --
--- TOC entry 2160 (class 0 OID 0)
+-- TOC entry 2188 (class 0 OID 0)
 -- Dependencies: 195
 -- Name: category_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -722,27 +814,79 @@ SELECT pg_catalog.setval('category_category_id_seq', 9, true);
 
 
 --
--- TOC entry 2121 (class 0 OID 16438)
+-- TOC entry 2143 (class 0 OID 16438)
 -- Dependencies: 183
 -- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY events (event_id, associationid, event_name, is_live, category, budget, location_id, registration_link, description, image_id, start_date, end_date, end_time, start_time) FROM stdin;
+COPY events (event_id, association_id, event_name, is_live, category, budget, location_id, registration_link, description, image_id, start_date, end_date, end_time, start_time) FROM stdin;
 1	1	Development Programs Assembly	yes	Professional De	\N	1	https://www.youtube.com/watch?v=dQw4w9WgXcQ	The Society of Hispanic Professional Engineers (SHPE) invites you to our Development Programs Assembly! Learn about our different professional growth programs: The Career Prep Program, the InternSHPE Program, and Technical Program. All offer great and unique opportunities to become a better leader, professional, and student. Do not miss this opportunity!	3	Oct. 27, 2016	Oct. 27, 2016	12:00 pm	10:30 am
+2	1	Haunted SHPE	yes	...	\N	2	https://www.youtube.com/watch?v=dQw4w9WgXcQ	Join us and have a bewitching time with SHPE RUM	7	Oct. 31, 2016	Oct. 27, 2016	9:00 pm	6:00 pm
 \.
 
 
 --
--- TOC entry 2161 (class 0 OID 0)
+-- TOC entry 2159 (class 0 OID 16583)
+-- Dependencies: 199
+-- Data for Name: events_categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY events_categories (ec_id, event_id, category_id) FROM stdin;
+1	1	1
+2	1	3
+3	1	5
+4	1	7
+5	1	9
+6	2	2
+7	2	4
+8	2	6
+9	2	8
+\.
+
+
+--
+-- TOC entry 2189 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: events_categories_ec_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('events_categories_ec_id_seq', 9, true);
+
+
+--
+-- TOC entry 2190 (class 0 OID 0)
 -- Dependencies: 182
 -- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('events_event_id_seq', 1, true);
+SELECT pg_catalog.setval('events_event_id_seq', 2, true);
 
 
 --
--- TOC entry 2129 (class 0 OID 16485)
+-- TOC entry 2161 (class 0 OID 16601)
+-- Dependencies: 201
+-- Data for Name: followed_associations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY followed_associations (fe_id, association_id, user_id) FROM stdin;
+1	1	1
+2	2	1
+3	2	2
+4	1	3
+\.
+
+
+--
+-- TOC entry 2191 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: followed_associations_fe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('followed_associations_fe_id_seq', 4, true);
+
+
+--
+-- TOC entry 2151 (class 0 OID 16485)
 -- Dependencies: 191
 -- Data for Name: images; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -754,11 +898,12 @@ COPY images (image_id, image_name, image_path) FROM stdin;
 4	Carlos Profile Image	http://2.bp.blogspot.com/-TfzSOP07oIk/VmNGMNJHwlI/AAAAAAAAAyc/vH8J3jD83ks/s1600/kevin-hart-waiting-face.jpg
 5	Mario Profile Image	http://4.bp.blogspot.com/-ygOsFPhxgdQ/VmNGLqQ5NLI/AAAAAAAAAyQ/jUW_798PhOU/s1600/kevin-hart-funny-faces.jpg
 6	Grciany Profile Image	http://orig04.deviantart.net/aded/f/2013/066/c/2/profile_picture_by_naivety_stock-d5x8lbn.jpg
+7	Haunted SHPE	https://scontent-atl3-1.xx.fbcdn.net/v/t1.0-9/14729161_1293791687317708_1785303248482865028_n.jpg?oh=31fb82748c19c1755c99f68dcb8da464&oe=58C4A084
 \.
 
 
 --
--- TOC entry 2162 (class 0 OID 0)
+-- TOC entry 2192 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: images_image_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -767,7 +912,7 @@ SELECT pg_catalog.setval('images_image_id_seq', 10, true);
 
 
 --
--- TOC entry 2132 (class 0 OID 16533)
+-- TOC entry 2154 (class 0 OID 16533)
 -- Dependencies: 194
 -- Data for Name: interested; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -776,20 +921,22 @@ COPY interested (event_id, user_id, interested_id) FROM stdin;
 1	1	1
 1	2	2
 1	3	3
+2	1	4
+2	2	5
 \.
 
 
 --
--- TOC entry 2163 (class 0 OID 0)
+-- TOC entry 2193 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: interested_interested_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('interested_interested_id_seq', 4, true);
+SELECT pg_catalog.setval('interested_interested_id_seq', 6, true);
 
 
 --
--- TOC entry 2119 (class 0 OID 16422)
+-- TOC entry 2141 (class 0 OID 16422)
 -- Dependencies: 181
 -- Data for Name: location; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -801,7 +948,7 @@ COPY location (location_id, room, building, city) FROM stdin;
 
 
 --
--- TOC entry 2164 (class 0 OID 0)
+-- TOC entry 2194 (class 0 OID 0)
 -- Dependencies: 180
 -- Name: location_locationid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -810,65 +957,69 @@ SELECT pg_catalog.setval('location_locationid_seq', 2, true);
 
 
 --
--- TOC entry 2131 (class 0 OID 16493)
+-- TOC entry 2153 (class 0 OID 16493)
 -- Dependencies: 193
 -- Data for Name: notifications; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY notifications (notification_id, notification_name, date_sent, event_id, review_text) FROM stdin;
+COPY notifications (notification_id, notification_name, date_sent, event_id, notification_text) FROM stdin;
 1	CHANGE OF CLASS ROOM	2100-01-31	1	So the room has changed. TO S113
+2	NEW TIME	2100-01-31	1	Event will now start at 2.
 \.
 
 
 --
--- TOC entry 2165 (class 0 OID 0)
+-- TOC entry 2195 (class 0 OID 0)
 -- Dependencies: 192
 -- Name: notifications_notification_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('notifications_notification_id_seq', 1, true);
+SELECT pg_catalog.setval('notifications_notification_id_seq', 2, true);
 
 
 --
--- TOC entry 2125 (class 0 OID 16459)
+-- TOC entry 2147 (class 0 OID 16459)
 -- Dependencies: 187
 -- Data for Name: review; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY review (review_id, event_id, user_id, review, rating, date_created) FROM stdin;
+1	1	1	Good Job!!	5	2005-01-04
+2	1	3	Horrible	1	2005-01-05
 \.
 
 
 --
--- TOC entry 2166 (class 0 OID 0)
+-- TOC entry 2196 (class 0 OID 0)
 -- Dependencies: 186
 -- Name: review_review_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('review_review_id_seq', 1, false);
+SELECT pg_catalog.setval('review_review_id_seq', 2, true);
 
 
 --
--- TOC entry 2117 (class 0 OID 16414)
+-- TOC entry 2139 (class 0 OID 16414)
 -- Dependencies: 179
 -- Data for Name: sponsors; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY sponsors (sponsorid, sponsorname, pagelink) FROM stdin;
+COPY sponsors (sponsor_id, sponsor_name, page_link) FROM stdin;
+1	Verizon	verizon.com
 \.
 
 
 --
--- TOC entry 2167 (class 0 OID 0)
+-- TOC entry 2197 (class 0 OID 0)
 -- Dependencies: 178
 -- Name: sponsors_sponsorid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('sponsors_sponsorid_seq', 1, false);
+SELECT pg_catalog.setval('sponsors_sponsorid_seq', 3, true);
 
 
 --
--- TOC entry 2123 (class 0 OID 16451)
+-- TOC entry 2145 (class 0 OID 16451)
 -- Dependencies: 185
 -- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -881,7 +1032,7 @@ COPY students (user_id, first_name, last_name, hometown, college, major, gender,
 
 
 --
--- TOC entry 2168 (class 0 OID 0)
+-- TOC entry 2198 (class 0 OID 0)
 -- Dependencies: 184
 -- Name: students_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -890,7 +1041,7 @@ SELECT pg_catalog.setval('students_user_id_seq', 3, true);
 
 
 --
--- TOC entry 2127 (class 0 OID 16477)
+-- TOC entry 2149 (class 0 OID 16477)
 -- Dependencies: 189
 -- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -900,7 +1051,7 @@ COPY transactions (transaction_id, type_of_transactions, amount_charged, date_do
 
 
 --
--- TOC entry 2169 (class 0 OID 0)
+-- TOC entry 2199 (class 0 OID 0)
 -- Dependencies: 188
 -- Name: transactions_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -909,7 +1060,7 @@ SELECT pg_catalog.setval('transactions_transaction_id_seq', 1, false);
 
 
 --
--- TOC entry 1967 (class 2606 OID 16400)
+-- TOC entry 1981 (class 2606 OID 16400)
 -- Name: account_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -918,16 +1069,16 @@ ALTER TABLE ONLY account
 
 
 --
--- TOC entry 1969 (class 2606 OID 16411)
+-- TOC entry 1983 (class 2606 OID 16411)
 -- Name: associations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY associations
-    ADD CONSTRAINT associations_pkey PRIMARY KEY (associationid);
+    ADD CONSTRAINT associations_pkey PRIMARY KEY (association_id);
 
 
 --
--- TOC entry 1989 (class 2606 OID 16556)
+-- TOC entry 2003 (class 2606 OID 16556)
 -- Name: category_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -936,7 +1087,16 @@ ALTER TABLE ONLY category
 
 
 --
--- TOC entry 1975 (class 2606 OID 16443)
+-- TOC entry 2005 (class 2606 OID 16588)
+-- Name: events_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY events_categories
+    ADD CONSTRAINT events_categories_pkey PRIMARY KEY (ec_id);
+
+
+--
+-- TOC entry 1989 (class 2606 OID 16443)
 -- Name: events_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -945,7 +1105,16 @@ ALTER TABLE ONLY events
 
 
 --
--- TOC entry 1983 (class 2606 OID 16490)
+-- TOC entry 2007 (class 2606 OID 16606)
+-- Name: followed_associations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY followed_associations
+    ADD CONSTRAINT followed_associations_pkey PRIMARY KEY (fe_id);
+
+
+--
+-- TOC entry 1997 (class 2606 OID 16490)
 -- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -954,7 +1123,7 @@ ALTER TABLE ONLY images
 
 
 --
--- TOC entry 1987 (class 2606 OID 16571)
+-- TOC entry 2001 (class 2606 OID 16571)
 -- Name: interested_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -963,7 +1132,7 @@ ALTER TABLE ONLY interested
 
 
 --
--- TOC entry 1973 (class 2606 OID 16427)
+-- TOC entry 1987 (class 2606 OID 16427)
 -- Name: location_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -972,7 +1141,7 @@ ALTER TABLE ONLY location
 
 
 --
--- TOC entry 1985 (class 2606 OID 16498)
+-- TOC entry 1999 (class 2606 OID 16498)
 -- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -981,7 +1150,7 @@ ALTER TABLE ONLY notifications
 
 
 --
--- TOC entry 1979 (class 2606 OID 16464)
+-- TOC entry 1993 (class 2606 OID 16464)
 -- Name: review_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -990,16 +1159,16 @@ ALTER TABLE ONLY review
 
 
 --
--- TOC entry 1971 (class 2606 OID 16419)
+-- TOC entry 1985 (class 2606 OID 16419)
 -- Name: sponsors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY sponsors
-    ADD CONSTRAINT sponsors_pkey PRIMARY KEY (sponsorid);
+    ADD CONSTRAINT sponsors_pkey PRIMARY KEY (sponsor_id);
 
 
 --
--- TOC entry 1977 (class 2606 OID 16456)
+-- TOC entry 1991 (class 2606 OID 16456)
 -- Name: students_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1008,7 +1177,7 @@ ALTER TABLE ONLY students
 
 
 --
--- TOC entry 1981 (class 2606 OID 16482)
+-- TOC entry 1995 (class 2606 OID 16482)
 -- Name: transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1017,7 +1186,7 @@ ALTER TABLE ONLY transactions
 
 
 --
--- TOC entry 1990 (class 2606 OID 16500)
+-- TOC entry 2008 (class 2606 OID 16500)
 -- Name: associations_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1026,7 +1195,7 @@ ALTER TABLE ONLY associations
 
 
 --
--- TOC entry 1991 (class 2606 OID 16510)
+-- TOC entry 2009 (class 2606 OID 16510)
 -- Name: associations_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1035,16 +1204,34 @@ ALTER TABLE ONLY associations
 
 
 --
--- TOC entry 1992 (class 2606 OID 16444)
+-- TOC entry 2010 (class 2606 OID 16444)
 -- Name: events_associationid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY events
-    ADD CONSTRAINT events_associationid_fkey FOREIGN KEY (associationid) REFERENCES associations(associationid);
+    ADD CONSTRAINT events_associationid_fkey FOREIGN KEY (association_id) REFERENCES associations(association_id);
 
 
 --
--- TOC entry 1994 (class 2606 OID 16528)
+-- TOC entry 2022 (class 2606 OID 16594)
+-- Name: events_categories_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY events_categories
+    ADD CONSTRAINT events_categories_category_id_fkey FOREIGN KEY (category_id) REFERENCES category(category_id);
+
+
+--
+-- TOC entry 2021 (class 2606 OID 16589)
+-- Name: events_categories_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY events_categories
+    ADD CONSTRAINT events_categories_event_id_fkey FOREIGN KEY (event_id) REFERENCES events(event_id);
+
+
+--
+-- TOC entry 2012 (class 2606 OID 16528)
 -- Name: events_image_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1053,7 +1240,7 @@ ALTER TABLE ONLY events
 
 
 --
--- TOC entry 1993 (class 2606 OID 16520)
+-- TOC entry 2011 (class 2606 OID 16520)
 -- Name: events_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1062,7 +1249,25 @@ ALTER TABLE ONLY events
 
 
 --
--- TOC entry 1999 (class 2606 OID 16515)
+-- TOC entry 2023 (class 2606 OID 16607)
+-- Name: followed_associations_association_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY followed_associations
+    ADD CONSTRAINT followed_associations_association_id_fkey FOREIGN KEY (association_id) REFERENCES associations(association_id);
+
+
+--
+-- TOC entry 2024 (class 2606 OID 16612)
+-- Name: followed_associations_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY followed_associations
+    ADD CONSTRAINT followed_associations_user_id_fkey FOREIGN KEY (user_id) REFERENCES students(user_id);
+
+
+--
+-- TOC entry 2017 (class 2606 OID 16515)
 -- Name: images_image_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1071,7 +1276,7 @@ ALTER TABLE ONLY images
 
 
 --
--- TOC entry 2001 (class 2606 OID 16536)
+-- TOC entry 2019 (class 2606 OID 16536)
 -- Name: interested_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1080,7 +1285,7 @@ ALTER TABLE ONLY interested
 
 
 --
--- TOC entry 2002 (class 2606 OID 16541)
+-- TOC entry 2020 (class 2606 OID 16541)
 -- Name: interested_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1089,7 +1294,7 @@ ALTER TABLE ONLY interested
 
 
 --
--- TOC entry 2000 (class 2606 OID 16557)
+-- TOC entry 2018 (class 2606 OID 16557)
 -- Name: notifications_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1098,7 +1303,7 @@ ALTER TABLE ONLY notifications
 
 
 --
--- TOC entry 1997 (class 2606 OID 16465)
+-- TOC entry 2015 (class 2606 OID 16465)
 -- Name: review_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1107,7 +1312,7 @@ ALTER TABLE ONLY review
 
 
 --
--- TOC entry 1998 (class 2606 OID 16470)
+-- TOC entry 2016 (class 2606 OID 16470)
 -- Name: review_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1116,7 +1321,7 @@ ALTER TABLE ONLY review
 
 
 --
--- TOC entry 1995 (class 2606 OID 16562)
+-- TOC entry 2013 (class 2606 OID 16562)
 -- Name: students_account_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1125,7 +1330,7 @@ ALTER TABLE ONLY students
 
 
 --
--- TOC entry 1996 (class 2606 OID 16576)
+-- TOC entry 2014 (class 2606 OID 16576)
 -- Name: students_image_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1134,7 +1339,7 @@ ALTER TABLE ONLY students
 
 
 --
--- TOC entry 2143 (class 0 OID 0)
+-- TOC entry 2169 (class 0 OID 0)
 -- Dependencies: 7
 -- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
@@ -1145,9 +1350,8 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-11-12 20:06:19 AST
+-- Completed on 2016-11-15 20:38:52 AST
 
 --
 -- PostgreSQL database dump complete
 --
-
