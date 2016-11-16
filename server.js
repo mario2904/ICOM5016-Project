@@ -509,8 +509,9 @@ const responseDB = {};
                   WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id = ${idused} and is_live = 'no'", {idused: id})
                     .then(function (data) {
                       responseDB.pastEvents = data;
-                      db1.any("SELECT sponsor_name \
-                          FROM sponsors", {idused: id})
+                      db1.any("SELECT sponsor_name, image_path \
+                          FROM association_sponsors natural join sponsors natural join images\
+                          WHERE association_id = ${idused}", {idused: id})
                           .then(function (data) {
                             responseDB.sponsors = data;
                             db1.one("SELECT count(user_id) \

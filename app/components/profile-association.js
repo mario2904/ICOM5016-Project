@@ -39,27 +39,27 @@ export default class ProfileAssociation extends Component{
       // tick.setState({activeEvents: response.data.activeEvents})
       // console.log(tick.state.activeEvents);
 
-      response.data.activeEvents.map((id) => {
-        axios.get('/api/event/'+id)
-        .then(function (response) {
-          console.log(response);
-          tick.setState({activeEvents: tick.state.activeEvents.concat(response.data)})
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      });
+      // response.data.activeEvents.map((id) => {
+      //   axios.get('/api/event/'+id)
+      //   .then(function (response) {
+      //     console.log(response);
+      //     tick.setState({activeEvents: tick.state.activeEvents.concat(response.data)})
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+      // });
 
-      response.data.sponsors.map((id) => {
-        axios.get('/api/sponsors/'+id)
-        .then(function (response) {
-          console.log(response);
-          tick.setState({sponsors: tick.state.sponsors.concat(response.data)})
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      });
+      // response.data.sponsors.map((id) => {
+      //   axios.get('/api/sponsors/'+id)
+      //   .then(function (response) {
+      //     console.log(response);
+      //     tick.setState({sponsors: tick.state.sponsors.concat(response.data)})
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+      // });
 
     })
     .catch(function (error) {
@@ -113,7 +113,7 @@ export default class ProfileAssociation extends Component{
     <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="checked calendar">
     </Icon>Current Events</strong></h2>
       <Divider/>
-     <GridList items={this.state.activeEvents} ListItem={EventsListItem}/>
+     <GridList items={this.state.associationInfo.activeEvents} ListItem={EventsListItem}/>
      </Segment>);
 
   };
@@ -123,7 +123,7 @@ export default class ProfileAssociation extends Component{
       <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="delete calendar">
       </Icon>Past Events</strong></h2>
         <Divider/>
-    <GridList items={this.props.events} ListItem={EventsListItem}/>
+    <GridList items={this.state.associationInfo.pastEvents} ListItem={EventsListItem}/>
   </Segment>);
   };
 
@@ -132,7 +132,7 @@ export default class ProfileAssociation extends Component{
         <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="hand spock">
         </Icon>Sponsors</strong></h2>
           <Divider/>
-    <GridList items={this.state.sponsors} ListItem={SponsorsListItem}/>
+    <GridList items={this.state.associationInfo.sponsors} ListItem={SponsorsListItem}/>
     </Segment>);
   };
 
@@ -167,7 +167,7 @@ export default class ProfileAssociation extends Component{
                 icon='user'
                 size="tiny"
                 onClick={this.handleOnClick}
-                label={{ basic: true, color:this.state.color, pointing: 'left', content: '100' }}/>
+                label={{ basic: true, color:this.state.color, pointing: 'left', content:this.state.associationInfo.followers.count }}/>
               </div>
             </h1>
             <ModalEditAssociationProfile associationProfile={this.state.associationInfo}/>
