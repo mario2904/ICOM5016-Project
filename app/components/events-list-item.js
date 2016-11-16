@@ -16,8 +16,9 @@ export default class EventsListItem extends Component {
         <Card.Content>
           <Card.Header style={nameStyle}><strong>{event_name}</strong></Card.Header>
           <Card.Meta style={nameStyle}><em>{association_name}</em></Card.Meta>
-          <Card.Description style={nameStyle}> {start_date} {start_date === end_date ? null: ' - ' + end_date}
-            {start_time + ' - ' + end_time}</Card.Description>
+          <Card.Description style={nameStyle}> { start_date }{ start_date === end_date ? null: ' - ' + end_date }
+          </Card.Description>
+          <Card.Description style={nameStyle}>{start_time + ' - ' + end_time}</Card.Description>
         </Card.Content>
         <Card.Content extra style={{backgroundColor:"rgb(35, 37, 40)"}}>
           <Card.Description style={descriptionStyle}><Icon name="marker"></Icon>{room}</Card.Description>

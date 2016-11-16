@@ -53,7 +53,7 @@ export default class Usignup extends Component {
 
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
-      <Grid style={{width:"70%", height:"80%", margin:"auto", paddingTop:75,
+      <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50,
       paddingBottom:75}}>
         <Grid.Row>
         <Header style={{width:"100%", textAlign:"center",

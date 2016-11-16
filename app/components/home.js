@@ -75,16 +75,16 @@ export default class Home extends Component {
 
   renderMyEvents = () => {
     return this.state.events.map((event) => {
-      const { id, name, associationName, startDate, endDate, startTime, endTime, location, image, description } = event;
+      const { id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
 
       return (
 
         <Item key={id}>
-          <Image size='small' src={image} />
+          <Image size='small' src={image_path} />
           <Content>
-            <Header>{name}</Header>
+            <Header>{event_name}</Header>
             <Meta>
-              <span>{associationName}</span>
+              <span>{association_name}</span>
             </Meta>
             <Description>{description}</Description>
           </Content>

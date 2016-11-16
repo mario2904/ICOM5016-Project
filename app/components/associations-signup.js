@@ -46,7 +46,7 @@ export default class Asignup extends Component {
   render() {
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
-        <Grid style={{width:"70%", height:"80%", margin:"auto", paddingTop:75,
+        <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50,
         paddingBottom:75}}>
         <Header style={{width:"100%", textAlign:"center",
           backgroundColor:"rgb(35, 37, 40)", color:"white"}} as='h2' attached='top'>
