@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button } from 'semantic-ui-react';
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
@@ -84,16 +85,15 @@ export default class Home extends Component {
 
   renderMyEvents = () => {
     return this.state.events.map((event) => {
-      const { id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
-
+      const { event_id, event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
       return (
 
-        <Item key={id}>
+        <Item key={event_id}>
           <Image size='small' src={image_path} />
           <Content>
-            <Header>{event_name}</Header>
+            <Header as={Link} to={'events/' + event_id}>{event_name}</Header>
             <Meta>
-              <span>{association_name}</span>
+              <span><Link to={'associations/' + association_id}>{association_name}</Link></span>
             </Meta>
             <Description>{description}</Description>
           </Content>
