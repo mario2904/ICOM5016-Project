@@ -15,7 +15,7 @@ export default class ModalEditStudentProfile extends Component {
   render() {
 
     const { serializedForm, genderControl } = this.state;
-    const { birthday, gender, hometown, college, major, bio } = this.props.studentProfile;
+    const { birthdate, gender, hometown, college, major, bio } = this.props.studentProfile;
 
     const trigger = (
       <Button
@@ -34,7 +34,7 @@ export default class ModalEditStudentProfile extends Component {
 
 
             <Form.Input label="Profile picture" name='image' type="file" />
-            <Form.Input label='Birthday' name='birthday' placeholder='Birthday' type='date' defaultValue={birthday}/>
+            <Form.Input label='Birthday' name='birthdate' placeholder='Birthday' type='date' defaultValue={birthdate}/>
             <Form.Field>
               <label>Gender</label>
               <Form.Group inline>

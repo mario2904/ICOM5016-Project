@@ -23,7 +23,7 @@ export default class ModalEditEvent extends Component {
   render() {
     if(!this.props.eventInfo.categories)
       return null;
-    const { name, id, associationName, associationId, image, startDate, endDate, startTime, endTime, location, description, registrationLink } = this.props.eventInfo;
+    const { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link } = this.props.eventInfo;
     const trigger = (
       <Button
         style={{textAlign: 'middle'}}
@@ -40,11 +40,11 @@ export default class ModalEditEvent extends Component {
 
 
             <Icon name="idea"></Icon>
-            <Form.Input label='Event Name' name='eventName' placeholder='Event Name' defaultValue={name}/>
+            <Form.Input label='Event Name' name='event_name' placeholder='Event Name' defaultValue={event_name}/>
             <Icon name="linkify"></Icon>
-            <Form.Input label='Registration Link' name='registrationLink' placeholder='RegistrationLink' defaultValue={registrationLink}/>
+            <Form.Input label='Registration Link' name='registration_link' placeholder='RegistrationLink' defaultValue={registration_link}/>
             <Icon name="image"></Icon>
-            <Form.Input label="Event Pic/Flyer" name='eventPic' placeholder="choose your flyer" type="file" defaultValue={image}/>
+            <Form.Input label="Event Pic/Flyer" name='image_path' placeholder="choose your flyer" type="file" defaultValue={image_path}/>
             <Form.Field>
               <Icon name="tag"></Icon>
               <label>Categories</label>
@@ -53,17 +53,17 @@ export default class ModalEditEvent extends Component {
               </Form.Group>
             </Form.Field>
             <Icon name="info circle"></Icon>
-            <Form.TextArea label="Event Info" name='eventInfo' placeholder="Tell us more about your event" rows="4" defaultValue={description}/>
+            <Form.TextArea label="Event Info" name='description' placeholder="Tell us more about your event" rows="4" defaultValue={description}/>
             <Icon name="map pin"></Icon>
-            <Form.Input label="Location" name='location' placeholder="Where is your event going to be at?" defaultValue={location}/>
+            <Form.Input label="Location" name='room' placeholder="Where is your event going to be at?" defaultValue={room}/>
             <Icon name="checked calendar"></Icon>
-            <Form.Input label="Start Date" name='startDate' placeholder="mm/dd/yyyy" type="date" defaultValue={startDate}/> {/* yyyy/mm/dd */}
+            <Form.Input label="Start Date" name='start_date' placeholder="mm/dd/yyyy" type="date" defaultValue={start_date}/> {/* yyyy/mm/dd */}
             <Icon name="wait" flipped="horizontally"></Icon>
-            <Form.Input label="Start Time" name="startTime" type="time" placeholder="--:-- --" defaultValue={startTime}/>  {/* 24 hr format */}
+            <Form.Input label="Start Time" name="start_time" type="time" placeholder="--:-- --" defaultValue={start_time}/>  {/* 24 hr format */}
             <Icon name="delete calendar"></Icon>
-            <Form.Input label="End Date" name='endDate' placeholder="mm/dd/yyyy" type="date" defaultValue={endDate}/>
+            <Form.Input label="End Date" name='end_date' placeholder="mm/dd/yyyy" type="date" defaultValue={end_date}/>
               <Icon name="wait"></Icon>
-            <Form.Input label="End Time" name="endTime" type="time" placeholder="--:-- --" defaultValue={endTime}/>
+            <Form.Input label="End Time" name="end_time" type="time" placeholder="--:-- --" defaultValue={end_time}/>
             <Form.TextArea label='Reasons' name='reasons' placeholder='Tell us more of the reasons for this change...' />
             <Button color="teal" type='submit'>Submit</Button>
 

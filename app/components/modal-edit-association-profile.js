@@ -12,7 +12,7 @@ export default class ModalEditAssociationProfile extends Component {
 
   render() {
 
-    const { name, initials, location, link, bio } = this.props.associationProfile;
+    const { association_name, initials, room, page_link, bio } = this.props.associationProfile;
 
     const trigger = (
       <Button
@@ -29,10 +29,10 @@ export default class ModalEditAssociationProfile extends Component {
           <Form onSubmit={this.handleSubmit}>
 
 
-            <Form.Input label='Association Name' name='name' placeholder='Association Name' defaultValue={name} />
+            <Form.Input label='Association Name' name='association_name' placeholder='Association Name' defaultValue={association_name} />
             <Form.Input label='Association Initials' name='initials' placeholder='Association Initials' defaultValue={initials} />
             <Form.Select label='Main Office Location' name='location' options={locations} placeholder='Main Office Location' />
-            <Form.Input label='Association Link' name='link' placeholder='Association Link' defaultValue={link} />
+            <Form.Input label='Association Link' name='page_link' placeholder='Association Link' defaultValue={page_link} />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' defaultValue={bio} />
             <Button type='submit'>Submit</Button>
 

@@ -10,42 +10,18 @@ export default class Usignup extends Component {
   handleGenderChange = (e, { value }) => this.setState({ gender: value });
 
   handleSubmit = (e, serializedForm) => {
-    e.preventDefault()
-    this.setState({ serializedForm })
-  }
+    e.preventDefault();
+    const { password, re_password, terms } = serializedForm;
+    if(checkPassword(password, re_password) && terms) {
+      // Send to server...
 
-  checkPasswordLength(string1){
-    var integer = string1.length;
-    if(integer>=8){return true};
-    if(integer < 8){return false};
-  }
-
-  submit (event) {
-    event.preventDefault();
-    if(this.checkPasswordLength(this.state.password)){
-      axios.post('/api/create-student', {
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        age: this.state.age,
-        gender: this.state.gender,
-        hometown: this.state.hometown,
-        college: this.state.college,
-        major: this.state.major,
-        email: this.state.email,
-        password: this.state.password
-      })
-      .then(function (response) {
-        // If successful, go to home page
-        console.log('Success');
-        console.log(response);
-        browserHistory.push('/home');
-      })
-      .catch(function (error) {
-        // Else do nothing
-        console.log('Error');
-        console.log(error);
-      });
     }
+
+    this.setState({ serializedForm });
+  }
+
+  checkPassword(pass, re_pass){
+    return (pass.length >= 8 && re_pass.length >= 8 && pass === re_pass);
   }
 
   render() {
@@ -62,12 +38,12 @@ export default class Usignup extends Component {
         </Header>
         <Segment attached style={{width:"100%"}}>
           <Form onSubmit={this.handleSubmit}>
-            <Form.Input label='First Name' name='firstName' placeholder='First Name'/>
-            <Form.Input label='Last Name' name='lastName' placeholder='Last Name' />
+            <Form.Input label='First Name' name='first_name' placeholder='First Name'/>
+            <Form.Input label='Last Name' name='last_name' placeholder='Last Name' />
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' />
-            <Form.Input label='Re-enter Password' name='rePassword' placeholder='Re-enter Password' type='password' />
-            <Form.Input label='Birthday' name='birthday' placeholder='Birthday' type='date' />
+            <Form.Input label='Re-enter Password' name='re_password' placeholder='Re-enter Password' type='password' />
+            <Form.Input label='Birthday' name='birthdate' placeholder='Birthday' type='date' />
             <Form.Field>
               <label>Gender</label>
               <Form.Group inline>
@@ -81,7 +57,7 @@ export default class Usignup extends Component {
             <Form.Select label='Major' name='major' options={majors} placeholder='Major' />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about you...' />
             <Form.Field>
-              <Checkbox label='I agree to the Terms and Conditions' />
+              <Checkbox name='terms' label='I agree to the Terms and Conditions' />
             </Form.Field>
             <Button animated color="blue"type='submit'>
               <Button.Content visible>

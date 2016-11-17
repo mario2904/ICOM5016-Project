@@ -9,7 +9,7 @@ import ModalEditAssociationProfile from './modal-edit-association-profile';
 
 import axios from 'axios';
 
-import { Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider,Button } from 'semantic-ui-react'
+import { Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider, Button } from 'semantic-ui-react'
 
 const banner = '/images/banner/mountains.png';
 
@@ -108,38 +108,41 @@ export default class ProfileAssociation extends Component{
 
   };
   renderMyCurrentEvents = () => {
-
     return (
-    <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="checked calendar">
-    </Icon>Current Events</strong></h2>
-      <Divider/>
-     <GridList items={this.state.associationInfo.activeEvents} ListItem={EventsListItem}/>
-     </Segment>);
-
+      <Segment style={{borderRadius:0, width:"100%"}}>
+        <h2><strong><Icon size="large"name="checked calendar"></Icon>Current Events</strong></h2>
+        <Divider/>
+        <GridList items={this.state.associationInfo.activeEvents} ListItem={EventsListItem}/>
+      </Segment>
+    );
   };
 
   renderMyPastEvents = () => {
-    return(
-      <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="delete calendar">
-      </Icon>Past Events</strong></h2>
+    return (
+      <Segment style={{borderRadius:0, width:"100%"}}>
+        <h2><strong><Icon size="large" name="delete calendar"></Icon>Past Events</strong></h2>
         <Divider/>
-    <GridList items={this.state.associationInfo.pastEvents} ListItem={EventsListItem}/>
-  </Segment>);
+        <GridList items={this.state.associationInfo.pastEvents} ListItem={EventsListItem}/>
+      </Segment>
+    );
   };
 
   renderSponsors = () => {
-      return(
-        <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large" name="hand spock">
-        </Icon>Sponsors</strong></h2>
-          <Divider/>
-    <GridList items={this.state.associationInfo.sponsors} ListItem={SponsorsListItem}/>
-    </Segment>);
-  };
-
+      return (
+        <Segment style={{borderRadius:0, width:"100%"}}>
+          <h2><strong><Icon size="large" name="hand spock"></Icon>Sponsors</strong></h2>
+          <Divider />
+          <GridList items={this.state.associationInfo.sponsors} ListItem={SponsorsListItem} />
+        </Segment>
+      );
+    };
 
   render(){
-    const { activeItem } = this.state
-
+    const { activeItem } = this.state;
+    // TODO: CHeck in more detail later.
+    if(this.state.associationInfo.followers === undefined) {
+      return null;
+    }
       return (
         <Grid style={{paddingLeft:"100px", paddingRight:"100px",
           backgroundColor:"rgb(247, 247, 247)"}}>
@@ -193,7 +196,6 @@ export default class ProfileAssociation extends Component{
               name='sponsors'
               active={activeItem === 'sponsors'}
               onClick={this.handleItemClick} />
-
          </Menu>
       </Grid.Row>
 
