@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button, Label,
-       Link, Rating} from 'semantic-ui-react';
+       Link, Rating, Statistic} from 'semantic-ui-react';
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
 
@@ -29,7 +29,8 @@ const styles = {
     backgroundImage: `url(${banner})`,
     height:'500px',
     backgroundPosition: 'center',
-    backgroundSize: '100% 100%'
+    backgroundSize: '100% 100%',
+
   },
   menubar: {
     borderRadius: 0
@@ -77,21 +78,21 @@ export default class HomeAssociation extends Component{
 
   renderMyEvents = () => {
     return this.state.events.map((event) => {
-      const { id, name, associationName, startDate, endDate, startTime, endTime, location, image, description } = event;
+      const { event_id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
 
       return (
-      <Grid.Column key={id} mobile={16} tablet={8} computer={6}>
+      <Grid.Column key={event_id} mobile={16} tablet={8} computer={6}>
         <Segment>
           <Label color='black' ribbon><Icon name="user"></Icon>100 followers</Label>
           <Item.Group>
         <Item>
-          <Image size='small' src={image} />
+          <Image size='small' src={image_path} />
           <Content>
-            <h3 style={nameStyle}>{name}</h3>
+            <h3 style={nameStyle}>{event_name}</h3>
             <Meta style={nameStyle}>
-              <span>{associationName}</span>
+              <span>{association_name}</span>
             </Meta>
-            <a href={"/events/" + id}><Button color="blue"><Icon name="write"></Icon>Edit</Button></a>
+            <a href={"/events/" + event_id}><Button color="blue"><Icon name="write"></Icon>Edit</Button></a>
             <Button color="teal"><Icon name="line chart"></Icon>Stats</Button>
             <Rating style={{paddingTop: 10}}icon='star' defaultRating={4} maxRating={5} />
           </Content>
@@ -117,6 +118,12 @@ export default class HomeAssociation extends Component{
       <div>
         <div style={styles.banner}>
           <h2 style={styles.title}>Welcome Back Fellow Association!<Icon size="large" name="smile"></Icon></h2>
+            <Statistic inverted style={{zIndex:1, paddingTop:220, paddingLeft:15}}>
+              <Statistic.Value>
+                <Icon name='user' />100
+        </Statistic.Value>
+        <Statistic.Label>followers</Statistic.Label>
+      </Statistic>
         </div>
         <div>
           <Menu inverted widths={3} pointing style={styles.menubar}>

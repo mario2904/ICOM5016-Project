@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { Form, Grid, Icon,Input, Image } from 'semantic-ui-react';
+import { Form, Grid, Icon,Input, Image, Search, Select } from 'semantic-ui-react';
 import axios from 'axios';
 
 import EventsSearchBar from './events-search-bar';
 import EventsListItem from './events-list-item';
 import GridList from './grid-list';
-
+import _ from 'lodash';
 
 export default class Events extends Component {
   constructor () {
     super();
-    this.state = {events: []};
+    this.state = {events: [], isLoading: false, value: "", results: []};
+
   }
   componentWillMount () {
     const tick = this;
@@ -23,20 +24,101 @@ export default class Events extends Component {
     .catch(function (error) {
       console.log(error);
     });
+
+    axios.get('/api/event')
+
+    this.resetComponent()
   }
+
+
+
+
+
+ resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
+
+  handleChange = (e, result) => this.setState({ value: this.result.event_name })
+
+  handleSearchChange = (e, value) => {
+    this.setState({ isLoading: true, value })
+
+    setTimeout(() => {
+
+      if (this.state.value.length < 1) return this.resetComponent()
+
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+      const isMatch = (result) => re.test(this.result.event_name)
+      this.setState({
+        isLoading: false,
+
+        results: _.filter(this.state.events, isMatch),
+      })
+    }, 500)
+
+  }
+
   render () {
+
     return (
+
       <Grid padded style={{backgroundColor:"rgb(247, 247, 247)"}}centered>
         <Grid.Row style={{padding:"50px 0px 50px 0px"}}>
         <h1 style={{textAlign:"center"}}>
           <Icon color="teal" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
         </Grid.Row>
-        <EventsSearchBar/>
+        <Grid padded style={{padding: 40}}>
+          <Search placeholder='Search by name...'
+           loading={this.isLoading}
+           onChange={this.handleChange}
+           onSearchChange={this.handleSearchChange}
+           results={this.results}
+           value={this.value}/>
+          <Form>
+            <Form.Group>
+              <Form.Field inline control={Select} label='Order by'
+                options={order} placeholder='i.e. Most Popular' />
+              <Form.Field inline control={Select} label='Categories'
+                options={options} placeholder='i.e. Food' />
+            </Form.Group>
+          </Form>
+        </Grid>
+
         <GridList items={this.state.events} ListItem={EventsListItem}/>
       </Grid>
     );
   }
 }
+
+// Add padding to searchbar
+const options = [
+  { text: 'Food', value: 'Food' },
+  { text: 'Music', value: 'Music' },
+  { text: 'Fundraiser', value: 'Fundraiser' },
+  { text: 'Arts', value: 'Arts' },
+  { text: 'Social', value: 'Social' },
+  { text: 'Educational', value: 'Educational' },
+  { text: 'Networking', value: 'Networking' },
+  { text: 'Sport', value: 'Sport' },
+  { text: 'Competition', value: 'Competition' },
+  { text: 'Other', value: 'Other' }];
+
+  const order = [
+    { text: 'Most Popular', value: 'Most Popular' },
+    { text: 'Starting Soon', value: 'Starting Soon' },
+    { text: 'A - Z', value: 'A - Z' },
+    { text: 'Z - A', value: 'Z - A' }];
+
+const style = {
+    padding: "50px"
+};
+
+const searchStyle={
+  margin: "0px 30px 0px 0px"
+};
+
+const txtStyle={
+  padding: "0px 10px 0px 0px"
+}
+
 
 // For testing...
 Events.defaultProps = {
