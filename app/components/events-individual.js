@@ -240,6 +240,8 @@ export default class IndividualEvent extends Component {
   }
 
   render(){
+    if(!this.state.eventInfo.reviews)
+      return null;
     return (
       <div style={styles.background}>
         <Grid padded>
@@ -273,6 +275,7 @@ export default class IndividualEvent extends Component {
           </Grid.Row>
           <Grid.Row style={styles.row}>
             <Grid.Column  computer={11} tablet={11} mobile={16} stretched>
+              { this.state.eventInfo.reviews.length === 0 ? null:
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
                   <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
@@ -289,6 +292,7 @@ export default class IndividualEvent extends Component {
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
+              }
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
                   <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
@@ -300,9 +304,12 @@ export default class IndividualEvent extends Component {
                     </span>
                   </Header>
                   <Segment attached>
+                    { this.state.eventInfo.reviews.length === 0 ?
+                      <span>There are no reviews yet. Be the first one to write a review.</span>:
                     <Comment.Group>
                       {this.renderReviews()}
                     </Comment.Group>
+                    }
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
