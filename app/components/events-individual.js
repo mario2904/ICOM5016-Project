@@ -310,6 +310,11 @@ export default class IndividualEvent extends Component {
                       {this.renderReviews()}
                     </Comment.Group>
                     }
+                    <Form reply onSubmit={e => e.preventDefault()}>
+                      <Form.TextArea />
+                      <Button content='Write a Review' labelPosition='left' icon='edit' primary />
+                      <Rating icon='star'  maxRating={5} />
+                    </Form>
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
