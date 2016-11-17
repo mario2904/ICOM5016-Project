@@ -52,20 +52,20 @@ export default class Home extends Component {
   componentWillMount() {
     const tick = this;
     // Get Events Data to render
-    axios.get('/api/event/all')
+    axios.get('/api/home/events')
     .then(function (response) {
       console.log(response);
-      tick.setState({events: response.data.events})
+      tick.setState({events: response.data})
     })
     .catch(function (error) {
       console.log(error);
     });
 
     // Get Associations Data to render
-    axios.get('/api/association/all')
+    axios.get('/api/home/associations')
     .then(function (response) {
       console.log(response);
-      tick.setState({associations: response.data.associations})
+      tick.setState({associations: response.data})
     })
     .catch(function (error) {
       console.log(error);

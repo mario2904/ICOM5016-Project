@@ -1030,9 +1030,36 @@ app.get('/api/home', (req, res) => {
 
 });
 
-app.get('/api/search', (req, res) => {
+app.get('/api/home/events', (req, res) => {
   console.log(req.params);
-  console.log("REACHED");
+  const id = '1'
+  db1.any("SELECT event_id, event_name,events.association_id, association_name, start_date, end_date, start_time, end_time, room, image_path \
+            FROM interested natural join events natural join images natural join location, associations \
+            WHERE user_id = ${idused} and events.association_id = associations.association_id", {idused: id})
+
+      .then(function (data) {
+        res.json(data);
+      })
+      .catch(function (error) {
+        // error;
+        console.log('Events Info Home Failed')
+      });
+});
+
+app.get('/api/home/associations', (req, res) => {
+  console.log(req.params);
+  const id = '1'
+  db1.any("SELECT association_id, association_name, initials, image_path \
+            FROM followed_associations natural join associations natural join images \
+            WHERE user_id = ${idused}", {idused: id})
+
+      .then(function (data) {
+        res.json(data);
+      })
+      .catch(function (error) {
+        // error;
+        console.log('Events Info Home Failed')
+      });
 });
 
 app.get('/api/search/event/orderby/asc', (req, res) => {
