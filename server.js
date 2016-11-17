@@ -877,7 +877,7 @@ app.get('/api/home', (req, res) => {
 
 });
 
-app.get('/api/home', (req, res) => {
+app.get('/api/search', (req, res) => {
   console.log(req.params);
   console.log("REACHED");
 });
