@@ -138,8 +138,11 @@ export default class ProfileAssociation extends Component{
     };
 
   render(){
-    const { activeItem } = this.state
-
+    const { activeItem } = this.state;
+    // TODO: CHeck in more detail later.
+    if(this.state.associationInfo.followers === undefined) {
+      return null;
+    }
       return (
         <Grid style={{paddingLeft:"100px", paddingRight:"100px",
           backgroundColor:"rgb(247, 247, 247)"}}>
