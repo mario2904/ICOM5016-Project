@@ -882,6 +882,100 @@ app.get('/api/search', (req, res) => {
   console.log("REACHED");
 });
 
+app.get('/api/search/event/orderby/asc', (req, res) => {
+  db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+           FROM events as E, associations as A, images as I, location as L \
+           WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id \
+           ORDER BY event_name asc")
+
+           .then(function(data){
+             // success;
+             console.log(data);
+               // Send Event Information
+               console.log('Success: Get Event Information');
+               res.json({events: data});
+             //console.log(data[0])
+             console.log('worked')
+
+
+           })
+
+         .catch(function (error) {
+           // error;
+           console.log('Updates Info Failed')
+         });
+
+
+  console.log(req.params);
+  console.log("REACHED");
+
+});
+
+app.get('/api/search/event/orderby/desc', (req, res) => {
+  db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+           FROM events as E, associations as A, images as I, location as L \
+           WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id \
+           ORDER BY event_name desc")
+
+           .then(function(data){
+             // success;
+             console.log(data);
+               // Send Event Information
+               console.log('Success: Get Event Information');
+               res.json({events: data});
+             //console.log(data[0])
+             console.log('worked')
+           })
+
+         .catch(function (error) {
+           // error;
+           console.log('Updates Info Failed')
+         });
+
+  console.log(req.params);
+  console.log("REACHED");
+
+});
+
+app.get('/api/search/association/orderby/asc', (req, res) => {
+  db1.any("SELECT association_id, association_name, initials, room, page_link, email, image_path, bio \
+          FROM associations natural join account natural join images natural join location \
+          ORDER BY association_name asc")
+      .then(function (data) {
+          // success;
+
+          // Send All Associations Information
+          console.log('Success: Get All Associations Information');
+          res.json({associations: data})
+          //console.log(data[0])
+          console.log('worked')
+      })
+      .catch(function (error) {
+          // error;
+          console.log('no function')
+      });
+
+});
+
+app.get('/api/search/association/orderby/desc', (req, res) => {
+  db1.any("SELECT association_id, association_name, initials, room, page_link, email, image_path, bio \
+          FROM associations natural join account natural join images natural join location \
+          ORDER BY association_name desc")
+      .then(function (data) {
+          // success;
+          // Send All Associations Information
+          console.log('Success: Get All Associations Information');
+          res.json({associations: data})
+          //console.log(data[0])
+          console.log('worked')
+      })
+      .catch(function (error) {
+          // error;
+          console.log('no function')
+      });
+
+});
+
 // -----------------------------------------------------------------------------
 // Webpack configurations ...
 const isDeveloping = process.env.NODE_ENV !== 'production';
