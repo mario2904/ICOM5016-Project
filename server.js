@@ -877,11 +877,10 @@ app.get('/api/home', (req, res) => {
 
 });
 
-app.get('/api/search', (req, res) => {
+app.get('/api/home', (req, res) => {
   console.log(req.params);
-  consol.log("REACHED")
-}
-
+  console.log("REACHED");
+});
 
 // -----------------------------------------------------------------------------
 // Webpack configurations ...
