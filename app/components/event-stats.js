@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Grid, Input, Item, Select, Header, Image, Segment } from 'semantic-ui-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Sector, Cell, Bar, BarChart } from 'recharts';
+import axios from 'axios';
 
 const styles = {
   column: {
@@ -12,6 +13,7 @@ const styles = {
     paddingBottom: 0
   }
 };
+
 
 const data = [
       {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
@@ -25,14 +27,14 @@ const data = [
 
 
 const ages = [
-  {name: '17', value: 50},
-  {name: '18', value: 20},
-  {name: '19', value: 7},
-  {name: '20', value: 19},
-  {name: '21', value: 14},
-  {name: '22', value: 17},
-  {name: '23', value: 24},
-  {name: '24', value: 26},
+  {name: 17, value: 1},
+  {name: 18, value: 1},
+  {name: 19, value: 1},
+  // {name: '20', value: 19},
+  // {name: '21', value: 14},
+  // {name: '22', value: 17},
+  // {name: '23', value: 24},
+  // {name: '24', value: 26},
   // {name: '25', value: 29},
   // {name: '26', value: 21},
 ];
@@ -172,31 +174,61 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 export default class EventStats extends Component {
+  constructor () {
+    super();
+    this.state = {stats: {}};
+  }
+
+  componentWillMount() {
+    const tick = this;
+    // Get Events Data to render
+    axios.get('/api/event-stats/' + this.props.params.eventID)
+    .then(function (response) {
+      console.log(response);
+      tick.setState({stats: response.data})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+    // Get Associations Data to render
+    axios.get('/api/association/all')
+    .then(function (response) {
+      console.log(response);
+      tick.setState({associations: response.data.associations})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   render() {
+    if(!this.state.stats.general)
+      return null;
+
     return (
       <Grid padded>
         <style type="text/css">
           {hack}
         </style>
         <Header as='h1' style={{marginTop: 10}}>
-          <Image shape='circular' size='medium' src={this.props.image}/>
-          {' '}{this.props.name}
+          <Image shape='rounded' size='medium' src={this.state.stats.general.image_path}/>
+          {' '}{this.state.stats.general.event_name}
         </Header>
         <Grid.Row style={styles.row}>
           <Grid.Column  width={16} style={styles.column}>
-            <Header as='h2' attached='top'>
+            <Header as='h2' attached='top' inverted>
               Interested Students
             </Header>
             <Segment attached>
               <ResponsiveContainer aspect={2}>
-                <LineChart data={data} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-                 <XAxis dataKey="name"/>
+                <LineChart data={this.state.stats.interested} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                 <XAxis dataKey="date"/>
                  <YAxis/>
                  <CartesianGrid strokeDasharray="3 3"/>
                  <Tooltip/>
                  <Legend />
-                 <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}}/>
-                 <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                 <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{r: 8}}/>
                 </LineChart>
               </ResponsiveContainer>
             </Segment>
@@ -204,14 +236,16 @@ export default class EventStats extends Component {
         </Grid.Row>
         <Grid.Row style={styles.row} centered>
           <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column}>
-            <Header as='h2' attached='top'>
+            <Header as='h2' attached='top' inverted>
               Gender
             </Header>
             <Segment attached>
               <ResponsiveContainer aspect={1} >
                 <PieChart >
                   <Pie
-                    data={gender}
+                    data={this.state.stats.genders}
+                    nameKey='gender'
+                    valueKey='count'
                     fill="#8884d8"
                     labelLine={false}
                     label={renderCustomizedLabel}>
@@ -224,14 +258,16 @@ export default class EventStats extends Component {
             </Segment>
           </Grid.Column>
           <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column}>
-            <Header as='h2' attached='top'>
+            <Header as='h2' attached='top' inverted>
               Ages
             </Header>
             <Segment attached >
               <ResponsiveContainer aspect={1} >
                 <PieChart  >
                   <Pie
-                    data={ages}
+                    data={this.state.stats.ages}
+                    nameKey='age'
+                    valueKey='count'
                     fill="#8884d8"
                     labelLine={false}
                     label={renderCustomizedLabel}>
@@ -244,14 +280,16 @@ export default class EventStats extends Component {
             </Segment>
           </Grid.Column>
           <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column}>
-            <Header as='h2' attached='top'>
+            <Header as='h2' attached='top' inverted>
               Hometowns
             </Header>
             <Segment attached >
               <ResponsiveContainer aspect={1} >
                 <PieChart  >
                   <Pie
-                    data={hometowns}
+                    data={this.state.stats.hometowns}
+                    nameKey='hometown'
+                    valueKey='count'
                     fill="#8884d8"
                     labelLine={false}
                     label={renderCustomizedLabel}>
@@ -266,33 +304,33 @@ export default class EventStats extends Component {
         </Grid.Row >
         <Grid.Row stretched style={styles.row}>
           <Grid.Column stretched computer={8} tablet={8} mobile={16} style={styles.column}>
-            <Header as='h2' attached='top'>
+            <Header as='h2' attached='top' inverted>
               Colleges
             </Header>
             <Segment attached>
               <ResponsiveContainer aspect={2} >
-                <BarChart data={colleges}>
-                 <XAxis label="Height" dataKey="name" hide/>
+                <BarChart data={this.state.stats.colleges}>
+                 <XAxis label="Height" dataKey="college" />
                  <YAxis label="Student count"/>
                  <CartesianGrid strokeDasharray="3 3"/>
                  <Tooltip/>
-                 <Bar dataKey="students" fill="#82ca9d" />
+                 <Bar dataKey="count" fill="#82ca9d" />
                 </BarChart>
               </ResponsiveContainer>
             </Segment>
           </Grid.Column>
           <Grid.Column stretched computer={8} tablet={8} mobile={16} style={styles.column}>
-            <Header as='h2' attached='top'>
+            <Header as='h2' attached='top' inverted>
               Majors
             </Header>
             <Segment attached>
               <ResponsiveContainer aspect={2} >
-                <BarChart data={majors}>
-                 <XAxis label="Height" dataKey="name" hide/>
+                <BarChart data={this.state.stats.majors}>
+                 <XAxis label="Height" dataKey="major" />
                  <YAxis label="Student count"/>
                  <CartesianGrid strokeDasharray="3 3"/>
                  <Tooltip/>
-                 <Bar dataKey="students" fill="#82ca9d" />
+                 <Bar dataKey="count" fill="#82ca9d" />
                 </BarChart>
               </ResponsiveContainer>
             </Segment>
@@ -300,14 +338,5 @@ export default class EventStats extends Component {
         </Grid.Row>
       </Grid>
     );
-  }
-}
-
-EventStats.defaultProps = {
-  id: 1,
-  name: 'Event Name',
-  image: 'http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png',
-  stats: {
-
   }
 }

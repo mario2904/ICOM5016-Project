@@ -5,7 +5,7 @@
 # And from: http://askubuntu.com/questions/638725/install-postgres-9-4-on-ubuntu-14-04-2
 
 # Edit the following to change the version of PostgreSQL that is installed
-PG_VERSION=9.4
+PG_VERSION=9.5
 
 # Add PG apt repo:
 PG_REPO_APT_SOURCE=/etc/apt/sources.list.d/pgdg.list
