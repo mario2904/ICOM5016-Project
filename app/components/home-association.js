@@ -127,13 +127,13 @@ export default class HomeAssociation extends Component{
           <div style={styles.followers}>
             <Statistic size='huge' inverted>
               <Statistic.Label>Followers</Statistic.Label>
-              <Statistic.Value>40,509</Statistic.Value>
+              <Statistic.Value><Icon name="user"></Icon> 1,509</Statistic.Value>
             </Statistic>
           </div>
 
         </div>
         <div>
-          <Menu inverted widths={3} pointing style={styles.menubar}>
+          <Menu inverted widths={2} pointing style={styles.menubar}>
             <Menu.Item
               name='news feed'
               icon='feed'
@@ -143,11 +143,6 @@ export default class HomeAssociation extends Component{
               name='events'
               icon='calendar'
               active={activeItem === 'events'}
-              onClick={this.handleItemClick} />
-            <Menu.Item
-              name='associations'
-              icon='university'
-              active={activeItem === 'associations'}
               onClick={this.handleItemClick} />
           </Menu>
           <Segment style={{backgroundColor:"rgb(247, 247, 247)"}} padded>
