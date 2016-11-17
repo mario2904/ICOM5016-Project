@@ -321,8 +321,8 @@ app.get('/api/student/:id', (req, res) => {
   // TODO: Check if it is in the db...
   const responseDB = {};
   //
-  db1.one("SELECT first_name, last_name, gender, hometown, college, major, image_path, bio \
-            FROM students natural join account natural join images \
+  db1.one("SELECT first_name, last_name, gender, hometown, college, major, image_path, bio, email \
+            FROM students natural join account natural join images natural join accout \
             WHERE user_id = ${idused}", {idused: id})
       .then(function (data) {
           // success;
@@ -339,7 +339,7 @@ app.get('/api/student/:id', (req, res) => {
                       .then(function (data) {
                           // success;
                           responseDB.followedAssociations = data;
-                          const { first_name, last_name, gender, hometown, college, major, image_path, bio } = responseDB.eventInfo;
+                          const { first_name, last_name, gender, hometown, college, major, image_path, bio, email } = responseDB.eventInfo;
                           const response = {
                             first_name,
                             last_name,
@@ -349,6 +349,7 @@ app.get('/api/student/:id', (req, res) => {
                             major,
                             image_path,
                             bio,
+                            email,
                             interestedEvents: responseDB.interestedEvents,
                             followedAssociations: responseDB.followedAssociations
                           };
