@@ -322,7 +322,7 @@ app.get('/api/student/:id', (req, res) => {
   const responseDB = {};
   //
   db1.one("SELECT first_name, last_name, gender, hometown, college, major, image_path, bio, email \
-            FROM students natural join account natural join images natural join accout \
+            FROM students natural join account natural join images \
             WHERE user_id = ${idused}", {idused: id})
       .then(function (data) {
           // success;
