@@ -25,35 +25,6 @@ export default class Events extends Component {
       console.log(error);
     });
 
-    axios.get('/api/event')
-
-    this.resetComponent()
-  }
-
-
-
-
-
- resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
-
-  handleChange = (e, result) => this.setState({ value: this.result.event_name })
-
-  handleSearchChange = (e, value) => {
-    this.setState({ isLoading: true, value })
-
-    setTimeout(() => {
-
-      if (this.state.value.length < 1) return this.resetComponent()
-
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = (result) => re.test(this.result.event_name)
-      this.setState({
-        isLoading: false,
-
-        results: _.filter(this.state.events, isMatch),
-      })
-    }, 500)
-
   }
 
   render () {
@@ -66,12 +37,7 @@ export default class Events extends Component {
           <Icon color="teal" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
         </Grid.Row>
         <Grid padded style={{padding: 40}}>
-          <Search placeholder='Search by name...'
-           loading={this.isLoading}
-           onChange={this.handleChange}
-           onSearchChange={this.handleSearchChange}
-           results={this.results}
-           value={this.value}/>
+          <Input  action={{ icon: 'search'}} placeholder='Search by name...' />
           <Form>
             <Form.Group>
               <Form.Field inline control={Select} label='Order by'
@@ -81,7 +47,6 @@ export default class Events extends Component {
             </Form.Group>
           </Form>
         </Grid>
-
         <GridList items={this.state.events} ListItem={EventsListItem}/>
       </Grid>
     );

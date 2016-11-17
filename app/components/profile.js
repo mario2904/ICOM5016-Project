@@ -3,6 +3,7 @@ import Associations from "./associations";
 import GridList from "./grid-list";
 import AssociationsListItem from './associations-list-item';
 import EventsListItem from './events-list-item';
+import ModalEditStudentProfile from './modal-edit-student-profile'
 import axios from 'axios';
 
 import { Form, Grid, Icon, Input, Image, Segment, Item, Menu, Divider } from 'semantic-ui-react';
@@ -25,7 +26,7 @@ export default class Profile extends Component{
     axios.get('/api/student/'+this.props.params.userID)
     .then(function (response) {
       console.log(response);
-  
+
       // const temp = response.data;
       // profileInfo.first_name = temp.first_name;
 
@@ -98,7 +99,10 @@ export default class Profile extends Component{
 
           <Grid.Row style={{paddingBottom:0}}>
           <Segment style={{borderRadius:0, width:"100%"}}>
-            <h1><strong>{this.state.profileInfo.first_name + " "+ this.state.profileInfo.last_name}</strong></h1>
+            <h1 style={{display:"inline",verticalAlign: 'middle'}}><strong>
+              {this.state.profileInfo.first_name + " "+ this.state.profileInfo.last_name} </strong></h1>
+            <div style={{display:"inline",verticalAlign: 'middle'}}>
+            <ModalEditStudentProfile studentProfile={this.state.profileInfo}> </ModalEditStudentProfile></div>
           </Segment>
           </Grid.Row>
 
