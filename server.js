@@ -805,6 +805,158 @@ app.get('/api/sponsors/:id', (req, res) => {
 });
 
 
+// GET - Event stats
+// response:
+//    [] genders
+//        {gender: string, count: int}
+//    [] ages
+//        {age: int, count: int}
+//    [] hometowns
+//        {hometown: string, count: int}
+//    [] colleges
+//        {college: string, count: int}
+//    [] majors
+//        {major: string, count: int}
+//    [] interested
+//        {date: 'time stamp', count: int}
+//    {} general
+//        event_name: string
+//        image_path: string
+//
+app.get('/api/event-stats/:id', (req, res) => {
+  console.log(req.params);
+  // Destructure params
+  const { id } = req.params;
+  const response = {};
+
+  // Get Colleges
+  db1.any(`
+    SELECT college, count(*)
+    FROM students natural join interested
+    WHERE event_id = $[idused]
+    GROUP BY college;`, {idused: id})
+    .then(function(data) {
+      // Change count type. From string to int
+      data.forEach(obj => obj.count = +obj.count);
+
+      console.log(data);
+      response.colleges = data;
+
+      // Get Majors
+      db1.any(`
+        SELECT major, count(*)
+        FROM students natural join interested
+        WHERE event_id = $[idused]
+        GROUP BY major`, {idused: id})
+      .then(function(data) {
+        // Change count type. From string to int
+        data.forEach(obj => obj.count = +obj.count);
+
+        console.log(data);
+        response.majors = data;
+
+        // Get Genders
+        db1.any(`
+          SELECT gender, count(*)
+          FROM students natural join interested
+          WHERE event_id = $[idused]
+          GROUP BY gender`, {idused: id})
+        .then(function(data) {
+          // Change count type. From string to int
+          data.forEach(obj => obj.count = +obj.count);
+
+          console.log(data);
+          response.genders = data;
+
+          // Get Hometowns
+          db1.any(`
+            SELECT hometown, count(*)
+            FROM students natural join interested
+            WHERE event_id = $[idused]
+            GROUP BY hometown`, {idused: id})
+          .then(function(data) {
+            // Change count type. From string to int
+            data.forEach(obj => obj.count = +obj.count);
+
+            console.log(data);
+            response.hometowns = data;
+
+            // Get Ages
+            db1.any(`
+              SELECT date_part('year', age(birthdate)) as age, count(*)
+              FROM students natural join interested
+              WHERE event_id = $[idused]
+              GROUP BY date_part('year', age(birthdate));`, {idused: id})
+            .then(function(data) {
+              // Change count type. From string to int
+              data.forEach(obj => obj.count = +obj.count);
+
+              console.log(data);
+              response.ages = data;
+
+              // GET interested
+              db1.any(`
+                SELECT stat_date as date, interested_count as count
+                FROM event_stats
+                WHERE event_id = $[idused]
+                ORDER BY stat_date`, {idused: id})
+              .then(function(data) {
+                // Change count type. From string to int
+                data.forEach(obj => obj.count = +obj.count);
+
+                console.log(data);
+                response.interested = data;
+
+                db1.one(`
+                  SELECT event_name, image_path
+                  FROM events natural join images
+                  WHERE event_id = $[idused]`, {idused: id})
+                .then(function(data) {
+                  console.log(data);
+                  response.general = data;
+
+                  // Send Event Information
+                  console.log('Success: Get Event Stats');
+                  res.json(response);
+                })
+                .catch(function(error) {
+                  // error;
+                  console.log('Event Stats: image_path and event_name failed.');
+                });
+              })
+              .catch(function(error) {
+                // error;
+                console.log('Event Stats: interested failed.');
+              });
+            })
+            .catch(function(error) {
+              // error;
+              console.log('Event Stats: ages failed.');
+            });
+          })
+          .catch(function(error) {
+            // error;
+            console.log('Event Stats: hometowns failed.');
+          });
+        })
+        .catch(function(error) {
+          // error;
+          console.log('Event Stats: genders failed.');
+        });
+      })
+      .catch(function(error) {
+        // error;
+        console.log('Event Stats: majors failed.');
+      });
+    })
+    .catch(function (error) {
+      // error;
+      console.log('Event Stats: colleges failed.');
+    });
+
+});
+
+
 app.get('/api/home', (req, res) => {
   console.log(req.params);
   const id = '1';
@@ -814,7 +966,7 @@ app.get('/api/home', (req, res) => {
             WHERE E.association_id = A.association_id and FA.association_id = E.association_id and FA.user_id = S.user_id and S.user_id = ${idused} \
             ORDER BY time_stamp DESC', {idused: id})
       .then(function (data) {
-        responseDB.eventsCreated = data
+        responseDB.eventsCreated = data;
 
         db1.any("SELECT E.event_id, E.event_name, E.association_id, notification_name, notification_text, date_sent, image_path \
                   FROM notifications as N, events as E, (associations as A natural join images), followed_associations as FA \
