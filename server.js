@@ -383,24 +383,8 @@ app.get('/api/student/:id', (req, res) => {
 
 
 
-
-
-
-
-
-
-  // Check if it is in the Testing db
-  // const student = db.student[id];
   // if (student === undefined)
-  //   return res.status(400).send('Error: Student not found in the DB.');
-  // Destructure student information
-
-  // TODO: Get extra information from the db
-  //
-  // Get extra information from the Testing db (other tables)
-  const interestedEvents = db.interestedEvents[id];
-  const followedAssociations = db.followedAssociations[id];
-
+  //   return res.status(400).send('Error: Student not found in the DB.')
 
 });
 
@@ -434,11 +418,6 @@ app.get('/api/association/all', (req, res) => {
               //
               // Get extra information from the Testing db (other tables)
 
-
-              // const sponsors = db.associationSponsors[id];
-              // const activeEvents = db.activeEvents[id];
-              // const pastEvents = db.pastEvents[id];
-              // const followers = db.followers[id];
 
               const singleAssociation = {
 
@@ -642,7 +621,6 @@ app.get('/api/event/all', (req, res) => {
           // error;
           console.log('no function')
       });
-
 });
 
 // GET - Event Information
@@ -827,6 +805,82 @@ app.get('/api/sponsors/:id', (req, res) => {
 });
 
 
+app.get('/api/home', (req, res) => {
+  console.log(req.params);
+  const id = '1';
+  const responseDB = {};
+  db1.any('SELECT event_id, event_name, association_name, time_stamp, image_path \
+            FROM associations as A, (events as E natural join images), followed_associations as FA, students as S \
+            WHERE E.association_id = A.association_id and FA.association_id = E.association_id and FA.user_id = S.user_id and S.user_id = ${idused} \
+            ORDER BY time_stamp DESC', {idused: id})
+      .then(function (data) {
+        responseDB.eventsCreated = data
+
+        db1.any("SELECT E.event_id, E.event_name, E.association_id, notification_name, notification_text, date_sent, image_path \
+                  FROM notifications as N, events as E, (associations as A natural join images), followed_associations as FA \
+                  WHERE N.event_id = E.event_id and A.association_id = E.association_id and A.association_id = FA.association_id and user_id = ${idused} \
+                  ORDER BY date_sent DESC", {idused: id})
+            .then(function (data) {
+            responseDB.updates = data;
+            console.log(data);
+            const response =[];
+            //breakdown for events
+            for (let i = 0; i<responseDB.eventsCreated.length;i++) {
+
+                // Destructure DB information
+                const { event_id, event_name, association_name, time_stamp, image_path } = responseDB.eventsCreated[i];
+                const summary = association_name + " has created a new event: ";
+                const extraText = event_name;
+                const singleEvent = {
+
+                  image: image_path,
+                  summary,
+                  date: time_stamp,
+                  extraText
+                }
+
+                response.push(singleEvent);
+            }
+
+            for (let i = 0; i<responseDB.updates.length;i++) {
+
+                // Destructure DB information
+                const { event_id, event_name, association_id, notification_name, notification_text,date_sent, image_path } = responseDB.updates[i];
+                const summary = event_name + " has a new update: ";
+                const extraText = notification_text;
+                const singleUpdate = {
+
+                  image: image_path,
+                  summary,
+                  date: date_sent,
+                  extraText
+                }
+
+                response.push(singleUpdate);
+            }
+
+            res.json(response);
+
+            })
+            .catch(function (error) {
+              // error;
+              console.log('Updates Info Failed')
+            });
+
+
+
+      })
+      .catch(function (error) {
+        // error;
+        console.log('Events Created Info Failed')
+      });
+
+});
+
+app.get('/api/search', (req, res) => {
+  console.log(req.params);
+  consol.log("REACHED")
+}
 
 
 // -----------------------------------------------------------------------------

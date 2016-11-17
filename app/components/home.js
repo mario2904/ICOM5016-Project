@@ -69,6 +69,15 @@ export default class Home extends Component {
     .catch(function (error) {
       console.log(error);
     });
+
+    axios.get('/api/home')
+    .then(function (response) {
+      console.log(response);
+      tick.setState({newsFeed: response.data})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -98,7 +107,7 @@ export default class Home extends Component {
 
   }
 
-  renderMyFeeds = () => <Feed events={this.props.feeds} />;
+  renderMyFeeds = () => <Feed events={this.state.newsFeed} />;
 
   render () {
     const { activeItem } = this.state;
