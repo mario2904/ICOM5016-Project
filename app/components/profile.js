@@ -107,7 +107,7 @@ export default class Profile extends Component{
           </Grid.Row>
 
           <Grid.Row style={{paddingTop: 0}}>
-            <Menu inverted fluid pointing widths={4} style={{borderRadius: 0}}>
+            <Menu inverted fluid pointing widths={3} style={{borderRadius: 0}}>
                <Menu.Item icon="info circle"
                  name='about'
                  active={activeItem === 'about'}
@@ -118,10 +118,6 @@ export default class Profile extends Component{
                <Menu.Item icon="calendar"
                  name='myEvents'
                  active={activeItem === 'myEvents'}
-                 onClick={this.handleItemClick} />
-               <Menu.Item icon="write"
-                 name='edit profile'
-                 active={activeItem === 'edit profile'}
                  onClick={this.handleItemClick} />
             </Menu>
          </Grid.Row>
