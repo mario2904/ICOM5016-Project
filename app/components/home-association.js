@@ -69,10 +69,10 @@ export default class HomeAssociation extends Component{
     });
 
     // Get Associations Data to render
-    axios.get('/api/association/all')
+    axios.get('/api/home-associations/reviews')
     .then(function (response) {
       console.log(response);
-      tick.setState({associations: response.data.associations})
+      tick.setState({newsFeed: response.data})
     })
     .catch(function (error) {
       console.log(error);
@@ -87,7 +87,7 @@ export default class HomeAssociation extends Component{
       const { event_id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
 
       return (
-      <Grid.Column key={event_id} mobile={16} tablet={8} computer={6}>
+      <Grid.Column key={event_id} mobile={16} tablet={8} computer={8}>
         <Segment>
           <Label color='black' ribbon><Icon name="user"></Icon>100 followers</Label>
           <Item.Group>
@@ -98,7 +98,7 @@ export default class HomeAssociation extends Component{
             <Meta style={nameStyle}>
               <span>{association_name}</span>
             </Meta>
-            <a href={"/events/" + event_id}><Button color="blue"><Icon name="write"></Icon>Edit</Button></a>
+            <a href={"/events/" + event_id}><Button color="blue"><Icon name="linkify"></Icon>See more</Button></a>
             <Button as={Link} to={'event-stats/' + event_id} color="teal"><Icon name="line chart"></Icon>Stats</Button>
             <Rating style={{paddingTop: 10}}icon='star' defaultRating={4} maxRating={5} />
           </Content>
@@ -115,7 +115,7 @@ export default class HomeAssociation extends Component{
 
   }
 
-  renderMyFeeds = () => <Feed events={this.props.feeds} />;
+  renderMyFeeds = () => <Feed events={this.state.newsFeed} />;
 
   render () {
     const { activeItem } = this.state;
@@ -147,7 +147,7 @@ export default class HomeAssociation extends Component{
               onClick={this.handleItemClick} />
           </Menu>
           <Segment style={{backgroundColor:"rgb(247, 247, 247)"}} padded>
-            {(this.state.activeItem === 'events') ? <Grid divided>{this.renderMyEvents()}</Grid>: null}
+            {(this.state.activeItem === 'events') ? <Grid padded>{this.renderMyEvents()}</Grid>: null}
             {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
             {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
           </Segment>
