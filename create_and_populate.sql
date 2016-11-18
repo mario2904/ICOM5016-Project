@@ -5,7 +5,7 @@
 -- Dumped from database version 9.4.10
 -- Dumped by pg_dump version 9.5.4
 
--- Started on 2016-11-16 22:18:11 AST
+-- Started on 2016-11-17 23:19:09 AST
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -73,8 +73,8 @@ CREATE TABLE account (
     account_id integer NOT NULL,
     email character varying(35) NOT NULL,
     password character varying(20) NOT NULL,
-    date_created character varying(30) NOT NULL,
-    receive_notifications character varying(5)
+    receive_notifications character varying(5),
+    date_created timestamp without time zone
 );
 
 
@@ -154,8 +154,8 @@ CREATE TABLE associations (
     initials character varying(10) NOT NULL,
     bio character varying(400),
     account_id bigint NOT NULL,
-    location_id bigint NOT NULL,
-    image_id bigint NOT NULL
+    location_id bigint,
+    image_id bigint
 );
 
 
@@ -841,12 +841,18 @@ ALTER TABLE ONLY transactions ALTER COLUMN transaction_id SET DEFAULT nextval('t
 -- Data for Name: account; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY account (account_id, email, password, date_created, receive_notifications) FROM stdin;
-1	shpe@upr.edu	password	today	no
-2	wie@uprm.edu	password1	today	no
-3	graciany.lebron@upr.edu	password12	today	no
-5	carlos.ojeda4@upr.edu	qwerty	today	no
-4	mario.orbegoso@upr.edu	password123	today	no
+COPY account (account_id, email, password, receive_notifications, date_created) FROM stdin;
+1	shpe@upr.edu	password	no	2016-11-16 00:00:00
+2	wie@uprm.edu	password1	no	1992-01-31 00:00:00
+3	graciany.lebron@upr.edu	password12	no	2016-11-17 00:00:00
+4	mario.orbegoso@upr.edu	password123	no	2016-11-17 00:00:00
+5	carlos.ojeda4@upr.edu	qwerty	no	2016-11-17 00:00:00
+6	kevin.hart@upr.edu	harambe	no	2016-11-17 00:00:00
+7	therock@upr.edu	thepebble	no	2016-11-17 00:00:00
+8	ip@upr.edu	ipRocks	no	2016-11-17 00:00:00
+9	ieee@upr.edu	password	no	2016-11-17 00:00:00
+10	swe@upr.edu	passwd	no	2016-11-17 00:00:00
+11	emmawatson@upr.edu	harrypotter	yes	2016-11-17 00:00:00
 \.
 
 
@@ -856,7 +862,7 @@ COPY account (account_id, email, password, date_created, receive_notifications) 
 -- Name: account_accountid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('account_accountid_seq', 5, true);
+SELECT pg_catalog.setval('account_accountid_seq', 11, true);
 
 
 --
@@ -867,6 +873,22 @@ SELECT pg_catalog.setval('account_accountid_seq', 5, true);
 
 COPY association_sponsors (asp_id, association_id, sponsor_id) FROM stdin;
 1	1	1
+2	1	3
+3	1	7
+4	2	10
+5	2	8
+6	2	9
+7	2	4
+8	3	1
+9	3	2
+10	4	6
+11	4	2
+12	4	10
+13	5	1
+14	5	3
+15	5	5
+17	5	9
+16	5	7
 \.
 
 
@@ -876,7 +898,7 @@ COPY association_sponsors (asp_id, association_id, sponsor_id) FROM stdin;
 -- Name: association_sponsors_asp_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('association_sponsors_asp_id_seq', 1, true);
+SELECT pg_catalog.setval('association_sponsors_asp_id_seq', 17, true);
 
 
 --
@@ -888,6 +910,9 @@ SELECT pg_catalog.setval('association_sponsors_asp_id_seq', 1, true);
 COPY associations (association_id, association_name, page_link, initials, bio, account_id, location_id, image_id) FROM stdin;
 1	Society of Hispanic Professional Engineers	http://shpeuprm.tumblr.com/	SHPE	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \\\rdo eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad \\\rminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex\\\rea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate \\\rvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\\\rcupidatat non proident, sunt	1	1	1
 2	IEEE Women in Engineering - UPRM	http://wie.uprm.edu/	WIE	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \\\rdo eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad \\\rminim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex\\\rea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate \\\rvelit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\\\rcupidatat non proident, sunt	2	2	2
+3	Idea Platform	google.com	IP	We are Idea Platfrom	8	6	21
+4	Institute of Electrical and Electronics Engineers	ieee.org	IEEE	IEEE!!!!!!	9	7	22
+5	Society of Women in Engineering	google.com	SWE	P-P-Power!	10	8	23
 \.
 
 
@@ -897,7 +922,7 @@ COPY associations (association_id, association_name, page_link, initials, bio, a
 -- Name: associations_associationid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('associations_associationid_seq', 4, true);
+SELECT pg_catalog.setval('associations_associationid_seq', 9, true);
 
 
 --
@@ -954,8 +979,12 @@ SELECT pg_catalog.setval('event_stats_stat_id_seq', 1, false);
 --
 
 COPY events (event_id, association_id, event_name, is_live, category, entrance_fee, location_id, registration_link, description, image_id, start_date, end_date, end_time, start_time, time_stamp) FROM stdin;
-2	1	Haunted SHPE	yes	...	\N	2	https://www.youtube.com/watch?v=dQw4w9WgXcQ	Join us and have a bewitching time with SHPE RUM	7	Oct. 31, 2016	Oct. 27, 2016	9:00 pm	6:00 pm	2016-11-16 00:00:00
+6	5	Movie Night: Dr. Strange	yes	\N	\N	7	swe.uprm.edu	SWEblings, queremos informarles que el "Movie Night" que estaba pautado para HOY a las 6:00 pm ha sido movido a las 9:00pm. Se realizó el cambio debido a que muchas personas tenían examen o clase a la hora antes anunciada. Disculpen los inconvenientes, tratamos de llegar a un acuerdo que beneficiara a la mayoria.\rLa película sigue siendo "Dr. Strange" y empieza a las 9:10pm.\r¡Los esperamos!\rNos encontraremos a las 9:00pm en la entrada del cine. Aquellos que estén interesados favor de confirmar a	27	Nov. 17, 2016	Nov. 17, 2016	12:00 am	9:00 pm	2016-11-17 00:00:00
 1	1	Development Programs Assembly	yes	Professional De	\N	1	https://www.youtube.com/watch?v=dQw4w9WgXcQ	The Society of Hispanic Professional Engineers (SHPE) invites you to our Development Programs Assembly! Learn about our different professional growth programs: The Career Prep Program, the InternSHPE Program, and Technical Program. All offer great and unique opportunities to become a better leader, professional, and student. Do not miss this opportunity!	3	Oct. 27, 2016	Oct. 27, 2016	12:00 pm	10:30 am	2016-11-17 00:00:00
+2	1	Haunted SHPE	no	...	\N	2	https://www.youtube.com/watch?v=dQw4w9WgXcQ	Join us and have a bewitching time with SHPE RUM	7	Oct. 31, 2016	Oct. 27, 2016	9:00 pm	6:00 pm	2016-11-16 00:00:00
+3	3	¿Quieres Ganar un Hackathon?	no	...	\N	3	https://www.youtube.com/watch?v=dQw4w9WgXcQ	HACKATHON	24	Oct. 11, 2016	Oct. 11, 2016	10:30 am	3:00 pm	2016-11-17 00:00:00
+4	3	Smash Bros. Tournament	yes	\N	\N	5	google.com	Let's get ready to RUMBLE!!!	25	Nov 20, 2016	Nov 20, 2016	10:30 am	1:00 pm	2016-11-18 00:00:00
+5	4	Circuits Lab Workshop	yes	\N	\N	6	google.com	Learn to Circuit	26	Dec. 14, 2016	Dec, 14, 2016	6:00 pm	8:00 pm	2016-11-16 00:00:00
 \.
 
 
@@ -993,7 +1022,7 @@ SELECT pg_catalog.setval('events_categories_ec_id_seq', 9, true);
 -- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('events_event_id_seq', 2, true);
+SELECT pg_catalog.setval('events_event_id_seq', 6, true);
 
 
 --
@@ -1007,6 +1036,13 @@ COPY followed_associations (fe_id, association_id, user_id) FROM stdin;
 2	2	1
 3	2	2
 4	1	3
+5	3	2
+6	5	6
+7	5	5
+8	4	1
+9	4	2
+10	3	6
+11	4	6
 \.
 
 
@@ -1016,7 +1052,7 @@ COPY followed_associations (fe_id, association_id, user_id) FROM stdin;
 -- Name: followed_associations_fe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('followed_associations_fe_id_seq', 4, true);
+SELECT pg_catalog.setval('followed_associations_fe_id_seq', 11, true);
 
 
 --
@@ -1026,14 +1062,33 @@ SELECT pg_catalog.setval('followed_associations_fe_id_seq', 4, true);
 --
 
 COPY images (image_id, image_name, image_path) FROM stdin;
+10	Spotify Lofo	https://developer.spotify.com/wp-content/uploads/2014/06/spotify-design.png
 1	SHPE Profile	https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1511592_794103793953169_1204815244615871931_n.png?oh=055f9de551f64f95a901ff880a6c5126&oe=58A573F7
 2	WIE Profile	https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/1620402_678979328807039_689288368_n.png?oh=c6adf4b93a16348fba226e12967c533e&oe=58745346
 3	SHPE event 1	https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14615698_1275776692452541_7398254866605758402_o.jpg
 4	Carlos Profile Image	http://2.bp.blogspot.com/-TfzSOP07oIk/VmNGMNJHwlI/AAAAAAAAAyc/vH8J3jD83ks/s1600/kevin-hart-waiting-face.jpg
-5	Mario Profile Image	http://4.bp.blogspot.com/-ygOsFPhxgdQ/VmNGLqQ5NLI/AAAAAAAAAyQ/jUW_798PhOU/s1600/kevin-hart-funny-faces.jpg
 6	Grciany Profile Image	http://orig04.deviantart.net/aded/f/2013/066/c/2/profile_picture_by_naivety_stock-d5x8lbn.jpg
 7	Haunted SHPE	https://scontent-atl3-1.xx.fbcdn.net/v/t1.0-9/14729161_1293791687317708_1785303248482865028_n.jpg?oh=31fb82748c19c1755c99f68dcb8da464&oe=58C4A084
 8	Verizon Logo	https://cdn0.vox-cdn.com/thumbor/zL414AMfclnMcwL59xa3ZTXrcDw=/3x0:1418x796/1600x900/cdn0.vox-cdn.com/uploads/chorus_image/image/47080648/Screen_Shot_2015-09-02_at_2.20.55_pm.0.0.png
+26	Circuits Lab	https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14543654_1328305037188137_8919927744200733943_o.png
+25	Smash Bro.	http://1u88jj3r4db2x4txp44yqfj1.wpengine.netdna-cdn.com/wp-content/uploads/2016/03/smashmelee.jpg
+24	Ganar Hackathon	https://scontent-mia1-1.xx.fbcdn.net/t31.0-8/14701042_887235714711763_1763279942730887759_o.jpg
+23	SWE Profile	https://scontent-mia1-2.xx.fbcdn.net/v/t1.0-9/12037936_1099401136737560_1578635137948238899_n.jpg?oh=18a7d0543739ffc4120a5974ebfc7162&oe=588B9FC4
+22	IEEE Profile	http://wie.uprm.edu/uploads/2/2/5/5/22558810/3691683_orig.jpg
+21	IP Profile	https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/11075167_628822830553054_4682981240345315035_n.png?oh=8c50c6447d46bf9d6a4d61f8974cf279&oe=58A3632B
+20	EW Profile	http://img.memecdn.com/emma-watson--quot-the-more-people-can-wonder-quot_o_1215827.jpg
+19	DJ Profile	https://pbs.twimg.com/media/BsrkPu2CUAEWSqY.jpg
+18	KH Profile	http://4.bp.blogspot.com/-ygOsFPhxgdQ/VmNGLqQ5NLI/AAAAAAAAAyQ/jUW_798PhOU/s1600/kevin-hart-funny-faces.jpg
+5	Mario Profile Image	https://s-media-cache-ak0.pinimg.com/564x/0e/07/0e/0e070edc7e2aa03fd15645f4a1b9ba32.jpg
+17	GM Logo	https://upload.wikimedia.org/wikipedia/en/b/b6/GM,_logo.png
+16	General Electric Logo	http://cdn-0.famouslogos.us/images/general-electric-logo.jpg
+15	UPRM Logo	http://www.uprm.edu/wdt/resources/portico1.gif
+14	Lockheed Logo	http://www.pngpix.com/wp-content/uploads/2016/07/PNGPIX-COM-Lockheed-Martin-Logo-PNG-Transparent-2.png
+13	Boeing Logo	http://1.bp.blogspot.com/-kLHu6zQLfMw/TdQxwBU2jfI/AAAAAAAAUB4/ZSbrhaHqmGA/s1600/boeing_Logo_10.jpg
+12	Exxon Mobile Logo	http://www.ieyenews.com/wordpress/wp-content/uploads/2016/08/exxon-mobil.jpg
+11	Chevron Logo	http://troutlakewashington.com/wp-content/uploads/ChevronLogo.png
+9	Harris Logo	https://static1.squarespace.com/static/53752262e4b0acdd68de7377/t/53869050e4b0149a746ccec3/1401327703838/Harris+Logo.png
+27	Movie Night: Dr.Strange	https://upload.wikimedia.org/wikipedia/en/0/0a/Benedict_Cumberbatch_as_Doctor_Strange.jpg
 \.
 
 
@@ -1043,7 +1098,7 @@ COPY images (image_id, image_name, image_path) FROM stdin;
 -- Name: images_image_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('images_image_id_seq', 10, true);
+SELECT pg_catalog.setval('images_image_id_seq', 29, true);
 
 
 --
@@ -1058,6 +1113,14 @@ COPY interested (event_id, user_id, interested_id) FROM stdin;
 1	3	3
 2	1	4
 2	2	5
+3	6	7
+6	5	8
+4	3	9
+4	5	10
+6	1	11
+6	2	12
+5	4	13
+5	3	14
 \.
 
 
@@ -1067,7 +1130,7 @@ COPY interested (event_id, user_id, interested_id) FROM stdin;
 -- Name: interested_interested_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('interested_interested_id_seq', 6, true);
+SELECT pg_catalog.setval('interested_interested_id_seq', 14, true);
 
 
 --
@@ -1079,6 +1142,12 @@ SELECT pg_catalog.setval('interested_interested_id_seq', 6, true);
 COPY location (location_id, room, building, city) FROM stdin;
 1	S113	Stefani	Mayaguez
 2	S229	Stefani	Mayaguez
+3	Faccio	Faccio	Mayaguez
+4	RC	Roberto Clemente	San Juan
+5	CC	Centro de Convenciones	San Juan
+6	CE-305	Centro de Estudiantes	Mayaguez
+7	S307	Stefani	Mayaguez
+8	Q308	Quimica	Mayaguez
 \.
 
 
@@ -1088,7 +1157,7 @@ COPY location (location_id, room, building, city) FROM stdin;
 -- Name: location_locationid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('location_locationid_seq', 2, true);
+SELECT pg_catalog.setval('location_locationid_seq', 10, true);
 
 
 --
@@ -1141,6 +1210,15 @@ SELECT pg_catalog.setval('review_review_id_seq', 2, true);
 
 COPY sponsors (sponsor_id, sponsor_name, page_link, image_id) FROM stdin;
 1	Verizon	verizon.com	8
+2	Spotify	spotify.com	10
+3	Chevron	chevron.com	11
+4	Exxon Mobile	exxonmobile.com	12
+5	Boeing	boeing.com	13
+6	Harris	harris.com	9
+7	Lockheed Martin	lockheedmartin.com	14
+8	UPRM	upmr.edu	15
+9	General Electric	ge.com	16
+10	General Motors	gm.com	17
 \.
 
 
@@ -1150,7 +1228,7 @@ COPY sponsors (sponsor_id, sponsor_name, page_link, image_id) FROM stdin;
 -- Name: sponsors_sponsorid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('sponsors_sponsorid_seq', 3, true);
+SELECT pg_catalog.setval('sponsors_sponsorid_seq', 11, true);
 
 
 --
@@ -1162,7 +1240,10 @@ SELECT pg_catalog.setval('sponsors_sponsorid_seq', 3, true);
 COPY students (user_id, first_name, last_name, hometown, college, major, gender, bio, birthdate, account_id, image_id) FROM stdin;
 1	Carlos	Ojeda	San Juan	Universidad de Puerto Rico - Mayaguez	ICOM	Male	HELLO MY NAME IS CARLOS	1992-01-31	5	4
 3	Graciany 	Lebron	Bayamon	Universidad de Puerto Rico - Mayaguez	ICOM	Male	HELLO MY NAME IS GRACIANY	1955-01-29	3	6
-2	Mario	Orbegoso	Trujillo Alto	Universidad de Puerto Rico - Mayaguez	ICOM	Male	HELLO MY NAME IS MARIO	2055-01-22	4	5
+2	Mario	Orbegoso	Trujillo Alto	Universidad de Puerto Rico - Mayaguez	ICOM	Male	HELLO MY NAME IS MARIO	2001-01-22	4	5
+4	Kevin	Hart	Chicago	University of Illinois	Comedy	Male	Say it with you chest!	1980-02-03	6	18
+5	Dwayne	Johnson	Texas	University of Texas - Austin	Acting	Male	Do you smell!!! What the Rock is cooking?	1979-05-08	7	19
+6	Emma	Watson	Oxford	Oxford University	Acting	Female	You're a wizard Harry!	1992-07-08	11	20
 \.
 
 
@@ -1172,7 +1253,7 @@ COPY students (user_id, first_name, last_name, hometown, college, major, gender,
 -- Name: students_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('students_user_id_seq', 3, true);
+SELECT pg_catalog.setval('students_user_id_seq', 6, true);
 
 
 --
@@ -1539,7 +1620,7 @@ GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
--- Completed on 2016-11-16 22:18:12 AST
+-- Completed on 2016-11-17 23:19:10 AST
 
 --
 -- PostgreSQL database dump complete
