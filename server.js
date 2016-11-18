@@ -1173,7 +1173,7 @@ app.get('/api/search/event', (req, res) => {
   //   .catch();
 
   res.json({ok: 'ok'});
-})
+});
 
 // -----------------------------------------------------------------------------
 // Webpack configurations ...
