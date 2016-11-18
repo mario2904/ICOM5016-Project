@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button, Label,
-       Link, Rating, Statistic } from 'semantic-ui-react';
+        Rating, Statistic } from 'semantic-ui-react';
 
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
@@ -98,7 +99,7 @@ export default class HomeAssociation extends Component{
               <span>{association_name}</span>
             </Meta>
             <a href={"/events/" + event_id}><Button color="blue"><Icon name="write"></Icon>Edit</Button></a>
-            <Button color="teal"><Icon name="line chart"></Icon>Stats</Button>
+            <Button as={Link} to={'event-stats/' + event_id} color="teal"><Icon name="line chart"></Icon>Stats</Button>
             <Rating style={{paddingTop: 10}}icon='star' defaultRating={4} maxRating={5} />
           </Content>
         </Item>
