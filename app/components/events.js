@@ -27,6 +27,52 @@ export default class Events extends Component {
 
   }
 
+  handleSearchChange = (e) => {
+    const tick = this;
+    const value = e.target.value;
+    console.log(value);
+    this.setState({ value });
+
+    // Get Events Data to render
+    axios.get('/api/event/all')
+    .then(function (response) {
+      console.log(response);
+      // filter by name
+      const filteredEvents = response.data.events.filter((event) => {
+        return event.event_name.toLowerCase().includes(value.toLowerCase());
+      });
+      tick.setState({events: filteredEvents})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  }
+
+  handleOrderChange = (e, { value }) => {
+    console.log(value);
+
+    // sort by event_name or start_date
+    const orderedEvents = this.state.events.sort((a, b) => {
+      const nameA = a.event_name.toLowerCase();
+      const nameB = b.event_name.toLowerCase();
+      const dateA = a.start_date;
+      const dateB = b.start_date;
+
+      console.log(nameA);
+      console.log(nameB);
+      // A-Z
+      if(value === 'A - Z')
+        return nameA > nameB;
+      if(value === 'Z - A')
+        return nameA < nameB;
+      if(value === 'Starting Soon')
+        return dateA > dateB;
+    });
+
+    this.setState({events: orderedEvents});
+  }
+
   render () {
 
     return (
@@ -37,13 +83,11 @@ export default class Events extends Component {
           <Icon color="teal" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
         </Grid.Row>
         <Grid padded style={{padding: 40}}>
-          <Input  action={{ icon: 'search'}} placeholder='Search by name...' />
+          <Input placeholder='Search by name...' value={this.state.value} onChange={this.handleSearchChange} />
           <Form>
             <Form.Group>
-              <Form.Field inline control={Select} label='Order by'
-                options={order} placeholder='i.e. Most Popular' />
-              <Form.Field inline control={Select} label='Categories'
-                options={options} placeholder='i.e. Food' />
+              <Form.Field onChange={this.handleOrderChange} inline control={Select} label='Order by' options={order} placeholder='i.e. Most Popular' />
+              <Form.Field inline control={Select} label='Categories' options={options} placeholder='i.e. Food' />
             </Form.Group>
           </Form>
         </Grid>

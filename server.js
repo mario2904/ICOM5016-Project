@@ -1156,6 +1156,25 @@ app.get('/api/search/association/orderby/desc', (req, res) => {
 
 });
 
+// Search for events
+//  Querystring params:
+//    name: string
+//    order: enum
+//    category: enum
+app.get('/api/search/event', (req, res) => {
+  // check for query params
+  console.log('name', req.query.name);
+  console.log('order', req.query.order);
+  console.log('category', req.query.category);
+
+  // db1.any(`
+  //   `)
+  //   .then()
+  //   .catch();
+
+  res.json({ok: 'ok'});
+})
+
 // -----------------------------------------------------------------------------
 // Webpack configurations ...
 const isDeveloping = process.env.NODE_ENV !== 'production';
