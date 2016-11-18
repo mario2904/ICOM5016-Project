@@ -53,7 +53,7 @@ export default class Profile extends Component{
         <Divider></Divider>
         <p><strong>Email</strong>: {this.state.profileInfo.email}</p>
         <p><strong>Gender</strong>: {this.state.profileInfo.gender}</p>
-        <p><strong>Hometown Link</strong>: {this.state.profileInfo.hometown} </p>
+        <p><strong>Hometown</strong>: {this.state.profileInfo.hometown} </p>
         <p><strong>College</strong>: {this.state.profileInfo.college}</p>
         <p><strong>Major</strong>: {this.state.profileInfo.major}</p>
         <p><strong>Bio</strong>: {this.state.profileInfo.bio}</p>

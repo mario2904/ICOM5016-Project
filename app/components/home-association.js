@@ -69,10 +69,10 @@ export default class HomeAssociation extends Component{
     });
 
     // Get Associations Data to render
-    axios.get('/api/association/all')
+    axios.get('/api/home-associations/reviews')
     .then(function (response) {
       console.log(response);
-      tick.setState({associations: response.data.associations})
+      tick.setState({newsFeed: response.data})
     })
     .catch(function (error) {
       console.log(error);
@@ -115,7 +115,7 @@ export default class HomeAssociation extends Component{
 
   }
 
-  renderMyFeeds = () => <Feed events={this.props.feeds} />;
+  renderMyFeeds = () => <Feed events={this.state.newsFeed} />;
 
   render () {
     const { activeItem } = this.state;
