@@ -30,7 +30,7 @@ const test = require('./test');
 const db = {};
 
 var pgp = require('pg-promise')(/*options*/);
-var db1 = pgp('postgres://postgres:postgres@localhost:8000/postgres');
+var db1 = pgp(process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:8000/postgres');
 
 db1.connect()
     .then(function (obj) {

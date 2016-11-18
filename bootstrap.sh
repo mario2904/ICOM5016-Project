@@ -55,4 +55,4 @@ service postgresql restart
 cd /vagrant
 
 # Create and populate database
-sudo -u postgres psql postgres < create_and_populate.sql
+sudo -u postgres psql postgres < e-spotter.sql
