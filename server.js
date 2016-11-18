@@ -1098,6 +1098,25 @@ app.get('/api/home-associations/reviews', (req, res) => {
       });
 });
 
+app.get('/api/home-associations/events', (req, res) => {
+  console.log(req.params);
+  const id = '1';
+
+  db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
+            FROM events as E, associations as A, images as I, location as L \
+            WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id= ${idused}", {idused: id})
+
+      .then(function (data) {
+
+        console.log(data);
+        res.json(data);
+      })
+      .catch(function (error) {
+        // error;
+        console.log('All Events Home-Association Failed')
+      });
+});
+
 app.get('/api/search/event/orderby/asc', (req, res) => {
   db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
            FROM events as E, associations as A, images as I, location as L \

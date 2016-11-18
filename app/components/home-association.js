@@ -59,10 +59,10 @@ export default class HomeAssociation extends Component{
   componentWillMount() {
     const tick = this;
     // Get Events Data to render
-    axios.get('/api/event/all')
+    axios.get('/api/home-associations/events')
     .then(function (response) {
       console.log(response);
-      tick.setState({events: response.data.events})
+      tick.setState({events: response.data})
     })
     .catch(function (error) {
       console.log(error);
