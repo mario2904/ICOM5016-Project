@@ -32,11 +32,24 @@ import EventStats from './components/event-stats';
 const createStoreWithMiddleware = applyMiddleware()(createStore);
 const store = createStoreWithMiddleware(reducers);
 
+// Function to scroll to top of window when routing
+// to a new destination.
+function handleUpdate() {
+  let {
+    action
+  } = this.state.location;
+
+  if (action === 'PUSH') {
+    window.scrollTo(0, 0);
+  }
+}
+
+
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Router history={browserHistory}>
+        <Router history={browserHistory} onUpdate={handleUpdate}>
           <Route path="/" component={Frame}>
             <IndexRoute component={Login} />
             <Route path="/home" component={Home}></Route>
