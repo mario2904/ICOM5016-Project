@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Grid, PageHeader } from 'react-bootstrap';
+import { Table, Header, Image, Button } from 'semantic-ui-react';
 import axios from 'axios';
 
 export default class AdministratorTableAssociations extends Component {
@@ -13,7 +13,7 @@ export default class AdministratorTableAssociations extends Component {
   componentWillMount () {
     const tick = this;
     // Get Events Data to render
-    axios.get('/api/association/all')
+    axios.get('/api/admin/association/all')
     .then(function (response) {
       console.log(response);
       tick.setState({associations: response.data.associations})
@@ -25,16 +25,25 @@ export default class AdministratorTableAssociations extends Component {
 
   renderRows () {
     return this.state.associations.map((association) => {
-      const { id, name, initials, link, email } = association;
+      const { account_id, association_id, association_name, initials, image_path, page_link, email, room, building, city, date_created } = association;
       return (
-        <tr key={id}>
-          <td>{id}</td>
-          <td>{name}</td>
-          <td>{initials}</td>
-          <td><a href={link}>{link}</a></td>
-          <td>{email}</td>
-          <td><a href="#">Edit</a></td>
-        </tr>
+        <Table.Row key={account_id}>
+          <Table.Cell>{association_id}</Table.Cell>
+          <Table.Cell>
+            <Image src={image_path} shape='rounded' size='mini' />
+          </Table.Cell>
+          <Table.Cell>
+            <Header as='h4'>{association_name}</Header>
+          </Table.Cell>
+          <Table.Cell>{initials}</Table.Cell>
+          <Table.Cell>{email}</Table.Cell>
+          <Table.Cell>{page_link}</Table.Cell>
+          <Table.Cell>{room}</Table.Cell>
+          <Table.Cell>{building}</Table.Cell>
+          <Table.Cell>{city}</Table.Cell>
+          <Table.Cell>{date_created}</Table.Cell>
+          <Table.Cell><Button>Edit</Button></Table.Cell>
+        </Table.Row>
       );
     });
   }
@@ -42,26 +51,31 @@ export default class AdministratorTableAssociations extends Component {
   render () {
     return (
       <div>
-        <PageHeader>Manage Associations Accounts</PageHeader>
-          <Grid >
-            <Table striped bordered condensed hover responsive>
-              <thead>
-                <tr>
-                  <th>#id</th>
-                  <th>Name</th>
-                  <th>Initials</th>
-                  <th>Link</th>
-                  <th>E-mail</th>
-                  <th>Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.renderRows()}
-              </tbody>
-            </Table>
-          </Grid>
+        <Header as='h2'>Manage Associations Accounts</Header>
+        <Table celled structured>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell rowSpan='2'>ID</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2'>Image</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2'>Name</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2'>Initials</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2'>E-mail</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2' >Link</Table.HeaderCell>
+              <Table.HeaderCell colSpan='3' >Location</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2'>Account Created</Table.HeaderCell>
+              <Table.HeaderCell rowSpan='2'>Edit</Table.HeaderCell>
+            </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell>Room</Table.HeaderCell>
+              <Table.HeaderCell>Building</Table.HeaderCell>
+              <Table.HeaderCell>City</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {this.renderRows()}
+          </Table.Body>
+        </Table>
       </div>
-
     );
   }
 }

@@ -8,8 +8,10 @@ export default class Frame extends Component {
     return (
       <div>
         <NavBar/>
+        <div>
           {this.props.children}
-        <Footer/>
+        </div>
+        <Footer />
       </div>
     );
   }

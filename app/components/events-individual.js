@@ -7,9 +7,6 @@ import ModalEditEvent from './modal-edit-event';
 import axios from 'axios';
 
 const styles = {
-  image: {
-    // marginTop: '-10%'
-  },
   background: {
     backgroundColor:"rgb(247, 247, 247)"
   },
@@ -25,8 +22,6 @@ const styles = {
     paddingBottom: 0
   }
 };
-
-
 
 export default class IndividualEvent extends Component {
 
@@ -198,44 +193,11 @@ export default class IndividualEvent extends Component {
     axios.get('/api/event/'+this.props.params.eventID)
     .then(function (response) {
       console.log(response);
-      const temp = response.data;
-      // temp.interested = interested;
-      // temp.categories = eventCategories;
-      // temp.updates = updates;
-      // temp.reviews = reviews;
-      temp.associationImage = "/images/defaults/default-profile.jpg";
-      tick.setState({eventInfo: temp})
+      tick.setState({eventInfo: response.data})
     })
     .catch(function (error) {
       console.log(error);
-      tick.setState(
-        {
-          eventInfo:{
-          name: "Hackathon",
-          id: "1",
-          associationName: "HackPR",
-          associationId: "45239847",
-          image: "http://hack.pr/wp-content/uploads/2016/09/Facebook-Banner-HackPR-1.png",
-          startDate: "Oct. 15, 2016",
-          endDate: "Oct. 16, 2016",
-          startTime: "9:00 am",
-          endTime: "5:00 pm",
-          location: "Roberto Clemente",
-          description: "HackPR 2016 is the perfect \
-            meeting place for the hacker and technology innovation \
-            community in Puerto Rico. Join us as a student or \
-            professional hacker to win more than {'5k'} in prizes or \
-            as a  visitors to participate in our job fair, \
-            exhibitors area, workshops and final hacks (projects) \
-            presentation at the end of the event. ",
-          registrationLink:"google.com",
-          interested: interested,
-          categories: eventCategories,
-          updates: updates,
-          reviews: reviews,
-          associationImage: "/images/defaults/default-profile.jpg"
-        }
-      })
+
     });
   }
 
@@ -358,123 +320,6 @@ export default class IndividualEvent extends Component {
   }
 }
 
-const updates = [
-  {
-    id: 1,
-    title: 'Title of the Update',
-    text: 'Update 1',
-    timestamp: 'Time'
-  },
-  {
-    id: 2,
-    title: 'Title of the Update',
-    text: 'Update 2',
-    timestamp: 'Time'
-  },
-  {
-    id: 3,
-    title: 'Title of the Update',
-    text: 'Update 3',
-    timestamp: 'Time'
-  },
-  {
-    id: 4,
-    title: 'Title of the Update',
-    text: 'Update 4',
-    timestamp: 'Time'
-  }
-];
-
-const reviews = [
-  {
-    id: 1,
-    firstName: 'Joe',
-    lastName: 'Doe',
-    image: 'http://semantic-ui.com/images/avatar/small/joe.jpg',
-    comment: 'Thats Pretty Good!',
-    timestamp: 'Time',
-    stars: 5,
-    userId: 1
-  },
-  {
-    id: 2,
-    firstName: 'Christian',
-    lastName: 'Hendrix',
-    image: 'http://semantic-ui.com/images/avatar/small/christian.jpg',
-    comment: 'It was aight...',
-    timestamp: 'Time',
-    stars: 3,
-    userId: 2
-  },
-  {
-    id: 3,
-    firstName: 'Jenny',
-    lastName: 'Murphy',
-    image: 'http://semantic-ui.com/images/avatar/small/jenny.jpg',
-    comment: 'It suuucked!',
-    timestamp: 'Time',
-    stars: 0,
-    userId: 3
-  }
-];
-
-const interested = [
-  {
-    firstName: 'Maria',
-    lastName: 'Jimenez',
-    image: 'http://semantic-ui.com/images/avatar/small/helen.jpg',
-    id: 1
-  },
-  {
-    firstName: 'John',
-    lastName: 'Doe',
-    image: 'http://semantic-ui.com/images/avatar/small/daniel.jpg',
-    id: 2,
-  },
-  {
-    firstName: 'Joe',
-    lastName: 'Doe',
-    image: 'http://semantic-ui.com/images/avatar/small/joe.jpg',
-    id: 3
-  },
-  {
-    firstName: 'Elliot',
-    lastName: 'Fu',
-    image: 'http://semantic-ui.com/images/avatar/small/elliot.jpg',
-    id: 4
-  },
-  {
-    firstName: 'Paola',
-    lastName: 'Xiau',
-    image: 'http://semantic-ui.com/images/avatar/small/stevie.jpg',
-    id: 5
-  },
-  {
-    firstName: 'Christian',
-    lastName: 'Hendrix',
-    image: 'http://semantic-ui.com/images/avatar/small/christian.jpg',
-    id: 6
-  },
-  {
-    firstName: 'Jenny',
-    lastName: 'Murphy',
-    image: 'http://semantic-ui.com/images/avatar/small/jenny.jpg',
-    id: 7
-  }
-];
-
-const eventCategories = [
-  'Food',
-  'Music',
-  'Fundraiser',
-  'Arts',
-  'Social',
-  'Educational',
-  'Business',
-  'Sports',
-  'Competition',
-  'Other'
-];
 
 const categories = {
   Food: {

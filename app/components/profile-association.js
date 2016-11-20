@@ -25,8 +25,6 @@ export default class ProfileAssociation extends Component{
       activeItem: 'about',
       color: "blue",
       content:"follow"
-
-
     };
   }
   componentWillMount() {
@@ -36,56 +34,11 @@ export default class ProfileAssociation extends Component{
     .then(function (response) {
       console.log(response);
       tick.setState({associationInfo: response.data})
-      // tick.setState({activeEvents: response.data.activeEvents})
-      // console.log(tick.state.activeEvents);
-
-      // response.data.activeEvents.map((id) => {
-      //   axios.get('/api/event/'+id)
-      //   .then(function (response) {
-      //     console.log(response);
-      //     tick.setState({activeEvents: tick.state.activeEvents.concat(response.data)})
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
-      // });
-
-      // response.data.sponsors.map((id) => {
-      //   axios.get('/api/sponsors/'+id)
-      //   .then(function (response) {
-      //     console.log(response);
-      //     tick.setState({sponsors: tick.state.sponsors.concat(response.data)})
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
-      // });
 
     })
     .catch(function (error) {
       console.log(error);
 
-      // tick.setState(
-      //   {
-      //     associationInfo:{
-      //     name: 'Neuro-RUM / Club Literario en Neurociencias',
-      //     initials: 'Neuro-RUM',
-      //     location: 'University of Puerto Rico, Mayagüez Campus, Student Center, 3rd Floor',
-      //     link: 'http://neurorum.wordpress.com/',
-      //     email: 'neuro_rum@uprm.edu',
-      //     password: 'password',
-      //     profileImage: 'https://scontent-mia1-1.xx.fbcdn.net/v/t1.0-9/10421498_737130869697123_3967938647967576555_n.jpg?oh=fe06bd1bb04ee5eaf42411221548dc23&oe=58AD9751',
-      //     bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, \
-      //     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. \
-      //     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris \
-      //     nisi ut aliquip exea commodo consequat. Duis aute irure dolor in \
-      //     reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
-      //     pariatur. Excepteur sint occaecatcupidatat non proident, sunt in culpa\
-      //      qui officia deserunt mollit anim id est laborum.'
-      //
-      //   }
-      //   }
-      // )
     });
   }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
@@ -144,39 +97,42 @@ export default class ProfileAssociation extends Component{
       return null;
     }
       return (
-        <Grid style={{paddingLeft:"100px", paddingRight:"100px",
-          backgroundColor:"rgb(247, 247, 247)"}}>
+        <Grid style={{paddingLeft:"100px", paddingRight:"100px", backgroundColor:"rgb(247, 247, 247)"}}>
+
           <Grid.Row style={{paddingBottom: 0}} >
 
-        <Grid.Column style={{padding:"0px", margin: 0}} width={4}>
-          <Image style={{width:"100%", height:"250px", padding: 0}}
-            src={this.state.associationInfo.image_path}></Image>
+            <Grid.Column style={{padding:"0px", margin: 0}} width={4}>
+              <Image
+                style={{width:"100%", height:"250px", padding: 0}}
+                src={this.state.associationInfo.image_path}>
+              </Image>
+            </Grid.Column>
 
-        </Grid.Column>
-          <Grid.Column style={{padding:"0px"}}width={12}>
-          <Image style={{height:"250px", width:"100%"}} src={banner}></Image>
-          </Grid.Column>
-        </Grid.Row>
+            <Grid.Column style={{padding:"0px"}}width={12}>
+              <Image style={{height:"250px", width:"100%"}} src={banner}></Image>
+            </Grid.Column>
+
+          </Grid.Row>
 
           <Grid.Row style={{paddingBottom:0}}>
-          <Segment style={{borderRadius:0, width:"100%"}}>
+            <Segment style={{borderRadius:0, width:"100%"}}>
 
-            <h1 style={{display: 'inline'}}><strong>{this.state.associationInfo.association_name}</strong>{ ' ' }
+            <h1 style={{display: 'inline'}}>
+              <strong>{this.state.associationInfo.association_name}</strong>{ ' ' }
               <div style={{display:"inline", float:"right"}}>
-              <Button
-                style={{verticalAlign: 'middle'}}
-                color={this.state.color}
-                content={this.state.content}
-                icon='user'
-                size="tiny"
-                onClick={this.handleOnClick}
-                label={{ basic: true, color:this.state.color, pointing: 'left', content:this.state.associationInfo.followers.count }}/>
+                <Button
+                  style={{verticalAlign: 'middle'}}
+                  color={this.state.color}
+                  content={this.state.content}
+                  icon='user'
+                  size="tiny"
+                  onClick={this.handleOnClick}
+                  label={{ basic: true, color:this.state.color, pointing: 'left', content:this.state.associationInfo.followers.count }}/>
               </div>
             </h1>
             <ModalEditAssociationProfile associationProfile={this.state.associationInfo}/>
 
-
-          </Segment>
+            </Segment>
           </Grid.Row>
 
        <Grid.Row style={{paddingTop: 0}}>
@@ -200,83 +156,14 @@ export default class ProfileAssociation extends Component{
       </Grid.Row>
 
       <Grid.Row style={{paddingBottom:"50px"}}>
-      <Segment  style={{ backgroundColor: "rgb(236,238,238)", borderRadius: 0, width:"100%"}} padded>
-        {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
-        {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
-        {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
-        {(this.state.activeItem === 'sponsors') ? <Grid padded>{this.renderSponsors()}</Grid>: null}
-
-      </Segment>
-        </Grid.Row>
-
+        <Segment  style={{ backgroundColor: "rgb(236,238,238)", borderRadius: 0, width:"100%"}} padded>
+          {(this.state.activeItem === 'about') ? <Grid padded>{this.renderAbout()}</Grid>: null}
+          {(this.state.activeItem === 'current events') ? <div>{this.renderMyCurrentEvents()}</div>: null}
+          {(this.state.activeItem === 'past events') ? <Grid padded>{this.renderMyPastEvents()}</Grid>: null}
+          {(this.state.activeItem === 'sponsors') ? <Grid padded>{this.renderSponsors()}</Grid>: null}
+        </Segment>
+      </Grid.Row>
     </Grid>
     );
   }
 }
-
-
-ProfileAssociation.defaultProps = {
-
-  events: [
-    {
-      event_name: "How to's Obtaining a Summer Research Experience within a Top University",
-      association_name: "Idea Platform",
-      start_date: "Sept. 14, 2015",
-      end_date: "Sept. 14, 2015",
-      start_time: "4:30 am",
-      end_time: "6:30 pm",
-      room: "AE-242 UPRM",
-      image_path: "https://scontent-atl3-1.xx.fbcdn.net/v/t1.0-9/12006342_691745294260807_6070613382749021088_n.png?oh=7b77c4998b758f002e2dc50f3ec714c6&oe=58703196",
-      event_id: "1",
-      interested: 70
-    },
-    {
-      event_name: "TEDxNight",
-      association_name: "Idea Platform",
-      start_date: "Nov. 18, 2015",
-      end_date: "Nov. 18, 2015",
-      start_time: "6:00 pm",
-      end_time: "8:00 pm",
-      room: "UPRM, Cueva de Tarzan",
-      image_path: "https://scontent-atl3-1.xx.fbcdn.net/t31.0-8/905747_714654865303183_4209403577516947442_o.jpg",
-      event_id: "2",
-      interested: 33
-    },
-    {
-      event_name: "Idea Platform Info-Session",
-      association_name: "Idea Platform",
-      start_date: "Aug. 18, 2016",
-      end_date: "Aug. 18, 2016",
-      start_time: "10:30 am",
-      end_time: "12:00 pm",
-      room: "UPRM: Celis 008",
-      image_path: "https://scontent-atl3-1.xx.fbcdn.net/v/t1.0-9/14021501_847850748650260_1591931888775191426_n.jpg?oh=a9a5c15a9b927ab1f037409468bf81a5&oe=58A8E370",
-      event_id: "3",
-      interested: 31
-    },
-    {
-      event_name: "App Creators Info-Session",
-      association_name: "Idea Platform",
-      start_date: "Dec. 1, 2015",
-      end_date: "Dec. 1, 2015",
-      start_time: "10:30 am",
-      end_time: "12:00 pm",
-      room: "UPRM: 1st Floor of Student Center, In Front of Café Colegial",
-      image_path: "https://scontent-atl3-1.xx.fbcdn.net/v/t1.0-9/12243280_717010345067635_3087706880041792762_n.jpg?oh=1e06997e75b675a0da683af2fe7f36f1&oe=58A114D7",
-      event_id: "4",
-      interested: 5
-    },
-    {
-      event_name: "Smash Bros. Tournament",
-      association_name: "Idea Platform",
-      start_date: "Oct. 5, 2016",
-      end_date: "Oct. 5, 2016",
-      start_time: "6:00 pm",
-      end_time: "9:00 pm",
-      room: "University of Puerto Rico, Mayaguez Campus - S-228",
-      image_path: "http://img14.deviantart.net/eea3/i/2016/003/0/b/super_smash_bros__melee_characters_by_mariokero345-d9mm04h.jpg",
-      event_id: "5",
-      interested: 65
-    }
-  ]
-};

@@ -99,20 +99,7 @@ export default class Login extends Component {
          </Button.Group>
       </Grid.Column>
     </Grid.Row>
-
-
   </Grid>
     );
   }
-}
-
-const radioStyle={
-  display: "inline-block",
-  padding: "0px 0px 0px 15px",
-  margin: "10px 0px 0px 0px"
-}
-
-const radio1={
-  display: "inline-block",
-margin: "10px 0px 0px 0px"
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Grid, PageHeader } from 'react-bootstrap';
+import { Table, Header, Image, Button } from 'semantic-ui-react';
 import axios from 'axios';
 
 export default class AdministratorTableStudents extends Component {
@@ -13,7 +13,7 @@ export default class AdministratorTableStudents extends Component {
   componentWillMount () {
     const tick = this;
     // Get Events Data to render
-    axios.get('/api/student/all')
+    axios.get('/api/admin/student/all')
     .then(function (response) {
       console.log(response);
       tick.setState({students: response.data.students})
@@ -25,49 +25,54 @@ export default class AdministratorTableStudents extends Component {
 
   renderRows () {
     return this.state.students.map((student) => {
-      const { id, firstName, lastName, age, gender, hometown, college, major } = student;
+      const { account_id, user_id, first_name, last_name, hometown, college, major, gender, bio, birthdate, email, date_created, image_path } = student;
       return (
-        <tr key={id}>
-          <td>{id}</td>
-          <td>{firstName}</td>
-          <td>{lastName}</td>
-          <td>{age}</td>
-          <td>{gender}</td>
-          <td>{hometown}</td>
-          <td>{college}</td>
-          <td>{major}</td>
-          <td><a href="#">Edit</a></td>
-        </tr>
+        <Table.Row key={account_id}>
+          <Table.Cell>{user_id}</Table.Cell>
+          <Table.Cell>
+            <Image src={image_path} shape='rounded' size='mini' />
+          </Table.Cell>
+          <Table.Cell>
+            <Header as='h4'>{first_name + ' ' + last_name}</Header>
+          </Table.Cell>
+          <Table.Cell>{email}</Table.Cell>
+          <Table.Cell>{birthdate}</Table.Cell>
+          <Table.Cell>{gender}</Table.Cell>
+          <Table.Cell>{hometown}</Table.Cell>
+          <Table.Cell>{college}</Table.Cell>
+          <Table.Cell>{major}</Table.Cell>
+          <Table.Cell>{date_created}</Table.Cell>
+          <Table.Cell><Button>Edit</Button></Table.Cell>
+        </Table.Row>
       );
     });
   }
 
-  render () {
+  render() {
     return (
       <div>
-        <PageHeader>Manage Student Accounts</PageHeader>
-          <Grid >
-            <Table striped bordered condensed hover responsive>
-              <thead>
-                <tr>
-                  <th>#id</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Age</th>
-                  <th>Gender</th>
-                  <th>Hometown</th>
-                  <th>College</th>
-                  <th>Major</th>
-                  <th>Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {this.renderRows()}
-              </tbody>
-            </Table>
-          </Grid>
+        <Header as='h2'>Manage Associations Accounts</Header>
+        <Table celled structured>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>ID</Table.HeaderCell>
+              <Table.HeaderCell>Image</Table.HeaderCell>
+              <Table.HeaderCell>Name</Table.HeaderCell>
+              <Table.HeaderCell>E-mail</Table.HeaderCell>
+              <Table.HeaderCell>Birthdate</Table.HeaderCell>
+              <Table.HeaderCell>Gender</Table.HeaderCell>
+              <Table.HeaderCell>Hometown</Table.HeaderCell>
+              <Table.HeaderCell>College</Table.HeaderCell>
+              <Table.HeaderCell>Major</Table.HeaderCell>
+              <Table.HeaderCell>Account Created</Table.HeaderCell>
+              <Table.HeaderCell>Edit</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {this.renderRows()}
+          </Table.Body>
+        </Table>
       </div>
-
     );
   }
 }

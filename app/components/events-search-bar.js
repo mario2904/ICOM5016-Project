@@ -37,15 +37,3 @@ const options = [
     { text: 'Starting Soon', value: 'Starting Soon' },
     { text: 'A - Z', value: 'A - Z' },
     { text: 'Z - A', value: 'Z - A' }];
-
-const style = {
-    padding: "50px"
-};
-
-const searchStyle={
-  margin: "0px 30px 0px 0px"
-};
-
-const txtStyle={
-  padding: "0px 10px 0px 0px"
-}
