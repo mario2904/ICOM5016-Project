@@ -33,14 +33,13 @@
     "node-uuid": "^1.4.7",
     "pg-promise": "^5.3.5",
     "react": "^15.3.2",
-    "react-bootstrap": "^0.30.6",
-    "react-burger-menu": "^1.10.9",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
-    "react-sparklines": "^1.6.0",
     "recharts": "^0.17.1",
     "redux": "^3.6.0",
+    "redux-api-middleware": "^1.0.2",
+    "redux-thunk": "^2.1.0",
     "semantic-ui-react": "^0.58.3"
   },
   "devDependencies": {

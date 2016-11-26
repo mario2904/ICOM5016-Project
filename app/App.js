@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { apiMiddleware } from 'redux-api-middleware';
+
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 
 import reducers from './reducers';
 
 import Login from './components/login';
-import Home from './components/home';
+import HomeStudent from './containers/home-student';
+import HomeAssociation from './containers/home-association';
 import Associations from './components/associations';
 import Events from './components/events';
 import Frame from './components/frame';
@@ -25,11 +29,11 @@ import CreateEventForm from './components/create-event-form';
 import EventsIndividual from './components/events-individual';
 
 import Settings from './components/settings';
-import HomeAssociation from './components/home-association';
+
 
 import EventStats from './components/event-stats';
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
+const createStoreWithMiddleware = applyMiddleware(apiMiddleware, thunkMiddleware)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
 // Function to scroll to top of window when routing
@@ -52,7 +56,7 @@ export default class App extends Component {
         <Router history={browserHistory} onUpdate={handleUpdate}>
           <Route path="/" component={Frame}>
             <IndexRoute component={Login} />
-            <Route path="/home" component={Home}></Route>
+            <Route path="/home-student" component={HomeStudent}></Route>
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
             <Route path="/students/:userID" component={Profile}></Route>

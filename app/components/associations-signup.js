@@ -31,10 +31,10 @@ export default class Asignup extends Component {
         password: this.state.password
       })
     .then(function (response) {
-      // If successful, go to home page
+      // If successful, go to login page
       console.log('Success');
       console.log(response);
-      browserHistory.push('/home');
+      browserHistory.push('/login');
     })
     .catch(function (error) {
       // Else do nothing

@@ -26,7 +26,7 @@ export default class NavBar extends Component {
                 <Menu.Item
                   fitted
                   name='E-Spotter'
-                  as={Link} to='/home'
+                  as={Link} to='/home-student'
                   active={activeItem === 'E-Spotter'}
                   icon='marker'
                   onClick={this.handleItemClick} />
@@ -64,7 +64,7 @@ export default class NavBar extends Component {
                 <Dropdown.Menu>
                   <Dropdown.Item
                     text='Home'
-                    as={Link} to='/home'
+                    as={Link} to='/home-student'
                     icon='marker' />
                   <Dropdown.Item
                     text='Associations'

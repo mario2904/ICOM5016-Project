@@ -1,17 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button, Label,
         Rating, Statistic } from 'semantic-ui-react';
 
-
 const { Content, Description, Group, Header, Image, Meta } = Item;
+
+import { fetchHomeAssociationNewsFeed, fetchHomeAssociationEvents } from '../actions';
 
 import axios from 'axios';
 
-import HomeSearchBar from './home-search-bar';
-import GridList from './grid-list';
-import EventsListItem from './events-list-item';
-import AssociationsListItem from './associations-list-item';
+import HomeSearchBar from '../components/home-search-bar';
+import GridList from '../components/grid-list';
+import EventsListItem from '../components/events-list-item';
+import AssociationsListItem from '../components/associations-list-item';
 const banner = '/images/banner/zl8K2Hy.png';
 
 const styles = {
@@ -42,8 +44,14 @@ const styles = {
     borderRadius: 0
   }
 }
+const nameStyle = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  color: 'black'
+}
 
-export default class HomeAssociation extends Component{
+class HomeAssociation extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,33 +65,17 @@ export default class HomeAssociation extends Component{
   }
 
   componentWillMount() {
-    const tick = this;
-    // Get Events Data to render
-    axios.get('/api/home-associations/events')
-    .then(function (response) {
-      console.log(response);
-      tick.setState({events: response.data})
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
-    // Get Associations Data to render
-    axios.get('/api/home-associations/reviews')
-    .then(function (response) {
-      console.log(response);
-      tick.setState({newsFeed: response.data})
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    const { dispatch } = this.props;
+    // Get Info to display in Home
+    dispatch(fetchHomeAssociationEvents());
+    dispatch(fetchHomeAssociationNewsFeed());
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
 
   renderMyEvents = () => {
-    return this.state.events.map((event) => {
+    return this.props.events.map((event) => {
       const { event_id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
 
       return (
@@ -110,12 +102,9 @@ export default class HomeAssociation extends Component{
     });
   };
 
-  renderMyAssociations = () => {
-    return  <GridList items={this.state.associations} ListItem={AssociationsListItem}/>;
+  renderMyAssociations = () => <GridList items={this.state.associations} ListItem={AssociationsListItem}/>;
 
-  }
-
-  renderMyFeeds = () => <Feed events={this.state.newsFeed} />;
+renderMyFeeds = () => <Feed events={this.props.newsFeed} />;
 
   render () {
     const { activeItem } = this.state;
@@ -156,3 +145,23 @@ export default class HomeAssociation extends Component{
     );
   }
 }
+
+// Type cheking
+HomeAssociation.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  events: PropTypes.array,
+  newsFeed: PropTypes.array
+}
+
+function mapStateToProps(state) {
+  const { auth, home_association } = state;
+  const { events, newsFeed } = home_association;
+
+  return {
+    events,
+    newsFeed
+  };
+}
+
+
+export default connect(mapStateToProps)(HomeAssociation);

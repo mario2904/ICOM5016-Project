@@ -7,7 +7,7 @@ export default class Settings extends Component {
     event.preventDefault();
 
     // If successful, go to prof page
-  browserHistory.push('/home');
+  browserHistory.push('/home-student');
   }
 
   state = { serializedForm: {} };

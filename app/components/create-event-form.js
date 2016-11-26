@@ -6,7 +6,7 @@ export default class CreateEventForm extends Component {
     // Do the sign-in validation here...
 
     // If successful, go to prof page
-    browserHistory.push('/home');
+    browserHistory.push('/home-association');
   }
   renderCategoriesCheckboxes() {
     return categories.map((category) => {

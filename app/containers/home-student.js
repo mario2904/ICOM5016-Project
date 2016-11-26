@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import { fetchHomeStudentAssociations, fetchHomeStudentNewsFeed, fetchHomeStudentEvents } from '../actions';
+
 import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, Button } from 'semantic-ui-react';
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
 
-import axios from 'axios';
-
-import HomeSearchBar from './home-search-bar';
-import GridList from './grid-list';
-import EventsListItem from './events-list-item';
-import AssociationsListItem from './associations-list-item';
+import HomeSearchBar from '../components/home-search-bar';
+import GridList from '../components/grid-list';
+import EventsListItem from '../components/events-list-item';
+import AssociationsListItem from '../components/associations-list-item';
 const banner = '/images/banner/Deer-overlooking-a-lake-at-sunset.jpg';
 
 const styles = {
@@ -36,7 +37,7 @@ const styles = {
   }
 }
 
-export default class Home extends Component {
+class HomeStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,41 +51,17 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
-    const tick = this;
-    // Get Events Data to render
-    axios.get('/api/home/events')
-    .then(function (response) {
-      console.log(response);
-      tick.setState({events: response.data})
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
-    // Get Associations Data to render
-    axios.get('/api/home/associations')
-    .then(function (response) {
-      console.log(response);
-      tick.setState({associations: response.data})
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
-    axios.get('/api/home')
-    .then(function (response) {
-      console.log(response);
-      tick.setState({newsFeed: response.data})
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    const { dispatch } = this.props;
+    // Get Info to display in Home
+    dispatch(fetchHomeStudentEvents());
+    dispatch(fetchHomeStudentAssociations());
+    dispatch(fetchHomeStudentNewsFeed());
   }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   renderMyEvents = () => {
-    return this.state.events.map((event) => {
+    return this.props.events.map((event) => {
       const { event_id, event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
       return (
 
@@ -102,16 +79,12 @@ export default class Home extends Component {
     });
   };
 
-  renderMyAssociations = () => {
-    return  <GridList items={this.state.associations} ListItem={AssociationsListItem}/>;
+  renderMyAssociations = () => <GridList items={this.props.associations} ListItem={AssociationsListItem}/>;
 
-  }
-
-  renderMyFeeds = () => <Feed events={this.state.newsFeed} />;
+  renderMyFeeds = () => <Feed events={this.props.newsFeed} />;
 
   render () {
     const { activeItem } = this.state;
-
     return (
       <div>
         <div style={styles.banner}>
@@ -145,3 +118,24 @@ export default class Home extends Component {
     );
   }
 }
+
+// Type cheking
+HomeStudent.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  associations: PropTypes.array,
+  events: PropTypes.array,
+  newsFeed: PropTypes.array
+}
+
+function mapStateToProps(state) {
+  const { auth, home_student } = state;
+  const { associations, events, newsFeed } = home_student;
+
+  return {
+    associations,
+    events,
+    newsFeed
+  };
+}
+
+export default connect (mapStateToProps)(HomeStudent);
