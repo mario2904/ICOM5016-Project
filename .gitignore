@@ -17,5 +17,9 @@ node_modules
 dist
 
 # Vagrant related files #
-###########
+#########################
 .vagrant
+
+# Env variables file #
+######################
+.env

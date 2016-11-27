@@ -6,22 +6,23 @@ const _ = require('lodash');
 exports.login = function (obj) {
   return (  _.has(obj, 'email')
         &&  _.has(obj, 'password')
+        &&  _.has(obj, 'role')
   );
 }
 
 exports.association = function (obj) {
-  return (  _.has(obj,'name')
+  return (  _.has(obj, 'association_name')
         &&  _.has(obj, 'initials')
         &&  _.has(obj, 'location')
-        &&  _.has(obj, 'link')
+        &&  _.has(obj, 'page_link')
         &&  _.has(obj, 'email')
         &&  _.has(obj, 'password')
   );
 };
 
 exports.student = function (obj) {
-  return (  _.has(obj, 'firstName')
-        &&  _.has(obj, 'lastName')
+  return (  _.has(obj, 'first_name')
+        &&  _.has(obj, 'last_name')
         &&  _.has(obj, 'age')
         &&  _.has(obj, 'gender')
         &&  _.has(obj, 'hometown')
@@ -29,6 +30,7 @@ exports.student = function (obj) {
         &&  _.has(obj, 'email')
         &&  _.has(obj, 'major')
         &&  _.has(obj, 'password')
+        &&  _.has(obj, 'bio')
   );
 }
 

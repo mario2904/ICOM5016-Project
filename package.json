@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "node -r dotenv/config server.js",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
     "dump": "sh create_dump_files.sh",
     "postinstall": "npm run build"
@@ -25,9 +25,11 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.15.0",
+    "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
     "cors": "^2.8.1",
     "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.9",
     "lodash": "^4.16.4",
     "multer": "^1.2.0",
     "node-uuid": "^1.4.7",
@@ -52,6 +54,7 @@
     "babel-preset-stage-0": "^6.16.0",
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
+    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.22.0",

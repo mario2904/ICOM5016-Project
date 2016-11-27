@@ -124,7 +124,7 @@ export function logoutUser() {
 export function fetchHomeStudentAssociations() {
   return {
     [CALL_API]: {
-      endpoint: `${API_BASE_URL}/home/associations`,
+      endpoint: `${API_BASE_URL}/home-student/associations`,
       method: 'GET',
       types: [STUDENT_ASSOCIATIONS_REQUEST, STUDENT_ASSOCIATIONS_SUCCESS, STUDENT_ASSOCIATIONS_FAILURE],
     }
@@ -134,7 +134,7 @@ export function fetchHomeStudentAssociations() {
 export function fetchHomeStudentNewsFeed() {
   return {
     [CALL_API]: {
-      endpoint: `${API_BASE_URL}/home`,
+      endpoint: `${API_BASE_URL}/home-student`,
       method: 'GET',
       types: [STUDENT_NEWS_FEED_REQUEST, STUDENT_NEWS_FEED_SUCCESS, STUDENT_NEWS_FEED_FAILURE],
     }
@@ -144,7 +144,7 @@ export function fetchHomeStudentNewsFeed() {
 export function fetchHomeStudentEvents() {
   return {
     [CALL_API]: {
-      endpoint: `${API_BASE_URL}/home/events`,
+      endpoint: `${API_BASE_URL}/home-student/events`,
       method: 'GET',
       types: [STUDENT_EVENTS_REQUEST, STUDENT_EVENTS_SUCCESS, STUDENT_EVENTS_FAILURE],
     }
@@ -159,7 +159,7 @@ export function fetchHomeStudentEvents() {
 export function fetchHomeAssociationNewsFeed() {
   return {
     [CALL_API]: {
-      endpoint: `${API_BASE_URL}/home-associations/reviews`,
+      endpoint: `${API_BASE_URL}/home-association/reviews`,
       method: 'GET',
       types: [ASSOCIATION_NEWS_FEED_REQUEST, ASSOCIATION_NEWS_FEED_SUCCESS, ASSOCIATION_NEWS_FEED_FAILURE],
     }
@@ -169,7 +169,7 @@ export function fetchHomeAssociationNewsFeed() {
 export function fetchHomeAssociationEvents() {
   return {
     [CALL_API]: {
-      endpoint: `${API_BASE_URL}/home-associations/events`,
+      endpoint: `${API_BASE_URL}/home-association/events`,
       method: 'GET',
       types: [ASSOCIATION_EVENTS_REQUEST, ASSOCIATION_EVENTS_SUCCESS, ASSOCIATION_EVENTS_FAILURE],
     }

@@ -17,41 +17,31 @@ const app = express();
 const { Association, Student, Event } = require('./model');
 
 // Utils
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const uuid = require('node-uuid');
 const validate = require('./utils/validate');
 const filter = require('./utils/filter');
 
+// API routes
+const api = require('./api');
+
 // File Uploaders
 const imgUpload = multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
 
-// Testing
-const test = require('./test');
 // Create Testing db
 const db = {};
 
-var pgp = require('pg-promise')(/*options*/);
-var db1 = pgp(process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:8000/postgres');
+const db1 = require('./db');
 
-db1.connect()
-    .then(function (obj) {
-        console.log('DB connection established.')
-        obj.done(); // success, release the connection;
-    })
-    .catch(function (error) {
-        console.log("ERROR:", error.message || error);
-    });
+// Add Middleware Express ------------------------------------------------------
 
-
-// Set Schema
-test.createSchema(db);
-// Fill testing db with dummy data
-test.fillDummyData(db);
-
-// Add Middleware Express
 // Allow Cross-Origin Resource Sharing (CORS)
 app.use(cors());
+
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+
 // Parse application/json
 app.use(bodyParser.json())
 
@@ -59,181 +49,43 @@ app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'));
 
 // Handle REST API calls -------------------------------------------------------
-
+app.use('/api', api);
 
 // POST - Login
 // body:
 //    email: string
 //    password: string
-//    account: string (association | student)
+//    role: string (association | student)
 // response:
 //    id: uuid
 app.post('/api/login', (req, res) => {
   console.log(req.body);
-  if (!req.body)
-    return res.sendStatus(400);
   // Check if has valid params in the body or the request
-  else if (!validate.login(req.body))
+  if (!req.body || !validate.login(req.body))
     return res.status(400).send('Error: Missing fields for login.');
   // Destructure body params
-  const { email, password, account } = req.body;
-  let id = '';
+  const { email, password, role } = req.body;
   // TODO: Check if it matches one record in the db
   //
-  // Check the db Testing and see if it mathces ...
-  for (var key in db[account]) {
-    if (db[account].hasOwnProperty(key)) {
-      // Need to match both email and password
-      if ( db[account][key].email === email && db[account][key].password === password) {
-        id = key;
-      }
-    }
-  }
-  // Return error if there was no match in the db
-  if (id === '')
-    return res.status(400).send('Error: E-mail or Password is Incorrect');
-  // Send their id
-  const response = {id};
-  res.json(response);
-});
-
-// POST - Sign Up Association
-// body:
-//    name: string
-//    initials: string
-//    location: string
-//    link: string
-//    email: string
-//    password: string
-app.post('/api/create-association', (req, res) => {
-  console.log(req.body);
-  if (!req.body)
-    return res.sendStatus(400);
-  // Check if has valid params in the body or the request
-  else if (!validate.association(req.body))
-    return res.status(400).send('Error: Missing fields for association.');
-  // Destructure body params
-  const { name, initials, location, link, email, password } = req.body;
-  // TODO: check the db and see if it it can create new association account
-  // ... (Check if e-mail is already registered)
-  //
-  // Checking if there's already an association account with same email in the Testing db
-  for (var key in db.association) {
-    if (db.association.hasOwnProperty(key)) {
-      if ( db.association[key].email === email) {
-        return res.status(400).send('Error: There is already an association with the same e-mail account');
-      }
-    }
-  }
-  // Create new association account
-  // Generate association id
-  const id = uuid.v4();
-  // Create new Association object model
-  const newAssociation = new Association(id, name, initials, location, link, email, password);
-  // TODO: Store it in the db ...
-  // Store in Testing db
-  db.association[id] = newAssociation;
-  // Initialize association's active and past events Lists
-  db.activeEvents[id] = [];
-  db.pastEvents[id] = [];
-  // Initialize association's Sponsors Lists
-  db.associationSponsors[id] = [];
-  // Initialize association's followers list
-  db.followers[id] = [];
-  // Send OK status
-  console.log('Success: Create Association');
-  console.log('Association ID:', id);
-  res.sendStatus(200);
-});
-
-// POST - Sign Up Student
-// body:
-//    firstName: string
-//    lastName: string
-//    age: number
-//    gender: string
-//    hometown: string
-//    college: string
-//    major: string
-//    email: string
-//    password: string
-app.post('/api/create-student', (req, res) => {
-  console.log(req.body);
-  if (!req.body)
-    return res.sendStatus(400);
-  // Check if has valid params in the body or the request
-  else if (!validate.student(req.body))
-    return res.status(400).send('Error: Missing fields for student.');
-  // Destructure body params
-  const { firstName, lastName, age, gender, hometown, college, major, email, password } = req.body;
-  // TODO: check the db and see if it it can create new student account
-  // ... (Check if e-mail is already registered)
-  //
-  // Checking if there's already a student account with same email in the Testing db
-  for (var key in db.student) {
-    if (db.student.hasOwnProperty(key)) {
-      if ( db.student[key].email === email) {
-        return res.status(400).send('Error: There is already a student with the same e-mail account');
-      }
-    }
-  }
-
-  // Create new student account
-  // Generate student id
-  const id = uuid.v4();
-  // Create new Student object model
-  const newStudent = new Student(id, firstName, lastName, age, gender, hometown, college, major, email, password);
-  // TODO: Store it in the db ...
-  // Store in Testing db
-  db.student[id] = newStudent;
-  // Initialize student's interestedEvents list
-  db.interestedEvents[id] = [];
-  // Initialize student's followed associations list
-  db.followedAssociations[id] = [];
-  // Send OK status
-  console.log('Success: Create Student');
-  console.log('Student ID:', id);
-  res.sendStatus(200);
-});
-
-// POST - Create Event
-// body:
-//    name: string
-//    associationId: string
-//    associationName: string
-//    startDate: date
-//    endDate: date
-//    startTime: string
-//    endTime: string
-//    location: string
-//    image: string
-//    description: string
-//    registrationLink: string
-app.post('/api/create-event', (req, res) => {
-  console.log(req.body);
-  if (!req.body)
-    return res.sendStatus(400);
-  // Check if has valid params in the body or the request
-  else if (!validate.event(req.body))
-    return res.status(400).send('Error: Missing fields for event.');
-  // Destructure body params
-  const { name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = req.body;
-
-  // Create new event
-  // Generate event id
-  const id = uuid.v4();
-  // Create new Student object model
-  const newEvent = new Event(id, name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink);
-  // TODO: Store it in the db ...
-  //
-  // Store in Testing db
-  db.event[id] = newEvent;
-  // Update activeEvents list for that association
-  db.activeEvents[associationId] = [id].concat(db.activeEvents[associationId] || []);
-  // Send OK status
-  console.log('Success: Create Event');
-  console.log('Event ID:', id);
-  res.sendStatus(200);
+  // db.oneOrNone(`
+  //   SELECT *
+  //   FROM account
+  //   WHERE email = $[email] and password = $[hash]`, {email, hash});
+  // // Check the db Testing and see if it mathces ...
+  // for (var key in db[account]) {
+  //   if (db[account].hasOwnProperty(key)) {
+  //     // Need to match both email and password
+  //     if ( db[account][key].email === email && db[account][key].password === password) {
+  //       id = key;
+  //     }
+  //   }
+  // }
+  // // Return error if there was no match in the db
+  // if (id === '')
+  //   return res.status(400).send('Error: E-mail or Password is Incorrect');
+  // // Send their id
+  // const response = {id};
+  res.json({success: true});
 });
 
 // POST - Upload Image (SINGLE)
@@ -257,106 +109,6 @@ app.post('/api/upload-image', (req, res) => {
     res.json(response);
   });
 });
-
-// GET - Get All Students Info (Admin)
-// response:
-//    [] students:
-//        account_id: uuid
-//        user_id: uuid
-//        first_name: string
-//        last_name: string
-//        hometown: string
-//        college: string
-//        major: string
-//        gender: string
-//        birthdate: date
-//        email: string
-//        date_created: timestamp
-//        image_path: string
-//        bio: string
-app.get('/api/admin/student/all', (req, res) => {
-
-  db1.any(`
-    SELECT account_id, user_id, first_name, last_name, hometown, college, major, gender, bio, birthdate, email, date_created, image_path
-    FROM students natural join account natural join images`)
-    .then(function(data) {
-      // Send All Students Information
-      console.log('Success: Admin Get All Students Information');
-      res.json({students: data});
-
-    })
-    .catch(function(error) {
-      console.log(error);
-      return res.status(400).send('Error: Problem executing Query');
-    });
-
-});
-
-// GET - Get All Associations Info (Admin)
-// response:
-//    [] associations:
-//        account_id: uuid
-//        association_id: uuid
-//        association_name: string
-//        initials: string
-//        email: string
-//        page_link: string
-//        image_path: string
-//        bio: string
-//        date_created: timestamp
-//        room: string
-//        building: string
-//        city: string
-app.get('/api/admin/association/all', (req, res) => {
-
-  db1.any(`
-    SELECT account_id, association_id, association_name, initials, page_link, image_path, email, bio, room, building, city, date_created
-    FROM associations natural join account natural join location natural join images`)
-    .then(function(data) {
-      // Send All Associations Information
-      console.log('Success: Admin Get All Associations Information');
-      res.json({associations: data});
-
-    })
-    .catch(function(error) {
-      console.log(error);
-      return res.status(400).send('Error: Problem executing Query');
-    });
-
-});
-
-// GET - Get All Events Info (Admin)
-// response:
-//  [] events
-//      event_id: id
-//      event_name: string
-//      is_live: bool (yes/no)
-//      registration_link: string
-//      start_date: date
-//      end_date: date
-//      start_time: time
-//      end_time: time
-//      room: string
-//      building: string
-//      city: string
-//      image_path: string
-//      time_stamp: timestamp
-app.get('/api/admin/event/all', (req, res) => {
-  db1.any(`
-    SELECT event_id, event_name, is_live, registration_link, start_date, end_date, start_time, end_time, room, building, city, image_path, time_stamp
-    FROM events natural join images natural join location`)
-    .then(function(data) {
-      // Send All Events Information
-      console.log('Success: Admin Get All Events Information');
-      res.json({events: data});
-    })
-    .catch(function(error) {
-      console.log(error);
-      return res.status(400).send('Error: Problem executing Query');
-    });
-
-});
-
 
 // GET - Get Student Info
 // params:
@@ -466,7 +218,7 @@ app.get('/api/association/all', (req, res) => {
       .then(function (data) {
           // success;
 
-          for (let i = 0; i<data.length;i++) {
+          for (let i = 0; i < data.length; i++) {
 
               // Destructure association information
               const { association_id, association_name, initials, room, page_link, email, image_path, bio } = data[i];
@@ -525,7 +277,7 @@ app.get('/api/association/:id', (req, res) => {
   const { id } = req.params;
   // TODO: Check if it is in the db...
   //
-const responseDB = {};
+  const responseDB = {};
 
   db1.one("SELECT association_name, initials, room, page_link, email, image_path, bio \
           FROM associations natural join account natural join images natural join location\
@@ -635,7 +387,7 @@ app.get('/api/event/all', (req, res) => {
       .then(function (data) {
           // success;
           console.log(data);
-          for (let i = 0; i<data.length;i++) {
+          for (let i = 0; i < data.length; i++) {
 
               // Destructure association information
 
@@ -860,7 +612,6 @@ app.get('/api/sponsors/:id', (req, res) => {
   res.json(response);
 });
 
-
 // GET - Event stats
 // response:
 //    [] genders
@@ -1012,166 +763,6 @@ app.get('/api/event-stats/:id', (req, res) => {
 
 });
 
-
-app.get('/api/home', (req, res) => {
-  console.log(req.params);
-  const id = '1';
-  const responseDB = {};
-  db1.any('SELECT event_id, event_name, association_name, time_stamp, image_path \
-            FROM associations as A, (events as E natural join images), followed_associations as FA, students as S \
-            WHERE E.association_id = A.association_id and FA.association_id = E.association_id and FA.user_id = S.user_id and S.user_id = ${idused} \
-            ORDER BY time_stamp DESC', {idused: id})
-      .then(function (data) {
-        responseDB.eventsCreated = data;
-
-        db1.any("SELECT E.event_id, E.event_name, E.association_id, notification_name, notification_text, date_sent, image_path \
-                  FROM notifications as N, events as E, (associations as A natural join images), followed_associations as FA \
-                  WHERE N.event_id = E.event_id and A.association_id = E.association_id and A.association_id = FA.association_id and user_id = ${idused} \
-                  ORDER BY date_sent DESC", {idused: id})
-            .then(function (data) {
-            responseDB.updates = data;
-            console.log(data);
-            const response =[];
-            //breakdown for events
-            for (let i = 0; i<responseDB.eventsCreated.length;i++) {
-
-                // Destructure DB information
-                const { event_id, event_name, association_name, time_stamp, image_path } = responseDB.eventsCreated[i];
-                const summary = association_name + " has created a new event: ";
-                const extraText = event_name;
-                const singleEvent = {
-
-                  image: image_path,
-                  summary,
-                  date: time_stamp,
-                  extraText
-                }
-
-                response.push(singleEvent);
-            }
-
-            for (let i = 0; i<responseDB.updates.length;i++) {
-
-                // Destructure DB information
-                const { event_id, event_name, association_id, notification_name, notification_text,date_sent, image_path } = responseDB.updates[i];
-                const summary = event_name + " has a new update: ";
-                const extraText = notification_text;
-                const singleUpdate = {
-
-                  image: image_path,
-                  summary,
-                  date: date_sent,
-                  extraText
-                }
-
-                response.push(singleUpdate);
-            }
-
-            res.json(response);
-
-            })
-            .catch(function (error) {
-              // error;
-              console.log('Updates Info Failed')
-            });
-
-
-
-      })
-      .catch(function (error) {
-        // error;
-        console.log('Events Created Info Failed')
-      });
-
-});
-
-app.get('/api/home/events', (req, res) => {
-  console.log(req.params);
-  const id = '1'
-  db1.any("SELECT event_id, event_name,events.association_id, association_name, start_date, end_date, start_time, end_time, room, image_path \
-            FROM interested natural join events natural join images natural join location, associations \
-            WHERE user_id = ${idused} and events.association_id = associations.association_id", {idused: id})
-
-      .then(function (data) {
-        res.json(data);
-      })
-      .catch(function (error) {
-        // error;
-        console.log('Events Info Home Failed')
-      });
-});
-
-app.get('/api/home/associations', (req, res) => {
-  console.log(req.params);
-  const id = '1'
-  db1.any("SELECT association_id, association_name, initials, image_path \
-            FROM followed_associations natural join associations natural join images \
-            WHERE user_id = ${idused}", {idused: id})
-
-      .then(function (data) {
-        res.json(data);
-      })
-      .catch(function (error) {
-        // error;
-        console.log('Events Info Home Failed')
-      });
-});
-
-app.get('/api/home-associations/reviews', (req, res) => {
-  console.log(req.params);
-  const id = '1';
-  const response=[];
-  db1.any("SELECT review_id, first_name, last_name, image_path, review, date_created, event_name, rating \
-            FROM review natural join students natural join images, events \
-            WHERE association_id= ${idused} and events.event_id = review.event_id", {idused: id})
-
-      .then(function (data) {
-        console.log("TTTTTTT")
-        //console.log(data);
-        for (let i = 0; i<data.length;i++) {
-
-            // Destructure DB information
-            const { review_id, first_name, last_name, image_path, review,date_created, event_name, rating } = data[i];
-            const summary = first_name + " "+ last_name + " has reviewed your event: " + event_name;
-            const extraText = review;
-            const singleReview = {
-
-              image: image_path,
-              summary,
-              date: date_created,
-              extraText
-            }
-            console.log(singleReview);
-            response.push(singleReview);
-        }
-        //console.log(response);
-        res.json(response);
-      })
-      .catch(function (error) {
-        // error;
-        console.log('Events Info Home-Association Failed')
-      });
-});
-
-app.get('/api/home-associations/events', (req, res) => {
-  console.log(req.params);
-  const id = '1';
-
-  db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
-            FROM events as E, associations as A, images as I, location as L \
-            WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id= ${idused}", {idused: id})
-
-      .then(function (data) {
-
-        console.log(data);
-        res.json(data);
-      })
-      .catch(function (error) {
-        // error;
-        console.log('All Events Home-Association Failed')
-      });
-});
-
 app.get('/api/search/event/orderby/asc', (req, res) => {
   db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
            FROM events as E, associations as A, images as I, location as L \
@@ -1266,7 +857,7 @@ app.get('/api/search/association/orderby/desc', (req, res) => {
 
 });
 
-// Search for events
+// GET - Search for events
 //  Querystring params:
 //    name: string
 //    order: enum
