@@ -1,81 +1,76 @@
-import React, { Component } from 'react';
-import Associations from "./associations";
-import GridList from "./grid-list";
-import AssociationsListItem from './associations-list-item';
-import EventsListItem from './events-list-item';
-import ModalEditStudentProfile from './modal-edit-student-profile'
-import axios from 'axios';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { fetchProfileStudentInfo } from '../actions';
+
+import GridList from "../components/grid-list";
+import AssociationsListItem from '../components/associations-list-item';
+import EventsListItem from '../components/events-list-item';
+import ModalEditStudentProfile from '../components/modal-edit-student-profile'
 
 import { Form, Grid, Icon, Input, Image, Segment, Item, Menu, Divider } from 'semantic-ui-react';
 const banner = '/images/banner/867870-minimalist-iphone-5.jpg';
 
-export default class Profile extends Component{
+class ProfileStudent extends Component{
   constructor () {
     super();
     this.state = {
-      activeItem: 'about',
-      profileInfo: {}
+      activeItem: 'about'
     };
   }
 
   componentWillMount() {
-    const tick = this;
-    // Get Events Data to render
-    axios.get('/api/student/'+this.props.params.userID)
-    .then(function (response) {
-      console.log(response);
+    const { dispatch, params } = this.props;
+    const { userID } = params;
+    dispatch(fetchProfileStudentInfo(userID));
 
-      tick.setState({profileInfo: response.data})
-    })
-    .catch(function (error) {
-      console.log(error);
-      console.log("e")
-    });
   }
 
   state = { activeItem: 'about' }
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   renderAbout = () => {
+    const { email, gender, hometown, college, major, bio } = this.props;
+
     return(
     <Grid.Row style={{paddingTop:"10px", paddingBottom:"100px"}}>
       <Segment style={{borderRadius:0, width:"100%", paddingBottom:"100px"}}>
         <h2><strong><Icon size="large"name="info circle"></Icon>About</strong></h2>
         <Divider></Divider>
-        <p><strong>Email</strong>: {this.state.profileInfo.email}</p>
-        <p><strong>Gender</strong>: {this.state.profileInfo.gender}</p>
-        <p><strong>Hometown</strong>: {this.state.profileInfo.hometown} </p>
-        <p><strong>College</strong>: {this.state.profileInfo.college}</p>
-        <p><strong>Major</strong>: {this.state.profileInfo.major}</p>
-        <p><strong>Bio</strong>: {this.state.profileInfo.bio}</p>
+        <p><strong>Email</strong>: {email}</p>
+        <p><strong>Gender</strong>: {gender}</p>
+        <p><strong>Hometown</strong>: {hometown} </p>
+        <p><strong>College</strong>: {college}</p>
+        <p><strong>Major</strong>: {major}</p>
+        <p><strong>Bio</strong>: {bio}</p>
       </Segment>
     </Grid.Row>
   );
 };
   renderMyAssociations = () => {
-
+    const { followedAssociations } = this.props;
     return (
       <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="university">
         </Icon>Associations</strong></h2>
         <Divider/>
-        <GridList items={this.state.profileInfo.followedAssociations} ListItem={AssociationsListItem}/>
+        <GridList items={followedAssociations} ListItem={AssociationsListItem}/>
       </Segment>
     );
   };
 
   renderMyEvents = () => {
-
+    const { interestedEvents } = this.props;
     return (
       <Segment style={{borderRadius:0, width:"100%"}}><h2><strong><Icon size="large"name="calendar">
         </Icon>Events</strong></h2>
         <Divider/>
-        <GridList items={this.state.profileInfo.interestedEvents} ListItem={EventsListItem}/>
+        <GridList items={interestedEvents} ListItem={EventsListItem}/>
       </Segment>
     );
   };
 
   render(){
     const { activeItem } = this.state
+    const { first_name, last_name, image_path, gender, hometown, college, major, bio } = this.props;
 
     return (
       <Grid style={{paddingLeft:"85px", paddingRight:"85px", backgroundColor:"rgb(247, 247, 247)"}}>
@@ -83,7 +78,7 @@ export default class Profile extends Component{
           <Grid.Column style={{padding:"0px", margin: 0}} width={4}>
             <Image
               style={{width:"100%", height:"250px", padding: 0}}
-              src={this.state.profileInfo.image_path}>
+              src={image_path}>
             </Image>
           </Grid.Column>
           <Grid.Column style={{padding:"0px"}} width={12}>
@@ -97,11 +92,11 @@ export default class Profile extends Component{
           <Segment style={{borderRadius:0, width:"100%"}}>
             <h1
               style={{display:"inline",verticalAlign: 'middle'}}>
-              <strong>{this.state.profileInfo.first_name + " "+ this.state.profileInfo.last_name}</strong>
+              <strong>{first_name + " "+ last_name}</strong>
             </h1>
             {' '}
             <div style={{display:"inline",verticalAlign: 'middle'}}>
-              <ModalEditStudentProfile studentProfile={this.state.profileInfo}> </ModalEditStudentProfile>
+              <ModalEditStudentProfile studentProfile={{gender, hometown, college, major, bio}}> </ModalEditStudentProfile>
             </div>
           </Segment>
         </Grid.Row>
@@ -134,3 +129,40 @@ export default class Profile extends Component{
     );
   }
 }
+
+// Type cheking
+ProfileStudent.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  first_name: PropTypes.string,
+  last_name: PropTypes.string,
+  gender: PropTypes.string,
+  hometown: PropTypes.string,
+  college: PropTypes.string,
+  major: PropTypes.string,
+  image_path: PropTypes.string,
+  bio: PropTypes.string,
+  email: PropTypes.string,
+  interestedEvents: PropTypes.array,
+  followedAssociations: PropTypes.array
+}
+
+function mapStateToProps(state) {
+  const { profile_student } = state;
+  const { first_name, last_name, gender, hometown, college, major, image_path, bio, email, interestedEvents, followedAssociations } = profile_student;
+
+  return {
+    first_name,
+    last_name,
+    gender,
+    hometown,
+    college,
+    major,
+    image_path,
+    bio,
+    email,
+    interestedEvents,
+    followedAssociations
+  };
+}
+
+export default connect(mapStateToProps)(ProfileStudent);

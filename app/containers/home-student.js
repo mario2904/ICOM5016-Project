@@ -41,8 +41,6 @@ class HomeStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        events: [],
-        associations: [],
         activeItem: 'news feed'
       };
     this.handleItemClick = this.handleItemClick.bind(this);

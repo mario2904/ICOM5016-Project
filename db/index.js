@@ -1,7 +1,6 @@
 const pgp = require('pg-promise')(/*options*/);
 
 const db = pgp(process.env.DATABASE_URL || 'postgres://postgres:postgres@localhost:8000/postgres');
-console.log("MEH");
 db.connect()
     .then(function (obj) {
         console.log('DB connection established.')

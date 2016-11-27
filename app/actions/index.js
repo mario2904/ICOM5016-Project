@@ -13,6 +13,9 @@ import { STUDENT_EVENTS_REQUEST, STUDENT_EVENTS_SUCCESS, STUDENT_EVENTS_FAILURE 
 import { ASSOCIATION_NEWS_FEED_REQUEST, ASSOCIATION_NEWS_FEED_SUCCESS, ASSOCIATION_NEWS_FEED_FAILURE } from './types';
 import { ASSOCIATION_EVENTS_REQUEST, ASSOCIATION_EVENTS_SUCCESS, ASSOCIATION_EVENTS_FAILURE } from './types';
 
+import { PROFILE_ASSOCIATION_REQUEST, PROFILE_ASSOCIATION_SUCCESS, PROFILE_ASSOCIATION_FAILURE } from './types';
+import { PROFILE_STUDENT_REQUEST, PROFILE_STUDENT_SUCCESS, PROFILE_STUDENT_FAILURE } from './types';
+
 const API_BASE_URL = '/api';
 
 // LOGIN -----------------------------------------------------------------------
@@ -172,6 +175,29 @@ export function fetchHomeAssociationEvents() {
       endpoint: `${API_BASE_URL}/home-association/events`,
       method: 'GET',
       types: [ASSOCIATION_EVENTS_REQUEST, ASSOCIATION_EVENTS_SUCCESS, ASSOCIATION_EVENTS_FAILURE],
+    }
+  };
+}
+
+// Profile Pages calls ---------------------------------------------------------
+// Does not need any TOKEN or auth. open to general public.
+
+export function fetchProfileAssociationInfo(id) {
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/association/${id}`,
+      method: 'GET',
+      types: [PROFILE_ASSOCIATION_REQUEST, PROFILE_ASSOCIATION_SUCCESS, PROFILE_ASSOCIATION_FAILURE],
+    }
+  };
+}
+
+export function fetchProfileStudentInfo(id) {
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/student/${id}`,
+      method: 'GET',
+      types: [PROFILE_STUDENT_REQUEST, PROFILE_STUDENT_SUCCESS, PROFILE_STUDENT_FAILURE],
     }
   };
 }

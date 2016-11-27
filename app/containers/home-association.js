@@ -55,12 +55,9 @@ class HomeAssociation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        events: [],
-        associations: [],
         activeItem: 'news feed'
       };
     this.handleItemClick = this.handleItemClick.bind(this);
-    this.renderMyAssociations = this.renderMyAssociations.bind(this);
     this.renderMyFeeds = this.renderMyFeeds.bind(this);
   }
 
@@ -102,8 +99,6 @@ class HomeAssociation extends Component {
     });
   };
 
-  renderMyAssociations = () => <GridList items={this.state.associations} ListItem={AssociationsListItem}/>;
-
 renderMyFeeds = () => <Feed events={this.props.newsFeed} />;
 
   render () {
@@ -137,7 +132,6 @@ renderMyFeeds = () => <Feed events={this.props.newsFeed} />;
           </Menu>
           <Segment style={{backgroundColor:"rgb(247, 247, 247)"}} padded>
             {(this.state.activeItem === 'events') ? <Grid padded>{this.renderMyEvents()}</Grid>: null}
-            {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
             {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
           </Segment>
         </div>

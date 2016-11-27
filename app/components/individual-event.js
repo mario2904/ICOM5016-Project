@@ -69,51 +69,45 @@ export default class IndividualEvent extends Component {
             content={<a href={registration_link}>Registration</a>} />
         }
         <Modal trigger={<Button color="teal">Entrance Fee</Button>}>
-    <Modal.Header style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>Event Payment <Icon name="payment"></Icon></Modal.Header>
-    <Modal.Content>
-      <Form>
+          <Modal.Header style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>Event Payment <Icon name="payment"></Icon></Modal.Header>
+          <Modal.Content>
+            <Form>
 
-        <Form.Group widths="equal">
-           <Form.Input label='Credit Card Number' name='creditCard'
-             placeholder='Card Number' />
-           <Form.Input label="Expiration Date" name='expirationDate'
-             placeholder='MM/YYYY'/>
-           <Form.Input label="Security Code (CCV)" name="securityCode"
-             placeholder="123"></Form.Input>
-         </Form.Group>
+              <Form.Group widths="equal">
+                <Form.Input label='Credit Card Number' name='creditCard' placeholder='Card Number' />
+                <Form.Input label="Expiration Date" name='expirationDate' placeholder='MM/YYYY'/>
+                <Form.Input label="Security Code (CCV)" name='securityCode' placeholder="123"></Form.Input>
+              </Form.Group>
 
-       <Form.Group widths="equal">
-         <Form.Input label="First Name" name="firstName" placeholder="First Name"/>
-         <Form.Input label="Last Name" name="lastName" placeholder="Last Name"/>
-       </Form.Group>
+              <Form.Group widths="equal">
+                <Form.Input label="First Name" name="firstName" placeholder="First Name"/>
+                <Form.Input label="Last Name" name="lastName" placeholder="Last Name"/>
+              </Form.Group>
 
+              <Form.Input label="Billing Address" name="addressLine1" placeholder="Address Line 1"/>
+              <Form.Input name="addressLine2" placeholder="Address Line 2"/>
 
-       <Form.Input label="Billing Address" name="addressLine1"
-         placeholder="Address Line 1"/>
-       <Form.Input name="addressLine2"
-         placeholder="Address Line 2"/>
+              <Form.Group widths="equal">
+                <Form.Input label="City" name="city" placeholder="City"/>
+                <Form.Input label="State" name="state" placeholder="State"/>
+              </Form.Group>
 
-       <Form.Group widths="equal">
-         <Form.Input label="City" name="city" placeholder="City"/>
-         <Form.Input label="State" name="state" placeholder="State"/>
-       </Form.Group>
+              <Form.Group widths="equal">
+                <Form.Input label="Post Code" name="postCode" placeholder="Post Code"/>
+                <Form.Select label="Country" name="country"/>
+              </Form.Group>
 
-       <Form.Group widths="equal">
-         <Form.Input label="Post Code" name="postCode" placeholder="Post Code"/>
-         <Form.Select label="Country" name="country"/>
-       </Form.Group>
-
-      </Form>
-      <Modal.Description>
-        <Header>Proceed to Checkout</Header>
-      </Modal.Description>
-    </Modal.Content>
-    <Modal.Actions style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
-      <Button primary>
-        Proceed <Icon name='right chevron' />
-      </Button>
-    </Modal.Actions>
-  </Modal>
+            </Form>
+            <Modal.Description>
+              <Header>Proceed to Checkout</Header>
+            </Modal.Description>
+          </Modal.Content>
+          <Modal.Actions style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
+            <Button primary>
+              Proceed <Icon name='right chevron' />
+            </Button>
+          </Modal.Actions>
+        </Modal>
       </List>
     );
   }
@@ -190,7 +184,7 @@ export default class IndividualEvent extends Component {
   componentWillMount() {
     const tick = this;
     // Get Events Data to render
-    axios.get('/api/event/'+this.props.params.eventID)
+    axios.get('/api/event/'+ this.props.params.eventID)
     .then(function (response) {
       console.log(response);
       tick.setState({eventInfo: response.data})
@@ -201,7 +195,7 @@ export default class IndividualEvent extends Component {
     });
   }
 
-  render(){
+  render() {
     if(!this.state.eventInfo.reviews)
       return null;
     return (
