@@ -43,6 +43,14 @@ export const PROFILE_ASSOCIATION_SUCCESS = 'PROFILE_ASSOCIATION_SUCCESS';
 export const PROFILE_ASSOCIATION_FAILURE = 'PROFILE_ASSOCIATION_FAILURE';
 
 // Profile Student API Requests ------------------------------------------------
+
 export const PROFILE_STUDENT_REQUEST = 'PROFILE_STUDENT_REQUEST';
 export const PROFILE_STUDENT_SUCCESS = 'PROFILE_STUDENT_SUCCESS';
 export const PROFILE_STUDENT_FAILURE = 'PROFILE_STUDENT_FAILURE';
+
+
+// Profile Event API Requests --------------------------------------------------
+
+export const PROFILE_EVENT_REQUEST = 'PROFILE_EVENT_REQUEST';
+export const PROFILE_EVENT_SUCCESS = 'PROFILE_EVENT_SUCCESS';
+export const PROFILE_EVENT_FAILURE = 'PROFILE_EVENT_FAILURE';

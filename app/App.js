@@ -13,6 +13,7 @@ import HomeAssociation from './containers/home-association';
 
 import ProfileAssociation from './containers/profile-association';
 import ProfileStudent from './containers/profile-student';
+import ProfileEvent from './containers/profile-event';
 
 import Login from './components/login';
 import Associations from './components/associations';
@@ -28,8 +29,6 @@ import AdministratorTableEvents from './components/administrator-table-events';
 
 
 import CreateEventForm from './components/create-event-form';
-
-import IndividualEvent from './components/individual-event';
 
 import Settings from './components/settings';
 
@@ -63,8 +62,8 @@ export default class App extends Component {
             <Route path="/home-association" component={HomeAssociation}></Route>
             <Route path="/students/:userID" component={ProfileStudent}></Route>
             <Route path="/associations/:associationID" component={ProfileAssociation}></Route>
+            <Route path="/events/:eventID" component={ProfileEvent}></Route>
 
-            <Route path="/events/:eventID" component={IndividualEvent}></Route>
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
             <Route path="/signup-student" component={UserReg}></Route>

@@ -15,6 +15,7 @@ import { ASSOCIATION_EVENTS_REQUEST, ASSOCIATION_EVENTS_SUCCESS, ASSOCIATION_EVE
 
 import { PROFILE_ASSOCIATION_REQUEST, PROFILE_ASSOCIATION_SUCCESS, PROFILE_ASSOCIATION_FAILURE } from './types';
 import { PROFILE_STUDENT_REQUEST, PROFILE_STUDENT_SUCCESS, PROFILE_STUDENT_FAILURE } from './types';
+import { PROFILE_EVENT_REQUEST, PROFILE_EVENT_SUCCESS, PROFILE_EVENT_FAILURE } from './types';
 
 const API_BASE_URL = '/api';
 
@@ -198,6 +199,16 @@ export function fetchProfileStudentInfo(id) {
       endpoint: `${API_BASE_URL}/student/${id}`,
       method: 'GET',
       types: [PROFILE_STUDENT_REQUEST, PROFILE_STUDENT_SUCCESS, PROFILE_STUDENT_FAILURE],
+    }
+  };
+}
+
+export function fetchProfileEventInfo(id) {
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/event/${id}`,
+      method: 'GET',
+      types: [PROFILE_EVENT_REQUEST, PROFILE_EVENT_SUCCESS, PROFILE_EVENT_FAILURE],
     }
   };
 }

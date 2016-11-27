@@ -8,8 +8,6 @@ const { Content, Description, Group, Header, Image, Meta } = Item;
 
 import { fetchHomeAssociationNewsFeed, fetchHomeAssociationEvents } from '../actions';
 
-import axios from 'axios';
-
 import HomeSearchBar from '../components/home-search-bar';
 import GridList from '../components/grid-list';
 import EventsListItem from '../components/events-list-item';
@@ -148,7 +146,7 @@ HomeAssociation.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { auth, home_association } = state;
+  const { profile_event } = state;
   const { events, newsFeed } = home_association;
 
   return {

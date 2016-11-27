@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router'
 import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon, Button, Modal } from 'semantic-ui-react';
 
-import ModalEditEvent from './modal-edit-event';
-
-import axios from 'axios';
+import ModalEditEvent from '../components/modal-edit-event';
+import { fetchProfileEventInfo } from '../actions';
 
 const styles = {
   background: {
@@ -23,13 +23,15 @@ const styles = {
   }
 };
 
-export default class IndividualEvent extends Component {
+class ProfileEvent extends Component {
 
   renderInterestedUsers() {
-    if(!this.state.eventInfo.interested) {
+    const { interested } = this.props;
+
+    if(!interested) {
       return null;
     }
-    return this.state.eventInfo.interested.map((user) => {
+    return interested.map((user) => {
       return (
         <List.Item key={user.user_id}>
           <Image avatar src={user.image_path}/>
@@ -45,10 +47,8 @@ export default class IndividualEvent extends Component {
   }
 
   renderDetails() {
-    if(!this.state.eventInfo) {
-      return null;
-    }
-    const { association_name, start_date, end_date, start_time, end_time, room, registration_link } = this.state.eventInfo;
+
+    const { association_name, start_date, end_date, start_time, end_time, room, registration_link } = this.props;
     return (
       <List>
         <List.Item
@@ -113,16 +113,16 @@ export default class IndividualEvent extends Component {
   }
 
   renderCategories() {
-    if(!this.state.eventInfo.categories) {
+    const { categories } = this.props;
+    if(!categories) {
       return null;
     }
-    console.log(this.state.eventInfo.categories);
-    return this.state.eventInfo.categories.map((cat) => {
+    return categories.map((cat) => {
       return (
         <Label
           style={styles.label}
-          icon={categories[cat].icon}
-          color={categories[cat].color}
+          icon={categoryMap[cat].icon}
+          color={categoryMap[cat].color}
           key={cat}
           content={cat} />
       );
@@ -130,14 +130,16 @@ export default class IndividualEvent extends Component {
   }
 
   renderUpdates() {
-    if(!this.state.eventInfo.updates) {
+    const { updates, image_path } = this.props;
+
+    if(!updates) {
       return null;
     }
-    return this.state.eventInfo.updates.map((update) => {
+    return updates.map((update) => {
       const { notification_id, notification_name, notification_text, date_sent } = update;
       return (
         <Comment key={notification_id}>
-          <Comment.Avatar src={this.state.eventInfo.image_path} />
+          <Comment.Avatar src={image_path} />
           <Comment.Content>
             <Comment.Author as='span'>{notification_name}</Comment.Author>
             <Comment.Metadata>
@@ -153,10 +155,12 @@ export default class IndividualEvent extends Component {
   }
 
   renderReviews() {
-    if(!this.state.eventInfo.reviews) {
+    const { reviews } = this.props;
+
+    if(!reviews) {
       return null;
     }
-    return this.state.eventInfo.reviews.map((reviews) => {
+    return reviews.map((reviews) => {
       const { review_id, first_name, last_name, image_path, review, date_created, rating, user_id } = reviews;
       return (
         <Comment key={review_id}>
@@ -176,27 +180,18 @@ export default class IndividualEvent extends Component {
       );
     })
   }
-
-  constructor () {
-    super();
-    this.state = {eventInfo: {}};
-  }
   componentWillMount() {
-    const tick = this;
-    // Get Events Data to render
-    axios.get('/api/event/'+ this.props.params.eventID)
-    .then(function (response) {
-      console.log(response);
-      tick.setState({eventInfo: response.data})
-    })
-    .catch(function (error) {
-      console.log(error);
+    const { dispatch, params } = this.props;
+    const { eventID } = params;
 
-    });
+    dispatch(fetchProfileEventInfo(eventID));
   }
 
   render() {
-    if(!this.state.eventInfo.reviews)
+    const { reviews, event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories } = this.props;
+    const editableInfo = { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
+
+    if(!reviews)
       return null;
     return (
       <div style={styles.background}>
@@ -205,7 +200,7 @@ export default class IndividualEvent extends Component {
             <Grid.Column style={styles.column} >
               <Segment>
                 <Image
-                  src={this.state.eventInfo.image_path}
+                  src={image_path}
                   size='big'
                   style={{width:"90%", marginTop:10, marginBottom:10}}
                   bordered
@@ -218,20 +213,20 @@ export default class IndividualEvent extends Component {
               <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
                  as='h2' attached='top'>
                 <span>
-                  {this.state.eventInfo.event_name} {' '}
-                  <ModalEditEvent eventInfo={this.state.eventInfo} />
+                  {event_name} {' '}
+                  <ModalEditEvent eventInfo={editableInfo} />
                 </span>
                 <br />
                 {this.renderCategories()}
               </Header>
               <Segment attached>
-                {this.state.eventInfo.description}
+                {description}
               </Segment>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row style={styles.row}>
             <Grid.Column  computer={11} tablet={11} mobile={16} stretched>
-              { this.state.eventInfo.reviews.length === 0 ? null:
+              { reviews.length === 0 ? null:
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
                   <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
@@ -260,7 +255,7 @@ export default class IndividualEvent extends Component {
                     </span>
                   </Header>
                   <Segment attached>
-                    { this.state.eventInfo.reviews.length === 0 ?
+                    { reviews.length === 0 ?
                       <span>There are no reviews yet. Be the first one to write a review.</span>:
                     <Comment.Group>
                       {this.renderReviews()}
@@ -315,7 +310,7 @@ export default class IndividualEvent extends Component {
 }
 
 
-const categories = {
+const categoryMap = {
   Food: {
     color: 'red',
     icon: 'food'// food or spoon
@@ -357,3 +352,48 @@ const categories = {
     icon: 'idea'
   }
 };
+
+// Type cheking
+ProfileEvent.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  event_name: PropTypes.string,
+  association_id: PropTypes.number,
+  association_name: PropTypes.string,
+  start_date: PropTypes.string,
+  end_date: PropTypes.string,
+  start_time: PropTypes.string,
+  end_time: PropTypes.string,
+  room: PropTypes.string,
+  image_path: PropTypes.string,
+  description: PropTypes.string,
+  registration_link: PropTypes.string,
+  interested: PropTypes.array,
+  updates: PropTypes.array,
+  reviews: PropTypes.array,
+  categories: PropTypes.array
+}
+
+function mapStateToProps(state) {
+  const { profile_event } = state;
+  const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link, interested, updates, reviews, categories } = profile_event;
+
+  return {
+    event_name,
+    association_id,
+    association_name,
+    start_date,
+    end_date,
+    start_time,
+    end_time,
+    room,
+    image_path,
+    description,
+    registration_link,
+    interested,
+    updates,
+    reviews,
+    categories
+  };
+}
+
+export default connect(mapStateToProps)(ProfileEvent);
