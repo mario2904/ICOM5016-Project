@@ -7,7 +7,6 @@ import { Image as ImageComponent, Item, Menu, Segment, Grid, Card, Icon, Feed, B
 
 const { Content, Description, Group, Header, Image, Meta } = Item;
 
-import HomeSearchBar from '../components/home-search-bar';
 import GridList from '../components/grid-list';
 import EventsListItem from '../components/events-list-item';
 import AssociationsListItem from '../components/associations-list-item';
