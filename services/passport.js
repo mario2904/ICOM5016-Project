@@ -24,7 +24,6 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
     FROM account
     WHERE email = $[email]`, {email})
     .then(function(data) {
-      console.log("LocalStrategy: THEN", data);
       // No account found with given email
       if (!data) { return done(null, false); }
       // If account exist, compare passwords.

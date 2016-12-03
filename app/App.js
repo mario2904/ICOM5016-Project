@@ -8,6 +8,8 @@ import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 
 import reducers from './reducers';
 
+import RequireAuth from './components/require-auth';
+
 import HomeStudent from './containers/home-student';
 import HomeAssociation from './containers/home-association';
 

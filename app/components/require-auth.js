@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 
-export default function(ComposedComponent) {
+export default function(ComposedComponent, auth_role) {
   class Authentication extends Component {
     componentWillMount() {
-      const { isAuthenticated } = this.props;
-      if(!isAuthenticated)
-        browserHistory.push('/login');
+      const { isAuthenticated, role } = this.props;
+      if(!isAuthenticated || role !== auth_role)
+        browserHistory.push('/');
     }
     componentWillUpdate(nextProps) {
-      const { isAuthenticated } = nextProps;
-      if(!isAuthenticated)
-        browserHistory.push('/login');
+      const { isAuthenticated, role } = nextProps;
+      if(!isAuthenticated || role !== auth_role)
+        browserHistory.push('/');
     }
     render() {
       return <ComposedComponent {...this.props}/>
@@ -20,7 +20,11 @@ export default function(ComposedComponent) {
   }
   function mapStateToProps(state) {
     const { auth } = state;
-    return {auth};
+    const { isAuthenticated, role } = auth;
+    return {
+      isAuthenticated,
+      role
+    };
   }
   return connect(mapStateToProps)(Authentication);
 }
