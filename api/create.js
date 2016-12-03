@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const db1 = require('../db');
 const validate = require('../utils/validate');

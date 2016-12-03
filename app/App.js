@@ -15,7 +15,7 @@ import ProfileAssociation from './containers/profile-association';
 import ProfileStudent from './containers/profile-student';
 import ProfileEvent from './containers/profile-event';
 
-import Login from './components/login';
+import Login from './containers/login';
 import Associations from './components/associations';
 import Events from './components/events';
 import Frame from './components/frame';

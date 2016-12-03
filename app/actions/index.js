@@ -38,7 +38,8 @@ function receiveLogin(user) {
     payload: {
       isFetching: false,
       isAuthenticated: true,
-      id_token: user.id_token
+      id_token: user.id_token,
+      role: user.role
     }
   }
 }
@@ -57,14 +58,15 @@ function loginError(message) {
 // Calls the API to get a token and
 // dispatches actions along the way
 export function loginUser(creds) {
-  const { username, password } = creds;
+  const { email, password, role } = creds;
 
   const config = {
     method: 'post',
     url: `${API_BASE_URL}/login`,
     data: {
-      username,
-      password
+      email,
+      password,
+      role
     }
   }
 
@@ -74,10 +76,11 @@ export function loginUser(creds) {
 
     return axios(config)
       .then(response => {
-        // If login was successful, set the token in local storage
-        localStorage.setItem('id_token', user.id_token);
+        // If login was successful, set the token and role in local storage
+        localStorage.setItem('id_token', response.data.id_token);
+        localStorage.setItem('role', response.data.role);
         // Dispatch the success action
-        dispatch(receiveLogin(user));
+        dispatch(receiveLogin(response.data));
       })
       .catch(error => {
         // If there was a problem, we want to
@@ -112,9 +115,10 @@ function receiveLogout() {
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
-    dispatch(requestLogout())
-    localStorage.removeItem('id_token')
-    dispatch(receiveLogout())
+    dispatch(requestLogout());
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('role');
+    dispatch(receiveLogout());
   }
 }
 

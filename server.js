@@ -51,43 +51,6 @@ app.use(express.static(__dirname + '/public'));
 // Handle REST API calls -------------------------------------------------------
 app.use('/api', api);
 
-// POST - Login
-// body:
-//    email: string
-//    password: string
-//    role: string (association | student)
-// response:
-//    id: uuid
-app.post('/api/login', (req, res) => {
-  console.log(req.body);
-  // Check if has valid params in the body or the request
-  if (!req.body || !validate.login(req.body))
-    return res.status(400).send('Error: Missing fields for login.');
-  // Destructure body params
-  const { email, password, role } = req.body;
-  // TODO: Check if it matches one record in the db
-  //
-  // db.oneOrNone(`
-  //   SELECT *
-  //   FROM account
-  //   WHERE email = $[email] and password = $[hash]`, {email, hash});
-  // // Check the db Testing and see if it mathces ...
-  // for (var key in db[account]) {
-  //   if (db[account].hasOwnProperty(key)) {
-  //     // Need to match both email and password
-  //     if ( db[account][key].email === email && db[account][key].password === password) {
-  //       id = key;
-  //     }
-  //   }
-  // }
-  // // Return error if there was no match in the db
-  // if (id === '')
-  //   return res.status(400).send('Error: E-mail or Password is Incorrect');
-  // // Send their id
-  // const response = {id};
-  res.json({success: true});
-});
-
 // POST - Upload Image (SINGLE)
 // file:
 //    image: <image>
