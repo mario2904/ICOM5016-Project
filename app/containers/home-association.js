@@ -8,7 +8,6 @@ const { Content, Description, Group, Header, Image, Meta } = Item;
 
 import { fetchHomeAssociationNewsFeed, fetchHomeAssociationEvents } from '../actions';
 
-import HomeSearchBar from '../components/home-search-bar';
 import GridList from '../components/grid-list';
 import EventsListItem from '../components/events-list-item';
 import AssociationsListItem from '../components/associations-list-item';
