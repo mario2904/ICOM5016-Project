@@ -57,6 +57,7 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
   // See if the user ID exists in the db
   // If it does, call 'done'
   // else, call done without a user object
+
 });
 
 // Tell Passport to use this Strategy

@@ -128,33 +128,40 @@ export function logoutUser() {
 // All require authentication (tokens)
 // TODO: Use tokens in each call by adding => headers: { 'Authorization': `Bearer ${token}` }
 // Where token = localStorage.getItem('id_token') || null
+// It is assumed that all the caller is already authenticated and has a student role
 
 export function fetchHomeStudentAssociations() {
+  let token = localStorage.getItem('id_token');
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-student/associations`,
       method: 'GET',
       types: [STUDENT_ASSOCIATIONS_REQUEST, STUDENT_ASSOCIATIONS_SUCCESS, STUDENT_ASSOCIATIONS_FAILURE],
+      headers: { 'Authorization': `Bearer ${token}` }
     }
   };
 }
 
 export function fetchHomeStudentNewsFeed() {
+  let token = localStorage.getItem('id_token');
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-student`,
       method: 'GET',
       types: [STUDENT_NEWS_FEED_REQUEST, STUDENT_NEWS_FEED_SUCCESS, STUDENT_NEWS_FEED_FAILURE],
+      headers: { 'Authorization': `Bearer ${token}` }
     }
   };
 }
 
 export function fetchHomeStudentEvents() {
+  let token = localStorage.getItem('id_token');
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-student/events`,
       method: 'GET',
       types: [STUDENT_EVENTS_REQUEST, STUDENT_EVENTS_SUCCESS, STUDENT_EVENTS_FAILURE],
+      headers: { 'Authorization': `Bearer ${token}` }
     }
   };
 }
