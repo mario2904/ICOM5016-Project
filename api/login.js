@@ -61,7 +61,8 @@ router.post('/', requireLogin, (req, res) => {
     .then(function(data) {
       const response = {
         id_token: generateToken(data[id], data[name], req.body.role),
-        role: req.body.role
+        role: req.body.role,
+        user_name: data[name]
       };
       return res.json(response);
     })
