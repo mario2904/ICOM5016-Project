@@ -23,7 +23,7 @@ exports.association = function (obj) {
 exports.student = function (obj) {
   return (  _.has(obj, 'first_name')
         &&  _.has(obj, 'last_name')
-        &&  _.has(obj, 'age')
+        &&  _.has(obj, 'birthdate')
         &&  _.has(obj, 'gender')
         &&  _.has(obj, 'hometown')
         &&  _.has(obj, 'college')

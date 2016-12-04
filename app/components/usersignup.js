@@ -11,13 +11,22 @@ export default class Usignup extends Component {
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault();
+    console.log(serializedForm);
     const { password, re_password, terms } = serializedForm;
-    if(checkPassword(password, re_password) && terms) {
+    if(password.length >= 8 && re_password.length >= 8 && password === re_password && terms) {
       // Send to server...
+      axios.post('/api/create/student', serializedForm)
+        .then(function (response) {
+          browserHistory.push('/');
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
     }
 
-    this.setState({ serializedForm });
+    //this.setState({ serializedForm });
   }
 
   checkPassword(pass, re_pass){
