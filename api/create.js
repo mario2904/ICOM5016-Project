@@ -21,34 +21,23 @@ router.post('/student',  (req, res, next) => {
       if(data)
         return res.status(422).send('Error: email is in use');
 
-      var date = new Date();
-      var year = date.getFullYear();
-      var month = date.getMonth();
-      var day = date.getDate();
-      var hours = date.getHours();
-      var minutes = date.getMinutes();
-      var seconds = date.getSeconds();
-      var milliseconds = date.getMilliseconds();
-
-      const dateCreated = new Date(year, month, day, hours, minutes, seconds, milliseconds);
-      console.log(dateCreated);
       db1.none(`
         WITH acc1 AS (
           INSERT INTO account (email, password,receive_notifications,date_created)
           VALUES ($[email], $[password],'no',CURRENT_TIMESTAMP)
           RETURNING account_id
         )
-        INSERT INTO students (first_name,last_name,hometown,college,major,gender,bio,birthdate,account_id)
-        SELECT $[first_name],$[last_name], $[hometown], $[college], $[major], $[gender], $[bio],to_timestamp($[birthdate], 'dd-mm-yyyy'), account_id
+        INSERT INTO students (first_name,last_name,hometown,college,major,gender,bio,birthdate,account_id,image_id)
+        SELECT $[first_name],$[last_name], $[hometown], $[college], $[major], $[gender], $[bio],to_timestamp($[birthdate], 'dd-mm-yyyy'), account_id, 28
         FROM acc1`,{first_name, last_name, hometown, college, major, gender, bio, email, password, birthdate})
         .then(function () {
         // success;
         res.sendStatus(200);
-        console.log("WOOOOT");
+        console.log("Student Creation Successful");
         })
         .catch(function (error) {
         // error;
-        console.log("MOOP");
+        console.log("Student Creation Unsuccessful");
         });
 
 
@@ -79,7 +68,7 @@ router.post('/association', (req, res, next) => {
   if (!req.body || !validate.association(req.body))
     return res.status(400).send('Error: Missing fields for association.');
   // Destructure body params
-  const { association_name, initials, location, page_link, email, password } = req.body;
+  const { association_name, initials, location, page_link, email, password, bio } = req.body;
   // TODO: check the db and see if it it can create new association account
   // ... (Check if e-mail is already registered)
   //
@@ -93,18 +82,38 @@ router.post('/association', (req, res, next) => {
       if(data)
         return res.status(422).send('Error: email is in use');
 
+        db1.none(`
+          WITH acc1 AS (
+            INSERT INTO account (email, password,receive_notifications,date_created)
+            VALUES ($[email], $[password],'no',CURRENT_TIMESTAMP)
+            RETURNING account_id
+          )
+          INSERT INTO associations (association_name,page_link,initials,bio,account_id,location_id)
+          SELECT $[association_name],$[page_link],$[initials], $[bio], account_id,  (SELECT location_id FROM location WHERE room = $[location])
+          FROM acc1`,{association_name, page_link, initials, location, bio, email, password})
+          .then(function () {
+          // success;
+          res.sendStatus(200);
+          console.log("Association Creation Successful");
+          })
+          .catch(function (error) {
+          // error;
+          console.log("Association Creation Unsuccessful");
+          });
+
+
       // If there is no other acount with the same email. Create account.
       // First. hash password
-      bcrypt.hash(password, 10, function(err, hash) {
-        if(err) { return next(err) }
-        // Second. Store hash password in the DB. Along with the rest of the association info
-        // TODO: implement!
-
-        // return res.sendStatus(200);
-        // Send OK status
-        console.log('Success: Create Association');
-        return res.json({success: true});
-      });
+      // bcrypt.hash(password, 10, function(err, hash) {
+      //   if(err) { return next(err) }
+      //   // Second. Store hash password in the DB. Along with the rest of the association info
+      //   // TODO: implement!
+      //
+      //   // return res.sendStatus(200);
+      //   // Send OK status
+      //   console.log('Success: Create Association');
+      //   return res.json({success: true});
+      // });
     })
     .catch(function(error) {
       return next(error);
