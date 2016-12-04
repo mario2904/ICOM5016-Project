@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router'
 import { Menu, Segment, Icon, Grid, Dropdown } from 'semantic-ui-react';
+
+import { logoutUser } from '../actions';
 
 const styles = {
   navbar: {
@@ -9,13 +12,15 @@ const styles = {
   }
 }
 
-export default class NavBar extends Component {
+class NavBar extends Component {
 
   state = { activeItem: 'E-Spotter' };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
+    const { dispatch } = this.props;
+
     const { activeItem } = this.state;
     return (
       <div style={this.props.style}>
@@ -52,10 +57,10 @@ export default class NavBar extends Component {
                   <Menu.Item
                     fitted
                     name='account'
-                    as={Link} to='/#'
+                    as={Link} to='/'
                     active={activeItem === 'account'}
                     icon='user'
-                    onClick={this.handleItemClick} />
+                    onClick={dispatch(logoutUser())} />
                 </Menu.Menu>
               </Menu>
             </Grid.Row>
@@ -89,3 +94,9 @@ export default class NavBar extends Component {
     )
   }
 }
+
+NavBar.propTypes = {
+  dispatch: PropTypes.func.isRequired
+}
+
+export default connect ()(NavBar);

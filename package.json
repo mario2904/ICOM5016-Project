@@ -1,5 +1,5 @@
 {
-  "name": "e-tracker",
+  "name": "E-Spotter",
   "version": "1.0.0",
   "description": "Web application that will help the student body. It will consolidate and facilitate all of the associations’ announcements of their events and let the students track and discover events that they find attractive all in one place.",
   "main": "server.js",
@@ -58,7 +58,6 @@
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "dotenv": "^2.0.0",
-    "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
