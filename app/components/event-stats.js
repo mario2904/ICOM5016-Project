@@ -182,7 +182,7 @@ export default class EventStats extends Component {
   componentWillMount() {
     const tick = this;
     // Get Events Data to render
-    axios.get('/api/event-stats/' + this.props.params.eventID)
+    axios.get('/api/event/stats/' + this.props.params.eventID)
     .then(function (response) {
       console.log(response);
       tick.setState({stats: response.data})
