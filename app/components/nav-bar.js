@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router'
 import { Menu, Segment, Icon, Grid, Dropdown } from 'semantic-ui-react';
@@ -19,7 +20,7 @@ class NavBar extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
-    const { dispatch } = this.props;
+    const { logoutUser } = this.props;
 
     const { activeItem } = this.state;
     return (
@@ -60,7 +61,7 @@ class NavBar extends Component {
                     as={Link} to='/'
                     active={activeItem === 'account'}
                     icon='user'
-                    onClick={dispatch(logoutUser())} />
+                    onClick={logoutUser} />
                 </Menu.Menu>
               </Menu>
             </Grid.Row>
@@ -84,7 +85,6 @@ class NavBar extends Component {
                     text='Account'
                     as={Link} to='/#'
                     icon='user' />
-
                 </Dropdown.Menu>
               </Dropdown>
             </Grid.Row>
@@ -96,7 +96,9 @@ class NavBar extends Component {
 }
 
 NavBar.propTypes = {
-  dispatch: PropTypes.func.isRequired
+  logoutUser: PropTypes.func.isRequired
 }
-
-export default connect ()(NavBar);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({logoutUser}, dispatch)
+}
+export default connect(null, mapDispatchToProps)(NavBar);
