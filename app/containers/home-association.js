@@ -145,7 +145,7 @@ HomeAssociation.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { profile_event } = state;
+  const { home_association } = state;
   const { events, newsFeed } = home_association;
 
   return {

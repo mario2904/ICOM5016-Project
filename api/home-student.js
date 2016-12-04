@@ -1,9 +1,13 @@
+const passport = require('passport');
+const requireAuth = passport.authenticate('jwt', {session: false});
+
 const router = require('express').Router();
 const db1 = require('../db');
 
-router.get('/', (req, res) => {
-  console.log(req.params);
-  const id = '1';
+router.get('/', requireAuth, (req, res) => {
+  // After auth check req.user.id = id of user.
+  const { id } = req.user;
+
   const responseDB = {};
   db1.any('SELECT event_id, event_name, association_name, time_stamp, image_path \
             FROM associations as A, (events as E natural join images), followed_associations as FA, students as S \
@@ -73,9 +77,11 @@ router.get('/', (req, res) => {
 
 });
 
-router.get('/events', (req, res) => {
+router.get('/events', requireAuth, (req, res) => {
   console.log(req.params);
-  const id = '1'
+  // After auth check req.user.id = id of user.
+  const { id } = req.user;
+
   db1.any("SELECT event_id, event_name,events.association_id, association_name, start_date, end_date, start_time, end_time, room, image_path \
             FROM interested natural join events natural join images natural join location, associations \
             WHERE user_id = ${idused} and events.association_id = associations.association_id", {idused: id})
@@ -89,9 +95,11 @@ router.get('/events', (req, res) => {
       });
 });
 
-router.get('/associations', (req, res) => {
+router.get('/associations', requireAuth, (req, res) => {
   console.log(req.params);
-  const id = '1'
+  // After auth check req.user.id = id of user.
+  const { id } = req.user;
+
   db1.any("SELECT association_id, association_name, initials, image_path \
             FROM followed_associations natural join associations natural join images \
             WHERE user_id = ${idused}", {idused: id})

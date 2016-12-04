@@ -1,9 +1,14 @@
+const passport = require('passport');
+const requireAuth = passport.authenticate('jwt', {session: false});
+
 const router = require('express').Router();
 const db1 = require('../db');
 
-router.get('/reviews', (req, res) => {
+router.get('/reviews', requireAuth, (req, res) => {
   console.log(req.params);
-  const id = '1';
+  // After auth check req.user.id = id of user.
+  const { id } = req.user;
+  
   const response = [];
   db1.any("SELECT review_id, first_name, last_name, image_path, review, date_created, event_name, rating \
             FROM review natural join students natural join images, events \
@@ -37,9 +42,10 @@ router.get('/reviews', (req, res) => {
       });
 });
 
-router.get('/events', (req, res) => {
+router.get('/events', requireAuth, (req, res) => {
   console.log(req.params);
-  const id = '1';
+  // After auth check req.user.id = id of user.
+  const { id } = req.user;
 
   db1.any("SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link \
             FROM events as E, associations as A, images as I, location as L \

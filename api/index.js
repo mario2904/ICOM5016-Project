@@ -3,6 +3,7 @@ const admin = require('./admin');
 const create = require('./create');
 const home_student = require('./home-student');
 const home_association = require('./home-association');
+const passportService = require('../services/passport');
 
 const router = require('express').Router();
 

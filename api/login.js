@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const passportService = require('../services/passport');
 const passport = require('passport');
 
 const requireLogin = passport.authenticate('local', {session: false});

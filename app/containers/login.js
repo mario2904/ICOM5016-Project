@@ -36,9 +36,17 @@ class Login extends Component {
   loginAssociaiton (event) {
     event.preventDefault();
     // Do the sign-in validation here...
+    const { email, password } = this.state;
+    const { dispatch } = this.props;
+    const creds = {
+      email,
+      password,
+      role: 'association'
+    }
     console.log("Association");
     console.log(this.state.email);
     console.log(this.state.password);
+    dispatch(loginUser(creds));
 
   }
 
@@ -52,7 +60,7 @@ class Login extends Component {
     browserHistory.push('/signup-association');
   }
 
-  render () {
+  componentWillMount() {
     const { isAuthenticated, role } = this.props;
     // Redirect to their respective homes if already authenticated
     if (isAuthenticated) {
@@ -65,6 +73,23 @@ class Login extends Component {
           break;
       }
     }
+  }
+  componentWillUpdate(nextProps) {
+    const { isAuthenticated, role } = nextProps;
+    // Redirect to their respective homes if already authenticated
+    if (isAuthenticated) {
+      switch (role) {
+        case 'student':
+          browserHistory.push('/home-student');
+          break;
+        case 'association':
+          browserHistory.push('/home-association');
+          break;
+      }
+    }
+  }
+
+  render () {
     return (
       <Grid padded stackable columns={2}>
         <Grid.Row centered>

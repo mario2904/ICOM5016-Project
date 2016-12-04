@@ -18,7 +18,6 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
   // otherwise, call done with false
   console.log("Start LocalStrategy");
 
-  // Second. Store hash password in the DB. Along with the rest of the student info
   db.oneOrNone(`
     SELECT *
     FROM account
@@ -48,7 +47,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
 
 // Setup options for JWT Strategy
 const jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+  jwtFromRequest: ExtractJwt.fromAuthHeader(),
   secretOrKey: process.env.SECRET_KEY || 'SECRET'
 };
 
@@ -57,6 +56,36 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
   // See if the user ID exists in the db
   // If it does, call 'done'
   // else, call done without a user object
+
+  console.log("Start JwtStrategy");
+
+  let table = '';
+  let name = '';
+  let id = '';
+  switch (payload.role) {
+    case 'student':
+      id = 'user_id'
+      table = 'students';
+      break;
+    case 'association':
+      id = 'association_id';
+      table = 'associations';
+      break;
+    default:
+      return res.status(400).send("Error: Login error. Role undefined.");
+  }
+
+  db.oneOrNone(`
+    SELECT *
+    FROM account natural join ${table}
+    WHERE ${id} = $[token_id]`, {token_id: payload.sub})
+    .then(function(data) {
+      if(!data) { return done(null, false); }
+      return done(null, {id: payload.sub})
+    })
+    .catch(function(error) {
+      return done(error, false);
+    });
 
 });
 
