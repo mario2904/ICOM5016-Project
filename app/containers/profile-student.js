@@ -70,7 +70,10 @@ class ProfileStudent extends Component{
 
   render(){
     const { activeItem } = this.state
-    const { first_name, last_name, image_path, gender, hometown, college, major, bio } = this.props;
+    const { first_name, last_name, image_path, gender, hometown, college, major, bio, id, role, params } = this.props;
+    const { userID } = params;
+    console.log(role);
+    console.log(id);
 
     return (
       <Grid style={{paddingLeft:"85px", paddingRight:"85px", backgroundColor:"rgb(247, 247, 247)"}}>
@@ -96,7 +99,11 @@ class ProfileStudent extends Component{
             </h1>
             {' '}
             <div style={{display:"inline",verticalAlign: 'middle'}}>
-              <ModalEditStudentProfile studentProfile={{gender, hometown, college, major, bio}}> </ModalEditStudentProfile>
+              { // If authenticated as student and same id as this profile
+                // Then allow to edit this profile.
+                (role === 'student' && userID === id) ?
+                <ModalEditStudentProfile studentProfile={{gender, hometown, college, major, bio}}> </ModalEditStudentProfile> : null
+              }
             </div>
           </Segment>
         </Grid.Row>
@@ -143,13 +150,15 @@ ProfileStudent.propTypes = {
   bio: PropTypes.string,
   email: PropTypes.string,
   interestedEvents: PropTypes.array,
-  followedAssociations: PropTypes.array
+  followedAssociations: PropTypes.array,
+  id: PropTypes.string,
+  role: PropTypes.string
 }
 
 function mapStateToProps(state) {
-  const { profile } = state;
+  const { profile, auth } = state;
   const { first_name, last_name, gender, hometown, college, major, image_path, bio, email, interestedEvents, followedAssociations } = profile;
-
+  const { id, role } = auth;
   return {
     first_name,
     last_name,
@@ -161,7 +170,9 @@ function mapStateToProps(state) {
     bio,
     email,
     interestedEvents,
-    followedAssociations
+    followedAssociations,
+    id,
+    role
   };
 }
 

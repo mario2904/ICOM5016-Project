@@ -188,7 +188,7 @@ class ProfileEvent extends Component {
   }
 
   render() {
-    const { reviews, event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories } = this.props;
+    const { reviews, event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, id, role } = this.props;
     const editableInfo = { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
 
     if(!reviews)
@@ -214,7 +214,11 @@ class ProfileEvent extends Component {
                  as='h2' attached='top'>
                 <span>
                   {event_name} {' '}
-                  <ModalEditEvent eventInfo={editableInfo} />
+                  { // If authenticated as an association and same id as this profile
+                    // Then allow to edit this profile.
+                    (role === 'association' && association_id === id) ?
+                    <ModalEditEvent eventInfo={editableInfo} /> : null
+                  }
                 </span>
                 <br />
                 {this.renderCategories()}
@@ -370,12 +374,15 @@ ProfileEvent.propTypes = {
   interested: PropTypes.array,
   updates: PropTypes.array,
   reviews: PropTypes.array,
-  categories: PropTypes.array
+  categories: PropTypes.array,
+  id: PropTypes.string,
+  role: PropTypes.string
 }
 
 function mapStateToProps(state) {
-  const { profile } = state;
+  const { profile, auth } = state;
   const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link, interested, updates, reviews, categories } = profile;
+  const { id, role } = auth;
 
   return {
     event_name,
@@ -392,7 +399,9 @@ function mapStateToProps(state) {
     interested,
     updates,
     reviews,
-    categories
+    categories,
+    id,
+    role
   };
 }
 

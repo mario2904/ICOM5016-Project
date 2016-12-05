@@ -88,7 +88,8 @@ class ProfileAssociation extends Component{
 
   render(){
     const { activeItem } = this.state;
-    const { followers, image_path, association_name, initials, room, page_link, bio } = this.props;
+    const { followers, image_path, association_name, initials, room, page_link, bio, id, role, params } = this.props;
+    const { associationID } = params;
 
     // TODO: CHeck in more detail later.
     if(followers === undefined) {
@@ -128,8 +129,11 @@ class ProfileAssociation extends Component{
                   label={{ basic: true, color:this.state.color, pointing: 'left', content: followers.count }}/>
               </div>
             </h1>
-            <ModalEditAssociationProfile associationProfile={{association_name, initials, room, page_link, bio}}/>
-
+            { // If authenticated as an association and same id as this profile
+              // Then allow to edit this profile.
+              (role === 'association' && associationID === id) ?
+              <ModalEditAssociationProfile associationProfile={{association_name, initials, room, page_link, bio}}/> : null
+            }
             </Segment>
           </Grid.Row>
 
@@ -179,12 +183,15 @@ ProfileAssociation.propTypes = {
   activeEvents: PropTypes.array,
   pastEvents: PropTypes.array,
   sponsors: PropTypes.array,
-  followers: PropTypes.object
+  followers: PropTypes.object,
+  id: PropTypes.string,
+  role: PropTypes.string
 }
 
 function mapStateToProps(state) {
-  const { profile } = state;
+  const { profile, auth } = state;
   const { association_name, initials, room, page_link, email, image_path, bio, activeEvents, pastEvents, sponsors, followers } = profile;
+  const { id, role } = auth;
 
   return {
     association_name,
@@ -197,7 +204,9 @@ function mapStateToProps(state) {
     activeEvents,
     pastEvents,
     sponsors,
-    followers
+    followers,
+    id,
+    role
   };
 }
 
