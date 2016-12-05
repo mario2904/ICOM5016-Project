@@ -183,8 +183,8 @@ ProfileAssociation.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { profile_association } = state;
-  const { association_name, initials, room, page_link, email, image_path, bio, activeEvents, pastEvents, sponsors, followers } = profile_association;
+  const { profile } = state;
+  const { association_name, initials, room, page_link, email, image_path, bio, activeEvents, pastEvents, sponsors, followers } = profile;
 
   return {
     association_name,

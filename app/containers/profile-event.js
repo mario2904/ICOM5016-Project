@@ -374,8 +374,8 @@ ProfileEvent.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { profile_event } = state;
-  const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link, interested, updates, reviews, categories } = profile_event;
+  const { profile } = state;
+  const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link, interested, updates, reviews, categories } = profile;
 
   return {
     event_name,

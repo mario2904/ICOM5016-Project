@@ -147,8 +147,8 @@ ProfileStudent.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { profile_student } = state;
-  const { first_name, last_name, gender, hometown, college, major, image_path, bio, email, interestedEvents, followedAssociations } = profile_student;
+  const { profile } = state;
+  const { first_name, last_name, gender, hometown, college, major, image_path, bio, email, interestedEvents, followedAssociations } = profile;
 
   return {
     first_name,
