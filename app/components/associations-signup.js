@@ -1,48 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
 
-import axios from 'axios';
+import { createAssociation } from '../actions';
 
-export default class Asignup extends Component {
+class Asignup extends Component {
 
   state = { serializedForm: {} };
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault()
-    this.setState({ serializedForm })
+    const { password, re_password, terms } = serializedForm;
+    if(password.length >= 8 && re_password.length >= 8 && password === re_password && terms) {
+      console.log(serializedForm);
+      // Send to server...
+      const { dispatch } = this.props;
+      dispatch(createAssociation(serializedForm));
+    }
   }
 
-  checkPasswordLength(string1){
-    var integer = string1.length;
-    if(integer>=8){return true};
-    if(integer < 8){return false};
+  componentWillUpdate(nextProps) {
+    const { isWaiting, isSuccessful } = nextProps;
+    // Redirect to their respective homes if already authenticated
+    if (!isWaiting && isSuccessful) {
+      browserHistory.push('/');
+    }
+    if(!isWaiting && !isSuccessful) {
+      console.log("Error: create student not successful.");
+    }
+    if(isWaiting) {
+      console.log("Waiting for confirmation");
+    }
+
   }
 
-  submit (event) {
-    event.preventDefault();
-    if(this.checkPasswordLength(this.state.password)){
-      axios.post('/api/create-association', {
-        name: this.state.name,
-        initials: this.state.initials,
-        location: this.state.location,
-        link: this.state.link,
-        email: this.state.email,
-        password: this.state.password
-      })
-    .then(function (response) {
-      // If successful, go to login page
-      console.log('Success');
-      console.log(response);
-      browserHistory.push('/login');
-    })
-    .catch(function (error) {
-      // Else do nothing
-      console.log('Error');
-      console.log(error);
-    });
-  }
-}
   render() {
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
@@ -54,16 +46,16 @@ export default class Asignup extends Component {
         </Header>
         <Segment attached>
           <Form onSubmit={this.handleSubmit}>
-            <Form.Input label='Association Name' name='name' placeholder='Association Name'/>
+            <Form.Input label='Association Name' name='association_name' placeholder='Association Name'/>
             <Form.Input label='Association Initials' name='initials' placeholder='Association Initials' />
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' />
-            <Form.Input label='Re-enter Password' name='rePassword' placeholder='Re-enter Password' type='password' />
+            <Form.Input label='Re-enter Password' name='re_password' placeholder='Re-enter Password' type='password' />
             <Form.Select label='Main Office Location' name='location' options={locations} placeholder='Main Office Location' />
-            <Form.Input label='Association Link' name='link' placeholder='Association Link' />
+            <Form.Input label='Association Link' name='page_link' placeholder='Association Link' />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' />
             <Form.Field>
-              <Checkbox label='I agree to the Terms and Conditions' />
+              <Checkbox label='I agree to the Terms and Conditions' name='terms' />
             </Form.Field>
             <Button animated color="teal"type='submit'>
               <Button.Content visible>
@@ -89,3 +81,22 @@ const locations = [
   { text: 'Ingenieria Industrial', value: 'ingenieria_industrial' },
   { text: 'Other', value: 'other' },
 ];
+
+// Type cheking
+Asignup.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isSuccessful: PropTypes.bool,
+  isWaiting: PropTypes.bool
+}
+
+function mapStateToProps(state) {
+  const { create_form } = state;
+  const { isSuccessful, isWaiting } = create_form;
+
+  return {
+    isSuccessful,
+    isWaiting
+  };
+}
+
+export default connect(mapStateToProps)(Asignup);

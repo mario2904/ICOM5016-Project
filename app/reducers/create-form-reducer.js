@@ -1,16 +1,16 @@
-import { CREATE_STUDENT_REQUEST, CREATE_STUDENT_SUCCESS, CREATE_STUDENT_FAILURE } from '../actions/types';
+import { CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE } from '../actions/types';
 
 // For now ignore the REQUEST and FAILURE...
 
 export default function(state={isSuccessful: false, isWaiting: false}, action) {
   switch (action.type) {
-    case CREATE_STUDENT_REQUEST:
+    case CREATE_FORM_REQUEST:
       return {...state, isWaiting: true};
       break;
-    case CREATE_STUDENT_SUCCESS:
+    case CREATE_FORM_SUCCESS:
       return {...state, isSuccessful: true, isWaiting: false};
       break;
-    case CREATE_STUDENT_FAILURE:
+    case CREATE_FORM_FAILURE:
       return {...state, isSuccessful: false, isWaiting: false};
       break
     default:

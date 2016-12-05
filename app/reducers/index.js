@@ -5,7 +5,7 @@ import HomeAssociationReducer from './home-association-reducer';
 import ProfileAssociationReducer from './profile-association-reducer';
 import ProfileStudentReducer from './profile-student-reducer';
 import ProfileEventReducer from './profile-event-reducer';
-import CreateStudentReducer from './create-student-reducer';
+import CreateFormReducer from './create-form-reducer';
 
 const rootReducer = combineReducers ({
   auth: AuthReducer,
@@ -14,7 +14,7 @@ const rootReducer = combineReducers ({
   profile_association: ProfileAssociationReducer,
   profile_student: ProfileStudentReducer,
   profile_event: ProfileEventReducer,
-  create_student: CreateStudentReducer
+  create_form: CreateFormReducer
 });
 
 export default rootReducer;

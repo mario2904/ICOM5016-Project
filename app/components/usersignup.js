@@ -13,9 +13,9 @@ class Usignup extends Component {
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault();
-    console.log(serializedForm);
     const { password, re_password, terms } = serializedForm;
     if(password.length >= 8 && re_password.length >= 8 && password === re_password && terms) {
+      console.log(serializedForm);
       // Send to server...
       const { dispatch } = this.props;
       dispatch(createStudent(serializedForm));
@@ -121,8 +121,8 @@ Usignup.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { create_student } = state;
-  const { isSuccessful, isWaiting } = create_student;
+  const { create_form } = state;
+  const { isSuccessful, isWaiting } = create_form;
 
   return {
     isSuccessful,

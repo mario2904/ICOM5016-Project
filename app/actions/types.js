@@ -55,8 +55,8 @@ export const PROFILE_EVENT_REQUEST = 'PROFILE_EVENT_REQUEST';
 export const PROFILE_EVENT_SUCCESS = 'PROFILE_EVENT_SUCCESS';
 export const PROFILE_EVENT_FAILURE = 'PROFILE_EVENT_FAILURE';
 
-// Create Student API Requests -------------------------------------------------
+// Create Forms API Requests --------------------------------------------------
 
-export const CREATE_STUDENT_REQUEST = 'CREATE_STUDENT_REQUEST';
-export const CREATE_STUDENT_SUCCESS = 'CREATE_STUDENT_SUCCESS';
-export const CREATE_STUDENT_FAILURE = 'CREATE_STUDENT_FAILURE';
+export const CREATE_FORM_REQUEST = 'CREATE_FORM_REQUEST';
+export const CREATE_FORM_SUCCESS = 'CREATE_FORM_SUCCESS';
+export const CREATE_FORM_FAILURE = 'CREATE_FORM_FAILURE';
