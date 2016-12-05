@@ -192,7 +192,7 @@ class ProfileEvent extends Component {
     const { reviews, event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, isInterested, id, role, dispatch, params } = this.props;
     const editableInfo = { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
     const { eventID } = params;
-    
+
     const InterestedButton = () => (
       <Button
         animated
@@ -223,6 +223,8 @@ class ProfileEvent extends Component {
     );
 
     const CurrentInterestButton = isInterested ? InterestedButton:  WantButton;
+    console.log('id = ', typeof id);
+    console.log('association_id = ', typeof association_id);
 
     if(!reviews)
       return null;
@@ -252,7 +254,7 @@ class ProfileEvent extends Component {
                   }
                   { // If authenticated as an association and same id as this profile
                     // Then allow to edit this profile.
-                    (role === 'association' && association_id === id) ?
+                    (role === 'association' && association_id === parseInt(id)) ?
                     <ModalEditEvent eventInfo={editableInfo} /> : null
                   }
                 </span>

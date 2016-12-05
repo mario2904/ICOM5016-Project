@@ -64,7 +64,7 @@ router.get('/:id', (req, res) => {
 
                                   event_id,
                                   event_name,
-                                  association_id ,
+                                  association_id,
                                   association_name,
                                   start_date,
                                   end_date,
