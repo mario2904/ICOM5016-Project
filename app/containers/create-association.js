@@ -5,7 +5,7 @@ import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui
 
 import { createAssociation } from '../actions';
 
-class Asignup extends Component {
+class CreateAssociation extends Component {
 
   state = { serializedForm: {} };
 
@@ -83,7 +83,7 @@ const locations = [
 ];
 
 // Type cheking
-Asignup.propTypes = {
+CreateAssociation.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isSuccessful: PropTypes.bool,
   isWaiting: PropTypes.bool
@@ -99,4 +99,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Asignup);
+export default connect(mapStateToProps)(CreateAssociation);

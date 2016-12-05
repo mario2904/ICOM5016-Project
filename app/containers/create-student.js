@@ -5,7 +5,7 @@ import { Form, Checkbox, Button, Grid, Icon, Header, Segment,Label } from 'seman
 
 import { createStudent } from '../actions';
 
-class Usignup extends Component {
+class CreateStudent extends Component {
 
   state = { serializedForm: {} };
 
@@ -114,7 +114,7 @@ const colleges = [
 ];
 
 // Type cheking
-Usignup.propTypes = {
+CreateStudent.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isSuccessful: PropTypes.bool,
   isWaiting: PropTypes.bool
@@ -130,4 +130,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(Usignup);
+export default connect(mapStateToProps)(CreateStudent);

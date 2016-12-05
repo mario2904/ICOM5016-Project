@@ -18,11 +18,13 @@ import ProfileStudent from './containers/profile-student';
 import ProfileEvent from './containers/profile-event';
 
 import Login from './containers/login';
+import CreateStudent from './containers/create-student';
+import CreateAssociation from './containers/create-association';
+
 import Associations from './components/associations';
 import Events from './components/events';
 import Frame from './components/frame';
-import UserReg from './components/usersignup';
-import AssoReg from './components/associations-signup';
+
 
 import Administrator from './components/administrator';
 import AdministratorTableAssociations from './components/administrator-table-associations';
@@ -65,13 +67,13 @@ export default class App extends Component {
             <Route path="/students/:userID" component={ProfileStudent}></Route>
             <Route path="/associations/:associationID" component={ProfileAssociation}></Route>
             <Route path="/events/:eventID" component={ProfileEvent}></Route>
+            <Route path="/signup-student" component={CreateStudent}></Route>
+            <Route path="/signup-association" component={CreateAssociation}></Route>
 
+            <Route path="/create-event" component={CreateEventForm}></Route>
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
-            <Route path="/signup-student" component={UserReg}></Route>
-            <Route path="/signup-association" component={AssoReg}></Route>
             <Route path="/event-stats/:eventID" component={EventStats}></Route>
-            <Route path="/create-event" component={CreateEventForm}></Route>
             <Route path="/settings" component={Settings}></Route>
             <Route path="/administrator" component={Administrator}></Route>
             <Route path="/administrator/associations" component={AdministratorTableAssociations}></Route>
