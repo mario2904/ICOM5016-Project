@@ -39,6 +39,7 @@ function receiveLogin(user) {
       isFetching: false,
       isAuthenticated: true,
       id_token: user.id_token,
+      id: user.id,
       user_name: user.user_name,
       role: user.role
     }
@@ -79,6 +80,7 @@ export function loginUser(creds) {
       .then(response => {
         // If login was successful, set the token and role in local storage
         localStorage.setItem('id_token', response.data.id_token);
+        localStorage.setItem('id', response.data.id);
         localStorage.setItem('role', response.data.role);
         localStorage.setItem('user_name', response.data.user_name);
         // Dispatch the success action
@@ -119,6 +121,7 @@ export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout());
     localStorage.removeItem('id_token');
+    localStorage.removeItem('id');
     localStorage.removeItem('role');
     localStorage.removeItem('user_name');
     dispatch(receiveLogout());
