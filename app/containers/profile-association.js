@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchProfileAssociationInfo } from '../actions';
+import { fetchProfileAssociationInfo, followAssociation, isFollowingAssociation } from '../actions';
 
 import GridList from "../components/grid-list";
 import AssociationsListItem from '../components/associations-list-item';
@@ -27,8 +27,18 @@ class ProfileAssociation extends Component{
     const { dispatch, params } = this.props;
     const { associationID } = params;
     dispatch(fetchProfileAssociationInfo(associationID));
+    dispatch(isFollowingAssociation(associationID));
 
   }
+  // componentWillUpdate(nextProps) {
+  //   // Get Info to display in Profile Page
+  //   const { dispatch, params } = nextProps;
+  //   const { associationID } = params;
+  //   dispatch(fetchProfileAssociationInfo(associationID));
+  //   dispatch(isFollowingAssociation(associationID));
+  //
+  // }
+
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
   handleOnClick = (e) => this.setState({ color:(this.state.color === "red" ? "blue": "red"),
     content:(this.state.content === "unfollow" ? "follow": "unfollow" )});
@@ -88,8 +98,39 @@ class ProfileAssociation extends Component{
 
   render(){
     const { activeItem } = this.state;
-    const { followers, image_path, association_name, initials, room, page_link, bio, id, role, params } = this.props;
+    const { followers, image_path, association_name, initials, room, page_link, bio, isFollowing, id, role, params, dispatch } = this.props;
     const { associationID } = params;
+
+    const FollowingButton = () => (
+      <Button
+        animated
+        color='grey'
+        onClick={() => {dispatch(followAssociation({association_id: associationID, action: false}))}}
+        >
+        <Button.Content visible>
+          <Icon name='checkmark' /> {' '}
+          following
+        </Button.Content>
+        <Button.Content hidden>
+          <Icon name='remove' /> {' '}
+          unfollow
+        </Button.Content>
+      </Button>
+    );
+
+    const FollowButton = () => (
+      <Button
+        primary
+        onClick={() => {dispatch(followAssociation({association_id: associationID, action: true}))}}
+        >
+        <Button.Content>
+          <Icon name='plus' /> {' '}
+          follow
+        </Button.Content>
+      </Button>
+    );
+
+    const CurrentFollowButton = isFollowing ? FollowingButton:  FollowButton;
 
     // TODO: CHeck in more detail later.
     if(followers === undefined) {
@@ -119,14 +160,9 @@ class ProfileAssociation extends Component{
             <h1 style={{display: 'inline'}}>
               <strong>{association_name}</strong>{ ' ' }
               <div style={{display:"inline", float:"right"}}>
-                <Button
-                  style={{verticalAlign: 'middle'}}
-                  color={this.state.color}
-                  content={this.state.content}
-                  icon='user'
-                  size="tiny"
-                  onClick={this.handleOnClick}
-                  label={{ basic: true, color:this.state.color, pointing: 'left', content: followers.count }}/>
+                { // Change button format depending if it's following or not
+                  (role === 'student') ? <CurrentFollowButton /> : null
+                }
               </div>
             </h1>
             { // If authenticated as an association and same id as this profile
@@ -184,13 +220,14 @@ ProfileAssociation.propTypes = {
   pastEvents: PropTypes.array,
   sponsors: PropTypes.array,
   followers: PropTypes.object,
+  isFollowing: PropTypes.bool,
   id: PropTypes.string,
   role: PropTypes.string
 }
 
 function mapStateToProps(state) {
   const { profile, auth } = state;
-  const { association_name, initials, room, page_link, email, image_path, bio, activeEvents, pastEvents, sponsors, followers } = profile;
+  const { association_name, initials, room, page_link, email, image_path, bio, activeEvents, pastEvents, sponsors, followers, isFollowing } = profile;
   const { id, role } = auth;
 
   return {
@@ -205,6 +242,7 @@ function mapStateToProps(state) {
     pastEvents,
     sponsors,
     followers,
+    isFollowing,
     id,
     role
   };

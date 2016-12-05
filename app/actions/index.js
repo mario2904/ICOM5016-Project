@@ -137,7 +137,6 @@ export function logoutUser() {
 
 export function fetchHomeStudentAssociations() {
   let token = localStorage.getItem('id_token');
-  console.log(token);
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-student/associations`,
@@ -150,7 +149,6 @@ export function fetchHomeStudentAssociations() {
 
 export function fetchHomeStudentNewsFeed() {
   let token = localStorage.getItem('id_token');
-  console.log(token);
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-student`,
@@ -163,7 +161,6 @@ export function fetchHomeStudentNewsFeed() {
 
 export function fetchHomeStudentEvents() {
   let token = localStorage.getItem('id_token');
-  console.log(token);
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-student/events`,
@@ -181,7 +178,6 @@ export function fetchHomeStudentEvents() {
 
 export function fetchHomeAssociationNewsFeed() {
   let token = localStorage.getItem('id_token');
-  console.log(token);
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-association/reviews`,
@@ -194,7 +190,6 @@ export function fetchHomeAssociationNewsFeed() {
 
 export function fetchHomeAssociationEvents() {
   let token = localStorage.getItem('id_token');
-  console.log(token);
   return {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/home-association/events`,
@@ -205,7 +200,7 @@ export function fetchHomeAssociationEvents() {
   };
 }
 
-// Profile Pages calls ---------------------------------------------------------
+// Profile Pages calls (GET) ---------------------------------------------------
 // Does not need any TOKEN or auth. open to general public.
 
 export function fetchProfileAssociationInfo(id) {
@@ -213,7 +208,7 @@ export function fetchProfileAssociationInfo(id) {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/association/${id}`,
       method: 'GET',
-      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE]
     }
   };
 }
@@ -223,7 +218,7 @@ export function fetchProfileStudentInfo(id) {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/student/${id}`,
       method: 'GET',
-      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE]
     }
   };
 }
@@ -233,7 +228,74 @@ export function fetchProfileEventInfo(id) {
     [CALL_API]: {
       endpoint: `${API_BASE_URL}/event/${id}`,
       method: 'GET',
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE]
+    }
+  };
+}
+
+// Profile Pages calls (GET) ---------------------------------------------------
+// All require authentication (tokens)
+// Where token = localStorage.getItem('id_token') || null
+
+export function isFollowingAssociation(association_id) {
+  console.log("MEH");
+  let token = localStorage.getItem('id_token');
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/follow-association/${association_id}`,
+      method: 'GET',
       types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      headers: { 'Authorization': `JWT ${token}` }
+    }
+  };
+}
+
+export function isInterestedEvent(event_id) {
+  let token = localStorage.getItem('id_token');
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/interested-event/${event_id}`,
+      method: 'GET',
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      headers: { 'Authorization': `JWT ${token}` }
+    }
+  };
+}
+
+// Profile Pages calls (POST) --------------------------------------------------
+// All require authentication (tokens)
+// Where token = localStorage.getItem('id_token') || null
+
+export function interestedInEvent(info) {
+  let token = localStorage.getItem('id_token');
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/interested-event`,
+      method: 'POST',
+      body: JSON.stringify(info),
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      headers:
+        {
+          'Content-Type':'application/json',
+          'Authorization': `JWT ${token}`
+        }
+    }
+  };
+}
+
+export function followAssociation(info) {
+  let token = localStorage.getItem('id_token');
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}//follow-association`,
+      method: 'POST',
+      body: JSON.stringify(info),
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      headers:
+        {
+          'Content-Type':'application/json',
+          'Authorization': `JWT ${token}`
+        }
     }
   };
 }

@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon, Button, Modal } from 'semantic-ui-react';
 
 import ModalEditEvent from '../components/modal-edit-event';
-import { fetchProfileEventInfo } from '../actions';
+import { fetchProfileEventInfo, interestedInEvent, isInterestedEvent } from '../actions';
 
 const styles = {
   background: {
@@ -185,11 +185,44 @@ class ProfileEvent extends Component {
     const { eventID } = params;
 
     dispatch(fetchProfileEventInfo(eventID));
+    dispatch(isInterestedEvent(eventID));
   }
 
   render() {
-    const { reviews, event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, id, role } = this.props;
+    const { reviews, event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, isInterested, id, role, dispatch, params } = this.props;
     const editableInfo = { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
+    const { eventID } = params;
+    
+    const InterestedButton = () => (
+      <Button
+        animated
+        color='grey'
+        onClick={() => {dispatch(interestedInEvent({event_id: eventID, action: false}))}}
+        >
+        <Button.Content visible>
+          <Icon name='checkmark' /> {' '}
+          interested
+        </Button.Content>
+        <Button.Content hidden>
+          <Icon name='remove' /> {' '}
+          nah...
+        </Button.Content>
+      </Button>
+    );
+
+    const WantButton = () => (
+      <Button
+        primary
+        onClick={() => {dispatch(interestedInEvent({event_id: eventID, action: true}))}}
+        >
+        <Button.Content>
+          <Icon name='plus' /> {' '}
+          looks interesting
+        </Button.Content>
+      </Button>
+    );
+
+    const CurrentInterestButton = isInterested ? InterestedButton:  WantButton;
 
     if(!reviews)
       return null;
@@ -214,6 +247,9 @@ class ProfileEvent extends Component {
                  as='h2' attached='top'>
                 <span>
                   {event_name} {' '}
+                  { // Change button format depending if it's following or not
+                    (role === 'student') ? <CurrentInterestButton /> : null
+                  }
                   { // If authenticated as an association and same id as this profile
                     // Then allow to edit this profile.
                     (role === 'association' && association_id === id) ?
@@ -375,13 +411,14 @@ ProfileEvent.propTypes = {
   updates: PropTypes.array,
   reviews: PropTypes.array,
   categories: PropTypes.array,
+  isInterested: PropTypes.bool,
   id: PropTypes.string,
   role: PropTypes.string
 }
 
 function mapStateToProps(state) {
   const { profile, auth } = state;
-  const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link, interested, updates, reviews, categories } = profile;
+  const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link, interested, updates, reviews, categories, isInterested } = profile;
   const { id, role } = auth;
 
   return {
@@ -400,6 +437,7 @@ function mapStateToProps(state) {
     updates,
     reviews,
     categories,
+    isInterested,
     id,
     role
   };
