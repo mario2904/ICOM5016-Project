@@ -81,9 +81,11 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
     WHERE ${id} = $[token_id]`, {token_id: payload.sub})
     .then(function(data) {
       if(!data) { return done(null, false); }
+      console.log('JWT Strategy: auth successful');
       return done(null, {id: payload.sub})
     })
     .catch(function(error) {
+      console.log('JWT Strategy: auth failed');
       return done(error, false);
     });
 
