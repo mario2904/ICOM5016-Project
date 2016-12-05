@@ -17,6 +17,10 @@ import { PROFILE_ASSOCIATION_REQUEST, PROFILE_ASSOCIATION_SUCCESS, PROFILE_ASSOC
 import { PROFILE_STUDENT_REQUEST, PROFILE_STUDENT_SUCCESS, PROFILE_STUDENT_FAILURE } from './types';
 import { PROFILE_EVENT_REQUEST, PROFILE_EVENT_SUCCESS, PROFILE_EVENT_FAILURE } from './types';
 
+import { CREATE_STUDENT_REQUEST, CREATE_STUDENT_SUCCESS, CREATE_STUDENT_FAILURE } from './types';
+
+
+
 const API_BASE_URL = '/api';
 
 // LOGIN -----------------------------------------------------------------------
@@ -231,6 +235,22 @@ export function fetchProfileEventInfo(id) {
       endpoint: `${API_BASE_URL}/event/${id}`,
       method: 'GET',
       types: [PROFILE_EVENT_REQUEST, PROFILE_EVENT_SUCCESS, PROFILE_EVENT_FAILURE],
+    }
+  };
+}
+
+// Create calls ----------------------------------------------------------------
+// Does not need any TOKEN or auth. open to general public.
+
+export function createStudent(info) {
+  console.log("MEH");
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/create/student`,
+      method: 'POST',
+      body: JSON.stringify(info),
+      types: [CREATE_STUDENT_REQUEST, CREATE_STUDENT_SUCCESS, CREATE_STUDENT_FAILURE],
+      headers: { 'Content-Type':'application/json' }
     }
   };
 }

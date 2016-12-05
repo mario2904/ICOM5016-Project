@@ -1,9 +1,11 @@
-import { Form, Checkbox, Button, Grid, Icon, Header, Segment,Label } from 'semantic-ui-react';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import axios from 'axios';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment,Label } from 'semantic-ui-react';
 
-export default class Usignup extends Component {
+import { createStudent } from '../actions';
+
+class Usignup extends Component {
 
   state = { serializedForm: {} };
 
@@ -15,22 +17,24 @@ export default class Usignup extends Component {
     const { password, re_password, terms } = serializedForm;
     if(password.length >= 8 && re_password.length >= 8 && password === re_password && terms) {
       // Send to server...
-      axios.post('/api/create/student', serializedForm)
-        .then(function (response) {
-          browserHistory.push('/');
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
+      const { dispatch } = this.props;
+      dispatch(createStudent(serializedForm));
     }
-
-    //this.setState({ serializedForm });
   }
 
-  checkPassword(pass, re_pass){
-    return (pass.length >= 8 && re_pass.length >= 8 && pass === re_pass);
+  componentWillUpdate(nextProps) {
+    const { isWaiting, isSuccessful } = nextProps;
+    // Redirect to their respective homes if already authenticated
+    if (!isWaiting && isSuccessful) {
+      browserHistory.push('/');
+    }
+    if(!isWaiting && !isSuccessful) {
+      console.log("Error: create student not successful.");
+    }
+    if(isWaiting) {
+      console.log("Waiting for confirmation");
+    }
+
   }
 
   render() {
@@ -108,3 +112,22 @@ const colleges = [
   { text: 'University of Puerto Rico, Ponce', value: 'uprp' },
   { text: 'University of Puerto Rico, Utuado', value: 'upru' },
 ];
+
+// Type cheking
+Usignup.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  isSuccessful: PropTypes.bool,
+  isWaiting: PropTypes.bool
+}
+
+function mapStateToProps(state) {
+  const { create_student } = state;
+  const { isSuccessful, isWaiting } = create_student;
+
+  return {
+    isSuccessful,
+    isWaiting
+  };
+}
+
+export default connect(mapStateToProps)(Usignup);
