@@ -9,6 +9,7 @@ const home_association = require('./home-association');
 const passportService = require('../services/passport');
 const interested_event = require('./interested-event');
 const follow_association = require('./follow-association')
+const post_review = require('./post-review');
 
 const router = require('express').Router();
 
@@ -22,6 +23,7 @@ router.use('/home-student', home_student);
 router.use('/home-association', home_association);
 router.use('/interested-event', interested_event);
 router.use('/follow-association',follow_association);
+router.use('/post-review', post_review);
 
 
 module.exports = router;
