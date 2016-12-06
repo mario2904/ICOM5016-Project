@@ -326,3 +326,45 @@ export function createAssociation(info) {
     }
   };
 }
+
+// Update/Edit calls Profiles (POST) -------------------------------------------
+// All require authentication (tokens)
+// Where token = localStorage.getItem('id_token') || null
+
+// Event -----------------------------------------------------------------------
+
+// info = {event_id, notification_name, notification_text}
+export function postEventUpdate(info) {
+  let token = localStorage.getItem('id_token');
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/post-update`,
+      method: 'POST',
+      body: JSON.stringify(info),
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      headers:
+        {
+          'Content-Type':'application/json',
+          'Authorization': `JWT ${token}`
+        }
+    }
+  };
+}
+
+// info = {event_id, review, rating}
+export function postEventReview(info) {
+  let token = localStorage.getItem('id_token');
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/post-review`,
+      method: 'POST',
+      body: JSON.stringify(info),
+      types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+      headers:
+        {
+          'Content-Type':'application/json',
+          'Authorization': `JWT ${token}`
+        }
+    }
+  };
+}

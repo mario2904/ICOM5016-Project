@@ -64,9 +64,7 @@ export default class ModalEditEvent extends Component {
             <Form.Input label="End Date" name='end_date' placeholder="mm/dd/yyyy" type="date" defaultValue={end_date}/>
               <Icon name="wait"></Icon>
             <Form.Input label="End Time" name="end_time" type="time" placeholder="--:-- --" defaultValue={end_time}/>
-            <Form.TextArea label='Reasons' name='reasons' placeholder='Tell us more of the reasons for this change...' />
             <Button color="teal" type='submit'>Submit</Button>
-
 
           </Form>
         </Modal.Content>

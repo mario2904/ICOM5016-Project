@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon, Button, Modal } from 'semantic-ui-react';
 
 import ModalEditEvent from '../components/modal-edit-event';
-import { fetchProfileEventInfo, interestedInEvent, isInterestedEvent } from '../actions';
+import { fetchProfileEventInfo, interestedInEvent, isInterestedEvent, postEventUpdate, postEventReview } from '../actions';
 
 const styles = {
   background: {
@@ -24,6 +24,43 @@ const styles = {
 };
 
 class ProfileEvent extends Component {
+  state = { rating: 1 }
+
+  handleUpdateSubmit = (e, serializedForm) => {
+    e.preventDefault();
+
+    const { dispatch, params } = this.props;
+    const { eventID } = params;
+
+    console.log("SUBMIT UPDATE");
+    console.log({...serializedForm, event_id: eventID});
+    dispatch(postEventUpdate({...serializedForm, event_id: eventID}));
+    // Clear Form
+    e.target.reset();
+    // Update Page...
+    dispatch(fetchProfileEventInfo(eventID));
+    dispatch(isInterestedEvent(eventID));
+
+
+  }
+
+  handleReviewRate = (e, { rating }) => this.setState({ rating })
+
+  handleReviewSubmit = (e, serializedForm) => {
+    e.preventDefault();
+    const { dispatch, params } = this.props;
+    const { eventID } = params;
+
+    console.log("SUBMIT REVIEW");
+    console.log({...serializedForm, ...this.state, event_id: eventID});
+    dispatch(postEventReview({...serializedForm, ...this.state, event_id: eventID}));
+    // Clear Form
+    e.target.reset();
+    this.setState({rating: 1});
+    // Update Page...
+    dispatch(fetchProfileEventInfo(eventID));
+    dispatch(isInterestedEvent(eventID));
+  }
 
   renderInterestedUsers() {
     const { interested } = this.props;
@@ -171,7 +208,7 @@ class ProfileEvent extends Component {
               <span>{date_created}</span>
             </Comment.Metadata>
             <Comment.Text>
-              <Rating icon='star' defaultRating={rating} maxRating={5} />
+              <Rating icon='star' defaultRating={rating} maxRating={5} disabled/>
               <br />
               <span>{review}</span>
             </Comment.Text>
@@ -282,6 +319,15 @@ class ProfileEvent extends Component {
                     <Comment.Group>
                       {this.renderUpdates()}
                     </Comment.Group>
+                    { // If authenticated as an association and same id as this profile
+                      // Then allow to make an update.
+                      (role === 'association' && association_id === parseInt(id)) ?
+                      <Form reply onSubmit={this.handleUpdateSubmit}>
+                        <Form.Input name='notification_name' placeholder='Title' />
+                        <Form.TextArea name='notification_text' placeholder='Write the update information here...'/>
+                        <Button content='Write an Update' labelPosition='left' icon='edit' primary />
+                      </Form> : null
+                    }
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
@@ -299,15 +345,18 @@ class ProfileEvent extends Component {
                   <Segment attached>
                     { reviews.length === 0 ?
                       <span>There are no reviews yet. Be the first one to write a review.</span>:
-                    <Comment.Group>
-                      {this.renderReviews()}
-                    </Comment.Group>
+                      <Comment.Group>
+                        {this.renderReviews()}
+                      </Comment.Group>
                     }
-                    <Form reply onSubmit={e => e.preventDefault()}>
-                      <Form.TextArea />
-                      <Button content='Write a Review' labelPosition='left' icon='edit' primary />
-                      <Rating icon='star'  maxRating={5} />
-                    </Form>
+                    { // only post a review if authenticated as a student
+                      role === 'student' ?
+                      <Form reply onSubmit={this.handleReviewSubmit} serializer={this.reviewSerializer}>
+                        <Form.TextArea name='review' placeholder='Write your review here...' />
+                        <Button content='Submit' labelPosition='left' icon='edit' primary />
+                        <Rating icon='star' maxRating={5} rating={this.state.rating} onRate={this.handleReviewRate}/>
+                      </Form> : null
+                    }
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
