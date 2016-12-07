@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const router = require('express').Router();
 const db1 = require('../db');
 const validate = require('../utils/validate');
+const passport = require('passport');
+const requireAuth = passport.authenticate('jwt', {session: false});
 
 router.post('/student',  (req, res, next) => {
   console.log(req.body);
@@ -121,29 +123,71 @@ router.post('/association', (req, res, next) => {
 
 });
 
-router.post('/event', (req, res, next) => {
+router.post('/event', requireAuth,  (req, res, next) => {
   console.log(req.body);
   // Check if has valid params in the body or the request
-  if (!req.body || !validate.event(req.body))
-    return res.status(400).send('Error: Missing fields for event.');
+  // if (!req.body || !validate.event(req.body))
+  //   return res.status(400).send('Error: Missing fields for event.');
   // Destructure body params
-  const { name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink } = req.body;
-
+  // id is the association_id
+  const { id } = req.user;
+  const { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories } = req.body;
+  console.log(categories);
   // Create new event
-  // Generate event id
-  const id = uuid.v4();
-  // Create new Student object model
-  const newEvent = new Event(id, name, associationId, associationName, startDate, endDate, startTime, endTime, location, image, description, registrationLink);
-  // TODO: Store it in the db ...
-  //
-  // Store in Testing db
-  db.event[id] = newEvent;
-  // Update activeEvents list for that association
-  db.activeEvents[associationId] = [id].concat(db.activeEvents[associationId] || []);
-  // Send OK status
-  console.log('Success: Create Event');
-  console.log('Event ID:', id);
-  res.sendStatus(200);
+  db1.none(`
+    INSERT INTO events (association_id,event_name,is_live,location_id,registration_link,description,
+    start_date,end_date,start_time,end_time,time_stamp)
+
+    VALUES ($[id],$[event_name], 'yes', (SELECT location_id FROM location WHERE room = $[location]), $[registration_link], $[description],
+    $[start_date], $[end_date], $[start_time], $[end_time],CURRENT_TIMESTAMP);`, {id, event_name, is_live, location, registration_link, description, start_date, end_date,start_time, end_time})
+    .then(function () {
+    // success;
+    console.log("BEFORE LOOP");
+
+      for(let counter = 0; counter < categories.length; counter ++){
+
+        const individualCategory = categories[counter];
+        console.log(individualCategory);
+        db1.one(`
+          SELECT category_id
+          FROM category
+          WHERE category_name = $[individualCategory]`, {individualCategory})
+          .then(function (data) {
+          // success;
+          console.log("DATA AFTER SEARCHING CATEGORY");
+          console.log(typeof data.category_id);
+          const cat_id =data.category_id;
+          console.log("CAT_ID: " + cat_id);
+          console.log("EVENTNAME: " + event_name);
+          db1.none(`
+            INSERT INTO events_categories (event_id,category_id)
+
+            VALUES ((SELECT event_id FROM events WHERE event_name = $[event_name] ORDER BY event_id desc limit 1), $[cat_id] )`, {event_name, cat_id})
+            .then(function () {
+            // success;
+            console.log("Category Table  Successful");
+            })
+            .catch(function (error) {
+            // error;
+            console.log("Category Table Unsuccessful");
+            });
+          res.sendStatus(200);
+          console.log("Select Category Successful");
+          })
+          .catch(function (error) {
+          // error;
+          console.log("Select Category Unsuccessful");
+          });
+      }
+
+    res.sendStatus(200);
+    console.log("Event Creation Successful");
+    })
+    .catch(function (error) {
+    // error;
+    console.log("Event Creation Unsuccessful");
+    });
+
 });
 
 module.exports = router;
