@@ -132,7 +132,7 @@ router.post('/event', requireAuth,  (req, res, next) => {
   // id is the association_id
   const { id } = req.user;
   const { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories, image_path } = req.body;
-  console.log(categories);
+  console.log(event_name);
   //Add image to images Table
   db1.none(`
     INSERT INTO images (image_path)

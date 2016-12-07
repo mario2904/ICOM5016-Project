@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import { Segment, Header, Label, Form, Checkbox, Icon, Button, Modal } from 'semantic-ui-react';
-
+import { Segment, Header, Label, Form, Checkbox, Icon, Button, Modal, Image } from 'semantic-ui-react';
+import Dropzone from 'react-dropzone';
 
 export default class ModalEditEvent extends Component {
 
-  state = { serializedForm: {} };
+  state = { files: []};
 
+  onDrop = (acceptedFiles, rejectedFiles) => {
+    this.setState({files: acceptedFiles});
+    console.log('Accepted files: ', acceptedFiles);
+    console.log('Rejected files: ', rejectedFiles);
+  }
   handleSubmit = (e, serializedForm) => {
-    e.preventDefault()
-    this.setState({ serializedForm })
+    e.preventDefault();
   }
   renderCategoriesCheckboxes() {
     return categories.map((category) => {
@@ -23,6 +27,7 @@ export default class ModalEditEvent extends Component {
   render() {
     if(!this.props.eventInfo.categories)
       return null;
+    const { files } = this.state;
     const { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link } = this.props.eventInfo;
     const trigger = (
       <Button
@@ -44,7 +49,26 @@ export default class ModalEditEvent extends Component {
             <Icon name="linkify"></Icon>
             <Form.Input label='Registration Link' name='registration_link' placeholder='RegistrationLink' defaultValue={registration_link}/>
             <Icon name="image"></Icon>
-            <Form.Input label="Event Pic/Flyer" name='image_path' placeholder="choose your flyer" type="file" defaultValue={image_path}/>
+
+
+
+            <Form.Field label="Event Pic/Flyer"/>
+            <Segment >
+              <Dropzone
+                multiple={false}
+                accept='image/*'
+                onDrop={this.onDrop}>
+                <div>Try dropping some files here, or click to select files to upload.</div>
+              </Dropzone>
+              {
+                (files.length === 0) ?
+                <Image size='medium' src={image_path} /> :
+                <Image size='medium' src={files[0].preview} />
+              }
+            </Segment>
+
+
+
             <Form.Field>
               <Icon name="tag"></Icon>
               <label>Categories</label>

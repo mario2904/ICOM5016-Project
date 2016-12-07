@@ -18,6 +18,32 @@ import { PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE } from './types';
 import { CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE } from './types';
 
 const API_BASE_URL = '/api';
+const CLOUDINARY_UPLOAD_PRESET = 'mylf6o8x';
+const CLOUDINARY_UPLOAD_URL = `https://api.cloudinary.com/v1_1/e-spotter/image/upload`
+
+// UPLOAD IMAGE ----------------------------------------------------------------
+// Calls the CLOUDINARY API to upload an image
+// Then calls callback with it's data (including public url)
+// cb(err, data)
+function uploadImage(file, cb) {
+  console.log('UPLOAD IMAGE: file = ', file);
+
+  const config = {
+    method: 'post',
+    url: CLOUDINARY_UPLOAD_URL,
+    data: {
+      file,
+      upload_preset: CLOUDINARY_UPLOAD_PRESET
+    }
+  }
+  return axios(config)
+  .then(function(response) {
+    cb(null, response.data);
+  })
+  .catch(function(error) {
+    cb(error);
+  })
+}
 
 // LOGIN -----------------------------------------------------------------------
 
@@ -327,6 +353,60 @@ export function createAssociation(info) {
   };
 }
 
+// Create calls ----------------------------------------------------------------
+// It requires authentication (token)
+// Where token = localStorage.getItem('id_token') || null
+// info = { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories, image_path }
+export function createEvent(info) {
+  console.log(CLOUDINARY_UPLOAD_URL);
+  console.log(CLOUDINARY_UPLOAD_PRESET);
+  console.log(info.image_path);
+  const data = new FormData();
+  data.append('file', info.image_path);
+  data.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  const config = {
+    method: 'post',
+    url: CLOUDINARY_UPLOAD_URL,
+    data
+  }
+
+  return dispatch => {
+
+    return axios(config)
+    .then(function(response) {
+      dispatch(createEventSuccess({...info, image_path: response.data.secure_url}));
+    })
+    .catch(function(error) {
+      dispatch(createEventFailure(error));
+    })
+  }
+}
+
+function createEventSuccess(info) {
+  let token = localStorage.getItem('id_token');
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/create/event`,
+      method: 'POST', // override image_path (image file) with the public url
+      body: JSON.stringify(info),
+      types: [CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE],
+      headers:
+        {
+          'Content-Type':'application/json',
+          'Authorization': `JWT ${token}`
+        }
+    }
+  };
+}
+function createEventFailure(error) {
+  return {
+    type: CREATE_FORM_FAILURE,
+    payload: {
+      error
+    }
+  }
+}
+
 // Update/Edit calls Profiles (POST) -------------------------------------------
 // All require authentication (tokens)
 // Where token = localStorage.getItem('id_token') || null
@@ -368,3 +448,30 @@ export function postEventReview(info) {
     }
   };
 }
+
+// info = { event_id, event_name, location, registration_link, description, start_date, end_date
+//          start_time, end_time, image_path } image_file
+// TODO: Possible problem. image will be uploaded before authentication in server...
+export function editEvent(info) {
+  // Upload image
+  uploadImage(info.file, (err, data) => {
+    let token = localStorage.getItem('id_token');
+    return {
+      [CALL_API]: {
+        endpoint: `${API_BASE_URL}/edit-event`,
+        method: 'POST',
+        body: JSON.stringify({...info, image_path: data.secure_url}),
+        types: [PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE],
+        headers:
+          {
+            'Content-Type':'application/json',
+            'Authorization': `JWT ${token}`
+          }
+      }
+    };
+  });
+}
+
+// Create Account calls (POST) -------------------------------------------------
+// All require authentication (tokens)
+// Where token = localStorage.getItem('id_token') || null
