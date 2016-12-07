@@ -131,61 +131,74 @@ router.post('/event', requireAuth,  (req, res, next) => {
   // Destructure body params
   // id is the association_id
   const { id } = req.user;
-  const { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories } = req.body;
+  const { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories, image_path } = req.body;
   console.log(categories);
-  // Create new event
+  //Add image to images Table
   db1.none(`
-    INSERT INTO events (association_id,event_name,is_live,location_id,registration_link,description,
-    start_date,end_date,start_time,end_time,time_stamp)
-
-    VALUES ($[id],$[event_name], 'yes', (SELECT location_id FROM location WHERE room = $[location]), $[registration_link], $[description],
-    $[start_date], $[end_date], $[start_time], $[end_time],CURRENT_TIMESTAMP);`, {id, event_name, is_live, location, registration_link, description, start_date, end_date,start_time, end_time})
+    INSERT INTO images (image_path)
+    VALUES($[image_path])`,{image_path})
     .then(function () {
     // success;
-    console.log("BEFORE LOOP");
+    // Create new event
+    db1.none(`
+      INSERT INTO events (association_id,event_name,is_live,location_id,registration_link,description,
+      start_date,end_date,start_time,end_time,time_stamp, image_id)
 
-      for(let counter = 0; counter < categories.length; counter ++){
+      VALUES ($[id],$[event_name], 'yes', (SELECT location_id FROM location WHERE room = $[location]), $[registration_link], $[description],
+      $[start_date], $[end_date], $[start_time], $[end_time],CURRENT_TIMESTAMP, (SELECT image_id FROM images WHERE image_path=$[image_path]));`, {id, event_name, is_live, location, registration_link, description, start_date, end_date,start_time, end_time, image_path})
+      .then(function () {
+      // success;
+      console.log("BEFORE LOOP");
 
-        const individualCategory = categories[counter];
-        console.log(individualCategory);
-        db1.one(`
-          SELECT category_id
-          FROM category
-          WHERE category_name = $[individualCategory]`, {individualCategory})
-          .then(function (data) {
-          // success;
-          console.log("DATA AFTER SEARCHING CATEGORY");
-          console.log(typeof data.category_id);
-          const cat_id =data.category_id;
-          console.log("CAT_ID: " + cat_id);
-          console.log("EVENTNAME: " + event_name);
-          db1.none(`
-            INSERT INTO events_categories (event_id,category_id)
+        for(let counter = 0; counter < categories.length; counter ++){
 
-            VALUES ((SELECT event_id FROM events WHERE event_name = $[event_name] ORDER BY event_id desc limit 1), $[cat_id] )`, {event_name, cat_id})
-            .then(function () {
+          const individualCategory = categories[counter];
+          console.log(individualCategory);
+          db1.one(`
+            SELECT category_id
+            FROM category
+            WHERE category_name = $[individualCategory]`, {individualCategory})
+            .then(function (data) {
             // success;
-            console.log("Category Table  Successful");
+            console.log("DATA AFTER SEARCHING CATEGORY");
+            console.log(typeof data.category_id);
+            const cat_id =data.category_id;
+            console.log("CAT_ID: " + cat_id);
+            console.log("EVENTNAME: " + event_name);
+            db1.none(`
+              INSERT INTO events_categories (event_id,category_id)
+
+              VALUES ((SELECT event_id FROM events WHERE event_name = $[event_name] ORDER BY event_id desc limit 1), $[cat_id] )`, {event_name, cat_id})
+              .then(function () {
+              // success;
+              console.log("Category Table  Successful");
+              })
+              .catch(function (error) {
+              // error;
+              console.log("Category Table Unsuccessful");
+              });
+            res.sendStatus(200);
+            console.log("Select Category Successful");
             })
             .catch(function (error) {
             // error;
-            console.log("Category Table Unsuccessful");
+            console.log("Select Category Unsuccessful");
             });
-          res.sendStatus(200);
-          console.log("Select Category Successful");
-          })
-          .catch(function (error) {
-          // error;
-          console.log("Select Category Unsuccessful");
-          });
-      }
+        }
 
+      res.sendStatus(200);
+      console.log("Event Creation Successful");
+      })
+      .catch(function (error) {
+      // error;
+      console.log("Event Creation Unsuccessful");
+      });
     res.sendStatus(200);
-    console.log("Event Creation Successful");
+    console.log("Update Added");
     })
     .catch(function (error) {
     // error;
-    console.log("Event Creation Unsuccessful");
+    console.log("Update Failed");
     });
 
 });
