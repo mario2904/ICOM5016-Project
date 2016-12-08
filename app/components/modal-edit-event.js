@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router'
-import { Segment, Header, Label, Form, Checkbox, Icon, Button, Modal, Image } from 'semantic-ui-react';
 import Dropzone from 'react-dropzone';
+import { Segment, Header, Label, Form, Checkbox, Icon, Button, Modal, Image } from 'semantic-ui-react';
 
-export default class ModalEditEvent extends Component {
+import { editEvent } from '../actions';
+
+class ModalEditEvent extends Component {
 
   state = { files: []};
 
@@ -14,21 +17,27 @@ export default class ModalEditEvent extends Component {
   }
   handleSubmit = (e, serializedForm) => {
     e.preventDefault();
+    const { files } = this.state;
+    const { event_id, dispatch } = this.props;
+    console.log({...serializedForm, event_id, image_path: files[0]});
+    dispatch(editEvent({...serializedForm, event_id, image_path: files[0]}));
+
   }
   renderCategoriesCheckboxes() {
-    return categories.map((category) => {
+    const { categories } = this.props;
+    return categories_options.map((category) => {
       const { label, value } = category;
       return (
-        <Form.Checkbox label={label} name='categories' value={value} defaultChecked={this.props.eventInfo.categories.includes(label)} key={value}/>
+        <Form.Checkbox label={label} name='categories' value={value} defaultChecked={categories.includes(label)} key={value}/>
       );
     });
   }
 
   render() {
-    if(!this.props.eventInfo.categories)
+    if(!this.props.categories)
       return null;
     const { files } = this.state;
-    const { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link } = this.props.eventInfo;
+    const { event_name, image_path, start_date, end_date, start_time, end_time, room, description, registration_link } = this.props;
     const trigger = (
       <Button
         style={{textAlign: 'middle'}}
@@ -79,7 +88,7 @@ export default class ModalEditEvent extends Component {
             <Icon name="info circle"></Icon>
             <Form.TextArea label="Event Info" name='description' placeholder="Tell us more about your event" rows="4" defaultValue={description}/>
             <Icon name="map pin"></Icon>
-            <Form.Input label="Location" name='room' placeholder="Where is your event going to be at?" defaultValue={room}/>
+            <Form.Input label="Location" name='location' placeholder="Where is your event going to be at?" defaultValue={room}/>
             <Icon name="checked calendar"></Icon>
             <Form.Input label="Start Date" name='start_date' placeholder="mm/dd/yyyy" type="date" defaultValue={start_date}/> {/* yyyy/mm/dd */}
             <Icon name="wait" flipped="horizontally"></Icon>
@@ -97,15 +106,31 @@ export default class ModalEditEvent extends Component {
   }
 }
 
-const categories = [
-  { label: 'Food', value: 'food' },
-  { label: 'Music', value: 'music' },
-  { label: 'Fundraiser', value: 'fundraiser' },
-  { label: 'Arts', value: 'arts' },
-  { label: 'Social', value: 'social' },
-  { label: 'Educational', value: 'educational' },
-  { label: 'Business', value: 'business' },
-  { label: 'Sport', value: 'sport' },
-  { label: 'Competition', value: 'competition' },
-  { label: 'Other', value: 'other' },
+const categories_options = [
+  { label: 'Food', value: 'Food' },
+  { label: 'Music', value: 'Music' },
+  { label: 'Fundraiser', value: 'Fundraiser' },
+  { label: 'Arts', value: 'Arts' },
+  { label: 'Social', value: 'Social' },
+  { label: 'Educational', value: 'Educational' },
+  { label: 'Business', value: 'Business' },
+  { label: 'Sport', value: 'Sport' },
+  { label: 'Competition', value: 'Competition' },
+  { label: 'Other', value: 'Other' },
 ];
+
+// Type cheking
+ModalEditEvent.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  event_name: PropTypes.string,
+  image_path: PropTypes.string,
+  start_date: PropTypes.string,
+  end_date: PropTypes.string,
+  start_time: PropTypes.string,
+  end_time: PropTypes.string,
+  room: PropTypes.string,
+  description: PropTypes.string,
+  registration_link: PropTypes.string,
+  categories: PropTypes.array
+}
+export default connect()(ModalEditEvent);

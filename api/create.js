@@ -5,6 +5,12 @@ const validate = require('../utils/validate');
 const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', {session: false});
 
+const filter = require('../utils/filter');
+const cloudinary = require('cloudinary');
+const stream = require('stream');
+const multer = require('multer');
+const imgUpload = multer({ storage: multer.memoryStorage(), fileFilter: filter.image});
+
 router.post('/student', (req, res, next) => {
   console.log(req.body);
   // Check if has valid params in the body or the request
@@ -27,7 +33,6 @@ router.post('/student', (req, res, next) => {
   //   console.log('Success: Create Student');
   //   return res.json({success: true});
   // });
-  console.log("Before query");
   const default_image_id = 30;
   db1.task(function *(t) {
     let exist = yield t.oneOrNone(`
@@ -110,7 +115,7 @@ router.post('/association', (req, res, next) => {
 
 });
 
-router.post('/event', requireAuth, (req, res, next) => {
+router.post('/event', requireAuth, imgUpload.single('image_path'), (req, res, next) => {
   console.log(req.body);
   // Check if has valid params in the body or the request
   // if (!req.body || !validate.event(req.body))
@@ -118,34 +123,45 @@ router.post('/event', requireAuth, (req, res, next) => {
   // Destructure body params
   // id is the association_id
 
-  const { id } = req.user;
-  const { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories, image_path } = req.body;
-  console.log(id);
+  // Check for image file
+  if(!req.file) {return next(new Error('no file'))}
 
-  db1.task(function *(t) {
-      //Add image to images Table
-      let { image_id } = yield t.one(`
-        INSERT INTO images (image_path)
-        VALUES($[image_path])
-        RETURNING image_id`,{image_path});
-      let { event_id } = yield t.one(`
-        INSERT INTO events (association_id, event_name, is_live, location_id, registration_link, description, start_date, end_date, start_time, end_time, time_stamp, image_id)
-        VALUES ($[id], $[event_name], 'yes', (SELECT location_id FROM location WHERE room = $[location]), $[registration_link], $[description], $[start_date], $[end_date], $[start_time], $[end_time], CURRENT_TIMESTAMP, $[image_id])
-        RETURNING event_id`, {id, event_name, is_live, location, registration_link, description, start_date, end_date,start_time, end_time, image_path, image_id});
-      return yield t.batch(categories.map(category_name => {
-        return t.none(`
-          INSERT INTO events_categories (event_id,category_id)
-          VALUES ($[event_id], (SELECT category_id FROM category WHERE category_name = $[category_name]) )`, {event_id, category_name})
-      }));
-    })
-    .then(data => {
-      console.log("Event Creation Successful");
-      res.sendStatus(200);
-    })
-    .catch(error => {
-      console.log("Event Creation Unsuccessful");
-      next(error);
-    });
+  // Store image file in the cloud...
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(req.file.buffer);
+  bufferStream.pipe(cloudinary.uploader.upload_stream(result => {
+    console.log('upload: ',result);
+    // use only the public url of image to store in the db.
+    const { id } = req.user;
+    const image_path = result.secure_url;
+    const { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories } = req.body;
+    console.log(id);
+
+    db1.task(function *(t) {
+        //Add image to images Table
+        let { image_id } = yield t.one(`
+          INSERT INTO images (image_path)
+          VALUES($[image_path])
+          RETURNING image_id`,{image_path});
+        let { event_id } = yield t.one(`
+          INSERT INTO events (association_id, event_name, is_live, location_id, registration_link, description, start_date, end_date, start_time, end_time, time_stamp, image_id)
+          VALUES ($[id], $[event_name], 'yes', (SELECT location_id FROM location WHERE room = $[location]), $[registration_link], $[description], $[start_date], $[end_date], $[start_time], $[end_time], CURRENT_TIMESTAMP, $[image_id])
+          RETURNING event_id`, {id, event_name, is_live, location, registration_link, description, start_date, end_date,start_time, end_time, image_path, image_id});
+        return yield t.batch(categories.map(category_name => t.none(`
+            INSERT INTO events_categories (event_id,category_id)
+            VALUES ($[event_id], (SELECT category_id FROM category WHERE category_name = $[category_name]) )`, {event_id, category_name})
+        ));
+      })
+      .then(data => {
+        console.log("Event Creation Successful");
+        res.sendStatus(200);
+      })
+      .catch(error => {
+        console.log("Event Creation Unsuccessful");
+        next(error);
+      });
+
+  }));
 
 });
 

@@ -11,6 +11,7 @@ const interested_event = require('./interested-event');
 const follow_association = require('./follow-association')
 const post_review = require('./post-review');
 const post_update = require('./post-update');
+const edit = require('./edit');
 
 const router = require('express').Router();
 
@@ -26,6 +27,7 @@ router.use('/interested-event', interested_event);
 router.use('/follow-association', follow_association);
 router.use('/post-review', post_review);
 router.use('/post-update', post_update);
+router.use('/edit', edit);
 
 
 module.exports = router;

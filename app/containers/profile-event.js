@@ -226,10 +226,10 @@ class ProfileEvent extends Component {
   }
 
   render() {
-    const { reviews, event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, isInterested, id, role, dispatch, params } = this.props;
-    const editableInfo = { event_name, event_id, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
+    const { reviews, event_name, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, isInterested, id, role, dispatch, params } = this.props;
     const { eventID } = params;
-
+    const editableInfo = { event_name, event_id: eventID, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
+    console.log(editableInfo.event_id);
     const InterestedButton = () => (
       <Button
         animated
@@ -292,7 +292,7 @@ class ProfileEvent extends Component {
                   { // If authenticated as an association and same id as this profile
                     // Then allow to edit this profile.
                     (role === 'association' && association_id === parseInt(id)) ?
-                    <ModalEditEvent eventInfo={editableInfo} /> : null
+                    <ModalEditEvent {...editableInfo} /> : null
                   }
                 </span>
                 <br />
