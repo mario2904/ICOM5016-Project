@@ -40,7 +40,7 @@ export default class AssociationsListItem extends Component {
             icon='user'
             size="tiny"
             onClick={this.handleOnClick}
-            label={{ basic: true, color: this.state.color, pointing: 'left', content: '100' }}/>
+            />
           </div>
     </Item.Description>
        </Item.Content>

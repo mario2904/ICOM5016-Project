@@ -20,8 +20,7 @@ class NavBar extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
-    const { logoutUser } = this.props;
-
+    const { dispatch } = this.props;
     const { activeItem } = this.state;
     return (
       <div style={this.props.style}>
@@ -32,7 +31,7 @@ class NavBar extends Component {
                 <Menu.Item
                   fitted
                   name='E-Spotter'
-                  as={Link} to='/home-student'
+                  as={Link} to='/'
                   active={activeItem === 'E-Spotter'}
                   icon='marker'
                   onClick={this.handleItemClick} />
@@ -58,10 +57,29 @@ class NavBar extends Component {
                   <Menu.Item
                     fitted
                     name='account'
-                    as={Link} to='/'
                     active={activeItem === 'account'}
-                    icon='user'
-                    onClick={logoutUser} />
+                    >
+
+                    <Dropdown trigger={<span><Icon name='cogs' /> Account </span>} icon={null}>
+                      <Dropdown.Menu>
+                        <Dropdown.Item
+                          text='profile'
+                          as={Link} to={'/' + this.props.role  + 's/' + this.props.id}
+                          icon='user' />
+                        <Dropdown.Item
+                          text='Settings'
+                          as={Link} to='/settings'
+                          icon='setting'/>
+                        <Dropdown.Divider></Dropdown.Divider>
+                        <Dropdown.Item
+                          text='Logout'
+                          as={Link} to ='/'
+                          icon='sign out'
+                          onClick={(e) => {dispatch(logoutUser())}} />
+                      </Dropdown.Menu>
+                    </Dropdown>
+
+                  </Menu.Item>
                 </Menu.Menu>
               </Menu>
             </Grid.Row>
@@ -70,7 +88,7 @@ class NavBar extends Component {
                 <Dropdown.Menu>
                   <Dropdown.Item
                     text='Home'
-                    as={Link} to='/home-student'
+                    as={Link} to='/'
                     icon='marker' />
                   <Dropdown.Item
                     text='Associations'
@@ -81,10 +99,19 @@ class NavBar extends Component {
                     as={Link} to='/events'
                     icon='calendar outline' />
                   <Dropdown.Divider></Dropdown.Divider>
-                  <Dropdown.Item
-                    text='Account'
-                    as={Link} to='/#'
-                    icon='user' />
+                    <Dropdown.Item
+                      text='profile'
+                      as={Link} to={'/' + this.props.role  + 's/' + this.props.id}
+                      icon='marker' />
+                    <Dropdown.Item
+                      text='Settings'
+                      as={Link} to='/settings'
+                      icon='setting'/>
+                    <Dropdown.Item
+                      text='Logout'
+                      as={Link} to ='/'
+                      icon='sign out'
+                      onClick={(e) => {dispatch(logoutUser())}} />
                 </Dropdown.Menu>
               </Dropdown>
             </Grid.Row>
@@ -95,10 +122,17 @@ class NavBar extends Component {
   }
 }
 
-NavBar.propTypes = {
-  logoutUser: PropTypes.func.isRequired
+function mapStateToProps(state){
+  const { auth } = state;
+  const { isFetching, isAuthenticated, id, role, user_name} = auth;
+
+  return {
+    isFetching,
+    isAuthenticated,
+    id,
+    role,
+    user_name
+  };
 }
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({logoutUser}, dispatch)
-}
-export default connect(null, mapDispatchToProps)(NavBar);
+
+export default connect(mapStateToProps)(NavBar);
