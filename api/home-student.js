@@ -4,76 +4,53 @@ const requireAuth = passport.authenticate('jwt', {session: false});
 const router = require('express').Router();
 const db1 = require('../db');
 
-router.get('/', requireAuth, (req, res) => {
+router.get('/', requireAuth, (req, res, next) => {
   // After auth check req.user.id = id of user.
   const { id } = req.user;
 
   const responseDB = {};
-  db1.any('SELECT event_id, event_name, association_name, time_stamp, image_path \
-            FROM associations as A, (events as E natural join images), followed_associations as FA, students as S \
-            WHERE E.association_id = A.association_id and FA.association_id = E.association_id and FA.user_id = S.user_id and S.user_id = ${idused} \
-            ORDER BY time_stamp DESC', {idused: id})
-      .then(function (data) {
-        responseDB.eventsCreated = data;
-
-        db1.any("SELECT E.event_id, E.event_name, E.association_id, notification_name, notification_text, date_sent, image_path \
-                  FROM notifications as N, events as E, (associations as A natural join images), followed_associations as FA \
-                  WHERE N.event_id = E.event_id and A.association_id = E.association_id and A.association_id = FA.association_id and user_id = ${idused} \
-                  ORDER BY date_sent DESC", {idused: id})
-            .then(function (data) {
-            responseDB.updates = data;
-            console.log(data);
-            const response =[];
-            //breakdown for events
-            for (let i = 0; i < responseDB.eventsCreated.length; i++) {
-
-                // Destructure DB information
-                const { event_id, event_name, association_name, time_stamp, image_path } = responseDB.eventsCreated[i];
-                const summary = association_name + " has created a new event: ";
-                const extraText = event_name;
-                const singleEvent = {
-
-                  image: image_path,
-                  summary,
-                  date: time_stamp,
-                  extraText
-                }
-
-                response.push(singleEvent);
-            }
-
-            for (let i = 0; i < responseDB.updates.length; i++) {
-
-                // Destructure DB information
-                const { event_id, event_name, association_id, notification_name, notification_text,date_sent, image_path } = responseDB.updates[i];
-                const summary = event_name + " has a new update: ";
-                const extraText = notification_text;
-                const singleUpdate = {
-
-                  image: image_path,
-                  summary,
-                  date: date_sent,
-                  extraText
-                }
-
-                response.push(singleUpdate);
-            }
-
-            res.json(response);
-
-            })
-            .catch(function (error) {
-              // error;
-              console.log('Updates Info Failed')
-            });
-
-
-
-      })
-      .catch(function (error) {
-        // error;
-        console.log('Events Created Info Failed')
+  db1.task(t => {
+      return t.batch([
+        t.any(`
+          SELECT event_id, event_name, association_name, time_stamp, image_path
+          FROM associations as A, (events as E natural join images), followed_associations as FA, students as S
+          WHERE E.association_id = A.association_id and FA.association_id = E.association_id and FA.user_id = S.user_id and S.user_id = $[id]
+          ORDER BY time_stamp DESC`, {id}),
+        t.any(`
+          SELECT E.event_id, E.event_name, E.association_id, notification_name, notification_text, date_sent, image_path
+          FROM notifications as N, events as E, (associations as A natural join images), followed_associations as FA
+          WHERE N.event_id = E.event_id and A.association_id = E.association_id and A.association_id = FA.association_id and user_id = $[id]
+          ORDER BY date_sent DESC`, {id})
+      ]);
+    })
+    .then(data => {
+      console.log('Success: Updates Info');
+      data[0].map(event => {
+        const { event_id, event_name, association_name, time_stamp, image_path } = event;
+        return {
+          image: image_path,
+          summary: `${association_name} has created a new event: `,
+          date: time_stamp,
+          extraText: event_name
+        };
       });
+      data[1].map(update => {
+        const { event_id, event_name, association_id, notification_name, notification_text, date_sent, image_path } = update;
+        return {
+          image: image_path,
+          summary: `${event_name} has a new update: `,
+          date: date_sent,
+          extraText: notification_text
+        }
+      });
+
+      const response = data[0].concat(data[1]);
+      res.json(response);
+    })
+    .catch(error => {
+      console.log('Updates Info Failed');
+      next(error);
+    });
 
 });
 
@@ -82,35 +59,37 @@ router.get('/events', requireAuth, (req, res) => {
   // After auth check req.user.id = id of user.
   const { id } = req.user;
 
-  db1.any("SELECT event_id, event_name,events.association_id, association_name, start_date, end_date, start_time, end_time, room, image_path \
-            FROM interested natural join events natural join images natural join location, associations \
-            WHERE user_id = ${idused} and events.association_id = associations.association_id", {idused: id})
-
-      .then(function (data) {
-        res.json(data);
-      })
-      .catch(function (error) {
-        // error;
-        console.log('Events Info Home Failed')
-      });
+  db1.any(`
+    SELECT event_id, event_name,events.association_id, association_name, start_date, end_date, start_time, end_time, room, image_path
+    FROM interested natural join events natural join images natural join location, associations
+    WHERE user_id = $[id] and events.association_id = associations.association_id`, {id})
+    .then(data => {
+      console.log('Success: Events Info Home');
+      res.json(data);
+    })
+    .catch(error => {
+      console.log('Events Info Home Failed');
+      next(error);
+    });
 });
 
-router.get('/associations', requireAuth, (req, res) => {
+router.get('/associations', requireAuth, (req, res, next) => {
   console.log(req.params);
   // After auth check req.user.id = id of user.
   const { id } = req.user;
 
-  db1.any("SELECT association_id, association_name, initials, image_path \
-            FROM followed_associations natural join associations natural join images \
-            WHERE user_id = ${idused}", {idused: id})
-
-      .then(function (data) {
-        res.json(data);
-      })
-      .catch(function (error) {
-        // error;
-        console.log('Events Info Home Failed')
-      });
+  db1.any(`
+    SELECT association_id, association_name, initials, image_path
+    FROM followed_associations natural join associations natural join images
+    WHERE user_id = $[id]`, {id})
+    .then(data => {
+      console.log('Success: Events Info Home');
+      res.json(data);
+    })
+    .catch(error => {
+      console.log('Events Info Home Failed');
+      next(error);
+    });
 });
 
 module.exports = router;

@@ -49,16 +49,12 @@ router.post('/', requireLogin, (req, res) => {
     default:
       return res.status(400).send("Error: Login error. Role undefined.");
   }
-  console.log("id: ", id);
-  console.log("table: ", table);
-  console.log("name: ", name);
-  console.log("account_id: ", req.user.account_id);
 
   db.one(`
     SELECT ${id}, ${name}
     FROM account natural join ${table}
     WHERE account_id = $[account_id]`, {account_id: req.user.account_id})
-    .then(function(data) {
+    .then((data) => {
       const response = {
         id_token: generateToken(data[id], data[name], req.body.role),
         id: data[id],
@@ -67,7 +63,7 @@ router.post('/', requireLogin, (req, res) => {
       };
       return res.json(response);
     })
-    .catch(function(error) {
+    .catch((error) => {
       return res.status(400).send("Error: Login error with DB");
     });
 });

@@ -27,6 +27,7 @@
     "axios": "^0.15.0",
     "bcrypt": "^0.8.7",
     "body-parser": "^1.15.2",
+    "cloudinary": "^1.4.6",
     "cors": "^2.8.1",
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
@@ -46,7 +47,8 @@
     "redux": "^3.6.0",
     "redux-api-middleware": "^1.0.2",
     "redux-thunk": "^2.1.0",
-    "semantic-ui-react": "^0.61.10"
+    "semantic-ui-react": "^0.61.10",
+    "sendgrid": "^4.7.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",

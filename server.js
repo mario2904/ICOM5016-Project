@@ -22,12 +22,15 @@ const jwt = require('jsonwebtoken');
 const uuid = require('node-uuid');
 const validate = require('./utils/validate');
 const filter = require('./utils/filter');
+const cloudinary = require('cloudinary');
+const stream = require('stream');
 
 // API routes
 const api = require('./api');
 
 // File Uploaders
-const imgUpload = multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
+// const imgUpload = multer({ dest: './public/images/tmp', fileFilter: filter.image}).single('image');
+const imgUpload = multer({ storage: multer.memoryStorage(), fileFilter: filter.image}).single('image');
 
 // Create Testing db
 const db = {};
@@ -55,21 +58,27 @@ app.use(express.static(__dirname + '/public'));
 //    image: <image>
 // In case you need to handle a text-only multipart form, you can
 // use any of the multer methods (.single(), .array(), fields()).
-app.post('/api/upload-image', (req, res) => {
-  imgUpload(req, res, function (err) {
-    if (err) {
-      // An error occurred when uploading
-      return res.status(400).send(err.message);
-    }
-    // Everything went fine
-    // Get path to uploaded file (drop the 'public/')
-    const path = req.file.path.slice(req.file.path.indexOf('/'));
-    const response = {image: path};
-    // Send path to uploaded file
-    console.log('Success: Image Upload');
-    console.log('Image Path:', req.file.path);
-    res.json(response);
-  });
+app.post('/api/upload-image', imgUpload, (req, res, next) => {
+  console.log(req.file);
+
+  // Everything went fine
+  // Get path to uploaded file (drop the 'public/')
+  if(!req.file) {return next(new Error('no file'))}
+  console.log('meh');
+  const bufferStream = new stream.PassThrough();
+  bufferStream.end(req.file.buffer);
+  bufferStream.pipe(cloudinary.uploader.upload_stream((result) => {
+    console.log('upload: ',result); }
+  ));
+  // const response = {image: file_reader};
+  // const path = req.file.path.slice(req.file.path.indexOf('/'));
+  // const response = {image: path};
+  // Send path to uploaded file
+  // console.log(file_reader);
+  console.log('Success: Image Upload');
+  console.log('Image Path:', req.file.path);
+  res.json({ok: 'ok'});
+
 });
 
 // GET - All Associations Information

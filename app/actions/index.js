@@ -364,6 +364,30 @@ export function createEvent(info) {
   const data = new FormData();
   data.append('file', info.image_path);
   data.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  //
+  // let token = localStorage.getItem('id_token');
+  //
+  // // Create form data.
+  // const data = new FormData();
+  // for (var key in info) {
+  //   if (info.hasOwnProperty(key)) {
+  //     if(key === 'categories')
+  //       info[key].forEach((cat, i) => {data.append(`${key}[${i}]`, cat)});
+  //     else
+  //       data.append(key, info[key]);
+  //   }
+  // }
+  // console.log(data);
+  // console.log(JSON.stringify(data));
+  // return {
+  //   [CALL_API]: {
+  //     endpoint: `${API_BASE_URL}/create/event`,
+  //     method: 'POST',
+  //     body: data,
+  //     types: [CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE],
+  //     headers: { 'Authorization': `JWT ${token}` }
+  //   }
+  // };
   const config = {
     method: 'post',
     url: CLOUDINARY_UPLOAD_URL,
