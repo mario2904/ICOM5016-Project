@@ -112,7 +112,10 @@ renderMyFeeds = () => <Feed events={this.props.newsFeed} />;
               <Statistic.Value><Icon name="user"></Icon> 1,509</Statistic.Value>
             </Statistic>
           </div>
-
+          <Button as={Link} to={'create-event/'} style={{marginTop: "100px", marginLeft: "20px"}}>
+            <Icon name="write"></Icon>
+            Create an Event!
+          </Button>
         </div>
         <div>
           <Menu inverted widths={2} pointing style={styles.menubar}>
