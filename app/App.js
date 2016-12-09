@@ -20,6 +20,7 @@ import ProfileEvent from './containers/profile-event';
 import Login from './containers/login';
 import CreateStudent from './containers/create-student';
 import CreateAssociation from './containers/create-association';
+import CreateEvent from './containers/create-event';
 
 import Associations from './components/associations';
 import Events from './components/events';
@@ -32,7 +33,7 @@ import AdministratorTableStudents from './components/administrator-table-student
 import AdministratorTableEvents from './components/administrator-table-events';
 
 
-import CreateEventForm from './components/create-event-form';
+
 
 import Settings from './components/settings';
 
@@ -69,8 +70,8 @@ export default class App extends Component {
             <Route path="/events/:eventID" component={ProfileEvent}></Route>
             <Route path="/signup-student" component={CreateStudent}></Route>
             <Route path="/signup-association" component={CreateAssociation}></Route>
+            <Route path="/create-event" component={CreateEvent}></Route>
 
-            <Route path="/create-event" component={CreateEventForm}></Route>
             <Route path="/events" component={Events}></Route>
             <Route path="/associations" component={Associations}></Route>
             <Route path="/event-stats/:eventID" component={EventStats}></Route>

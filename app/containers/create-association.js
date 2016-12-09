@@ -90,8 +90,8 @@ CreateAssociation.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { create_form } = state;
-  const { isSuccessful, isWaiting } = create_form;
+  const { form } = state;
+  const { isSuccessful, isWaiting } = form;
 
   return {
     isSuccessful,

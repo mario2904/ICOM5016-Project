@@ -168,7 +168,7 @@ class ProfileAssociation extends Component{
             { // If authenticated as an association and same id as this profile
               // Then allow to edit this profile.
               (role === 'association' && associationID === id) ?
-              <ModalEditAssociationProfile associationProfile={{association_name, initials, room, page_link, bio}}/> : null
+              <ModalEditAssociationProfile associationProfile={{association_name, image_path, initials, room, page_link, bio}}/> : null
             }
             </Segment>
           </Grid.Row>

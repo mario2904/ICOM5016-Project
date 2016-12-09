@@ -44,6 +44,12 @@ export const PROFILE_FAILURE = 'PROFILE_FAILURE';
 
 // Create Forms API Requests --------------------------------------------------
 
-export const CREATE_FORM_REQUEST = 'CREATE_FORM_REQUEST';
-export const CREATE_FORM_SUCCESS = 'CREATE_FORM_SUCCESS';
-export const CREATE_FORM_FAILURE = 'CREATE_FORM_FAILURE';
+export const FORM_REQUEST = 'FORM_REQUEST';
+export const FORM_SUCCESS = 'FORM_SUCCESS';
+export const FORM_FAILURE = 'FORM_FAILURE';
+
+// Options
+
+export const OPTIONS_REQUEST = 'OPTIONS_REQUEST';
+export const OPTIONS_SUCCESS = 'OPTIONS_SUCCESS';
+export const OPTIONS_FAILURE = 'OPTIONS_FAILURE';

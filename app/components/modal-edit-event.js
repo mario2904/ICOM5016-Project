@@ -33,6 +33,21 @@ class ModalEditEvent extends Component {
     });
   }
 
+  componentWillUpdate(nextProps) {
+    const { isWaiting, isSuccessful, event_id } = nextProps;
+    // Redirect to their respective homes if already authenticated
+    if (!isWaiting && isSuccessful) {
+      window.location.reload();
+    }
+    if(!isWaiting && !isSuccessful) {
+      console.log("Error: create student not successful.");
+    }
+    if(isWaiting) {
+      console.log("Waiting for confirmation");
+    }
+
+  }
+
   render() {
     if(!this.props.categories)
       return null;
@@ -122,6 +137,8 @@ const categories_options = [
 // Type cheking
 ModalEditEvent.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  isSuccessful: PropTypes.bool,
+  isWaiting: PropTypes.bool,
   event_name: PropTypes.string,
   image_path: PropTypes.string,
   start_date: PropTypes.string,
@@ -133,4 +150,15 @@ ModalEditEvent.propTypes = {
   registration_link: PropTypes.string,
   categories: PropTypes.array
 }
-export default connect()(ModalEditEvent);
+
+function mapStateToProps(state) {
+  const { form } = state;
+  const { isSuccessful, isWaiting } = form;
+
+  return {
+    isSuccessful,
+    isWaiting
+  };
+}
+
+export default connect(mapStateToProps)(ModalEditEvent);

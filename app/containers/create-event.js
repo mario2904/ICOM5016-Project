@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-import {Form, Grid, Icon,Input, Image, Segment,Item, Menu, Divider, Header, Button } from 'semantic-ui-react'
+import { Form, Grid, Icon, Input, Image, Segment, Item, Menu, Divider, Header, Button } from 'semantic-ui-react'
 import Dropzone from 'react-dropzone';
 
 import { createEvent } from '../actions';
@@ -142,8 +142,8 @@ CreateEventForm.propTypes = {
 }
 
 function mapStateToProps(state) {
-  const { create_form } = state;
-  const { isSuccessful, isWaiting } = create_form;
+  const { form } = state;
+  const { isSuccessful, isWaiting } = form;
 
   return {
     isSuccessful,

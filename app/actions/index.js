@@ -15,33 +15,11 @@ import { ASSOCIATION_EVENTS_REQUEST, ASSOCIATION_EVENTS_SUCCESS, ASSOCIATION_EVE
 
 import { PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_FAILURE } from './types';
 
-import { CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE } from './types';
+import { FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE } from './types';
+
+import { OPTIONS_REQUEST, OPTIONS_SUCCESS, OPTIONS_FAILURE } from './types';
 
 const API_BASE_URL = '/api';
-
-// UPLOAD IMAGE ----------------------------------------------------------------
-// Calls the CLOUDINARY API to upload an image
-// Then calls callback with it's data (including public url)
-// cb(err, data)
-function uploadImage(file, cb) {
-  console.log('UPLOAD IMAGE: file = ', file);
-
-  const config = {
-    method: 'post',
-    url: CLOUDINARY_UPLOAD_URL,
-    data: {
-      file,
-      upload_preset: CLOUDINARY_UPLOAD_PRESET
-    }
-  }
-  return axios(config)
-  .then(function(response) {
-    cb(null, response.data);
-  })
-  .catch(function(error) {
-    cb(error);
-  })
-}
 
 // LOGIN -----------------------------------------------------------------------
 
@@ -333,7 +311,7 @@ export function createStudent(info) {
       endpoint: `${API_BASE_URL}/create/student`,
       method: 'POST',
       body: JSON.stringify(info),
-      types: [CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE],
+      types: [FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE],
       headers: { 'Content-Type':'application/json' }
     }
   };
@@ -345,7 +323,7 @@ export function createAssociation(info) {
       endpoint: `${API_BASE_URL}/create/association`,
       method: 'POST',
       body: JSON.stringify(info),
-      types: [CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE],
+      types: [FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE],
       headers: { 'Content-Type':'application/json' }
     }
   };
@@ -373,7 +351,7 @@ export function createEvent(info) {
       endpoint: `${API_BASE_URL}/create/event`,
       method: 'POST',
       body: data,
-      types: [CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE],
+      types: [FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE],
       headers: { 'Authorization': `JWT ${token}` }
     }
   };
@@ -442,12 +420,45 @@ export function editEvent(info) {
       endpoint: `${API_BASE_URL}/edit/event`,
       method: 'POST',
       body: data,
-      types: [CREATE_FORM_REQUEST, CREATE_FORM_SUCCESS, CREATE_FORM_FAILURE],
+      types: [FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE],
       headers: { 'Authorization': `JWT ${token}` }
     }
   };
 }
 
-// Create Account calls (POST) -------------------------------------------------
-// All require authentication (tokens)
-// Where token = localStorage.getItem('id_token') || null
+// Association -----------------------------------------------------------------
+// info = { association_name, initials, image_path, location, page_link, bio }
+
+export function editAssociation(info) {
+
+  let token = localStorage.getItem('id_token');
+  // Create form data.
+  const data = new FormData();
+  for (var key in info) {
+    if (info.hasOwnProperty(key)) {
+      data.append(key, info[key]);
+    }
+  }
+
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/edit/association`,
+      method: 'POST',
+      body: data,
+      types: [FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE],
+      headers: { 'Authorization': `JWT ${token}` }
+    }
+  };
+}
+
+
+// Fetch Options ---------------------------------------------------------------
+export function fetchOptionsLocation() {
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/options/location`,
+      method: 'GET',
+      types: [OPTIONS_REQUEST, OPTIONS_SUCCESS, OPTIONS_FAILURE]
+    }
+  };
+}
