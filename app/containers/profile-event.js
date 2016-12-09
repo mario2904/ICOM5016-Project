@@ -229,7 +229,7 @@ class ProfileEvent extends Component {
     const { reviews, event_name, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, isInterested, id, role, dispatch, params } = this.props;
     const { eventID } = params;
     const editableInfo = { event_name, event_id: eventID, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
-    console.log(editableInfo.event_id);
+
     const InterestedButton = () => (
       <Button
         animated

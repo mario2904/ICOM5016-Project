@@ -9,12 +9,15 @@ export default function(state={}, action) {
   switch (action.type) {
     case STUDENT_ASSOCIATIONS_SUCCESS:
       let associations = action.payload;
+      console.log('associations', associations);
       return { ...state, associations };
     case STUDENT_NEWS_FEED_SUCCESS:
       let newsFeed = action.payload;
+      console.log('newsfeed', newsFeed);
       return { ...state, newsFeed };
     case STUDENT_EVENTS_SUCCESS:
       let events = action.payload;
+      console.log('events', events);
       return { ...state, events };
     default:
       return state;

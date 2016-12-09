@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router'
 import Dropzone from 'react-dropzone';
-import { Segment, Header, Label, Form, Icon, Button, Modal, Image } from 'semantic-ui-react';
+import { Segment, Header, Label, Form, Icon, Button, Modal, Image, Grid } from 'semantic-ui-react';
 
 import { editAssociation, fetchOptionsLocation } from '../actions';
 
@@ -45,7 +45,7 @@ class ModalEditAssociationProfile extends Component {
 
   render() {
 
-    const { association_name, image_path, initials, room, page_link, bio } = this.props.associationProfile;
+    const { association_name, image_path, initials, room, page_link, bio } = this.props;
     const { location_options } = this.props;
     const { files } = this.state;
     const trigger = (
@@ -62,18 +62,30 @@ class ModalEditAssociationProfile extends Component {
       <Modal trigger={trigger}>
         <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}} icon='edit' content='Edit Association Profile' />
         <Modal.Content>
+
+          <Icon name="image"></Icon>
+          <label><strong>Profile Picture</strong></label>
+          <Segment>
+            <Grid stackable>
+              <Grid.Column width={8}>
+                <Dropzone
+                  multiple={false}
+                  accept='image/*'
+                  onDrop={this.onDrop}>
+                  <div>Try dropping some files here, or click to select files to upload.</div>
+                </Dropzone>
+              </Grid.Column>
+              <Grid.Column width={8}>
+                {
+                  (files.length === 0) ?
+                  <Image size='medium' src={image_path} /> :
+                  <Image size='medium' src={files[0].preview} />
+                }
+              </Grid.Column>
+            </Grid>
+          </Segment>
+
           <Form onSubmit={this.handleSubmit}>
-            <Dropzone
-              multiple={false}
-              accept='image/*'
-              onDrop={this.onDrop}>
-              <div>Try dropping some files here, or click to select files to upload.</div>
-            </Dropzone>
-            {
-              (files.length === 0) ?
-              <Image size='medium' src={image_path} /> :
-              <Image size='medium' src={files[0].preview} />
-            }
 
             <Form.Input label='Association Name' name='association_name' placeholder='Association Name' defaultValue={association_name} />
             <Form.Input label='Association Initials' name='initials' placeholder='Association Initials' defaultValue={initials} />
@@ -81,7 +93,6 @@ class ModalEditAssociationProfile extends Component {
             <Form.Input label='Association Link' name='page_link' placeholder='Association Link' defaultValue={page_link} />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' defaultValue={bio} />
             <Button type='submit'>Submit</Button>
-
 
           </Form>
         </Modal.Content>
@@ -102,6 +113,7 @@ ModalEditAssociationProfile.propTypes = {
   page_link: PropTypes.string,
   bio: PropTypes.string
 }
+
 function mapStateToProps(state) {
   const { form, options } = state;
   const { isSuccessful, isWaiting } = form;

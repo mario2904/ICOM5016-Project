@@ -451,6 +451,30 @@ export function editAssociation(info) {
   };
 }
 
+// Student ---------------------------------------------------------------------
+// info = { first_name, last_name, birthdate, gender, hometown, college, major, bio }
+
+export function editStudent(info) {
+
+  let token = localStorage.getItem('id_token');
+  // Create form data.
+  const data = new FormData();
+  for (var key in info) {
+    if (info.hasOwnProperty(key)) {
+      data.append(key, info[key]);
+    }
+  }
+
+  return {
+    [CALL_API]: {
+      endpoint: `${API_BASE_URL}/edit/student`,
+      method: 'POST',
+      body: data,
+      types: [FORM_REQUEST, FORM_SUCCESS, FORM_FAILURE],
+      headers: { 'Authorization': `JWT ${token}` }
+    }
+  };
+}
 
 // Fetch Options ---------------------------------------------------------------
 export function fetchOptionsLocation() {

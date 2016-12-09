@@ -71,6 +71,7 @@ class ProfileStudent extends Component{
   render(){
     const { activeItem } = this.state
     const { first_name, last_name, image_path, gender, hometown, college, major, bio, id, role, params } = this.props;
+    const editableInfo = { first_name, last_name, image_path, gender, hometown, college, major, bio };
     const { userID } = params;
     console.log(role);
     console.log(id);
@@ -100,9 +101,9 @@ class ProfileStudent extends Component{
             {' '}
             <div style={{display:"inline",verticalAlign: 'middle'}}>
               { // If authenticated as student and same id as this profile
-                // Then allow to edit this profile.
-                (role === 'student' && userID === id) ?
-                <ModalEditStudentProfile studentProfile={{gender, hometown, college, major, bio}}> </ModalEditStudentProfile> : null
+                // Then allow to edit this profile. // Quick fix. modal-edit
+                (role === 'student' && userID === id) && gender ?
+                <ModalEditStudentProfile {...editableInfo} /> : null
               }
             </div>
           </Segment>

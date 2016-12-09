@@ -25,7 +25,7 @@ router.get('/', requireAuth, (req, res, next) => {
     })
     .then(data => {
       console.log('Success: Updates Info');
-      data[0].map(event => {
+      let events = data[0].map(event => {
         const { event_id, event_name, association_name, time_stamp, image_path } = event;
         return {
           image: image_path,
@@ -34,7 +34,7 @@ router.get('/', requireAuth, (req, res, next) => {
           extraText: event_name
         };
       });
-      data[1].map(update => {
+      let updates = data[1].map(update => {
         const { event_id, event_name, association_id, notification_name, notification_text, date_sent, image_path } = update;
         return {
           image: image_path,
@@ -44,7 +44,7 @@ router.get('/', requireAuth, (req, res, next) => {
         }
       });
 
-      const response = data[0].concat(data[1]);
+      const response = events.concat(updates);
       res.json(response);
     })
     .catch(error => {

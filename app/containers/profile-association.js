@@ -30,14 +30,6 @@ class ProfileAssociation extends Component{
     dispatch(isFollowingAssociation(associationID));
 
   }
-  // componentWillUpdate(nextProps) {
-  //   // Get Info to display in Profile Page
-  //   const { dispatch, params } = nextProps;
-  //   const { associationID } = params;
-  //   dispatch(fetchProfileAssociationInfo(associationID));
-  //   dispatch(isFollowingAssociation(associationID));
-  //
-  // }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
   handleOnClick = (e) => this.setState({ color:(this.state.color === "red" ? "blue": "red"),
@@ -100,6 +92,7 @@ class ProfileAssociation extends Component{
     const { activeItem } = this.state;
     const { followers, image_path, association_name, initials, room, page_link, bio, isFollowing, id, role, params, dispatch } = this.props;
     const { associationID } = params;
+    const editableInfo = {association_name, image_path, initials, room, page_link, bio};
 
     const FollowingButton = () => (
       <Button
@@ -168,7 +161,7 @@ class ProfileAssociation extends Component{
             { // If authenticated as an association and same id as this profile
               // Then allow to edit this profile.
               (role === 'association' && associationID === id) ?
-              <ModalEditAssociationProfile associationProfile={{association_name, image_path, initials, room, page_link, bio}}/> : null
+              <ModalEditAssociationProfile {...editableInfo} /> : null
             }
             </Segment>
           </Grid.Row>
