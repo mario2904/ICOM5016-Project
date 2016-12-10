@@ -105,7 +105,6 @@ renderMyFeeds = () => <Feed events={this.props.newsFeed} />;
       <div>
         <div style={styles.banner}>
           <h2 style={styles.title}>Welcome Back Fellow Association!<Icon size="large" name="smile"></Icon></h2>
-
           <div style={styles.followers}>
             <Statistic size='huge' inverted>
               <Statistic.Label>Followers</Statistic.Label>
