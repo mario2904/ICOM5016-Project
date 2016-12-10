@@ -129,7 +129,7 @@ const categories_options = [
   { label: 'Social', value: 'Social' },
   { label: 'Educational', value: 'Educational' },
   { label: 'Business', value: 'Business' },
-  { label: 'Sport', value: 'Sport' },
+  { label: 'Sports', value: 'Sports' },
   { label: 'Competition', value: 'Competition' },
   { label: 'Other', value: 'Other' },
 ];

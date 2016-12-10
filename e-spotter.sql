@@ -837,6 +837,7 @@ COPY category (category_id, category_name) FROM stdin;
 7	Sports
 8	Competition
 9	Other
+10	Music
 \.
 
 
@@ -844,7 +845,7 @@ COPY category (category_id, category_name) FROM stdin;
 -- Name: category_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('category_category_id_seq', 9, true);
+SELECT pg_catalog.setval('category_category_id_seq', 10, true);
 
 
 --
@@ -965,6 +966,7 @@ COPY images (image_id, image_name, image_path) FROM stdin;
 11	Chevron Logo	http://troutlakewashington.com/wp-content/uploads/ChevronLogo.png
 9	Harris Logo	https://static1.squarespace.com/static/53752262e4b0acdd68de7377/t/53869050e4b0149a746ccec3/1401327703838/Harris+Logo.png
 27	Movie Night: Dr.Strange	https://upload.wikimedia.org/wikipedia/en/0/0a/Benedict_Cumberbatch_as_Doctor_Strange.jpg
+30	Default Profile Image	/images/defaults/default-profile.jpg
 \.
 
 
@@ -972,7 +974,7 @@ COPY images (image_id, image_name, image_path) FROM stdin;
 -- Name: images_image_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('images_image_id_seq', 29, true);
+SELECT pg_catalog.setval('images_image_id_seq', 30, true);
 
 
 --
