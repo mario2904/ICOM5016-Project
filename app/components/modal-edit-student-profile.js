@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import Dropzone from 'react-dropzone';
 import { Segment, Header, Label, Form, Checkbox, Icon, Button, Modal, Grid, Image } from 'semantic-ui-react';
 
+import { hometown_options, college_options, major_options } from '../options';
 import { editStudent } from '../actions';
 
 class ModalEditStudentProfile extends Component {
@@ -92,7 +93,7 @@ class ModalEditStudentProfile extends Component {
                 <Form.Radio label='Other' name='gender' value='Other' checked={gender === 'Other'} onChange={this.handleGenderChange} />
               </Form.Group>
             </Form.Field>
-            <Form.Input label='Hometown' name='hometown' placeholder='Hometown' defaultValue={hometown} />
+            <Form.Select label='Hometown' name='hometown' options={hometown_options.map(h => {return {text: h, value: h}})} placeholder='Hometown' />
             <Form.Select label='College' name='college' options={college_options.map(c => {return {text: c, value: c}})} placeholder='College' defaultValue={college} />
             <Form.Select label='Major' name='major' options={major_options.map(m => {return {text: m, value: m}})} placeholder='Major' defaultValue={major} />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about you...' defaultValue={bio}/>
@@ -104,54 +105,6 @@ class ModalEditStudentProfile extends Component {
   }
 }
 
-const major_options = [
-  'ICOM',
-  'INEL',
-  'INQU',
-  'INCI',
-  'INME',
-  'ININ',
-  'OTHER'
-];
-
-// const majors = [
-//   { text: 'ICOM', value: 'icom' },
-//   { text: 'INEL', value: 'inel' },
-//   { text: 'INQU', value: 'inqu' },
-//   { text: 'INCI', value: 'inci' },
-//   { text: 'INME', value: 'inme' },
-//   { text: 'ININ', value: 'inin' },
-//   { text: 'OTHER', value: 'other' },
-// ];
-
-const college_options = [
-  'University of Puerto Rico, Arecibo',
-  'University of Puerto Rico, Aguadilla',
-  'University of Puerto Rico, Bayamon',
-  'University of Puerto Rico, Carolina',
-  'University of Puerto Rico, Cayey',
-  'University of Puerto Rico, Ciencias Medicas',
-  'University of Puerto Rico, Humacao',
-  'University of Puerto Rico, Mayaguez',
-  'University of Puerto Rico, Rio Piedras',
-  'University of Puerto Rico, Ponce',
-  'University of Puerto Rico, Utuado'
-];
-
-
-// const colleges = [
-//   { text: 'University of Puerto Rico, Arecibo', value: 'upra' },
-//   { text: 'University of Puerto Rico, Aguadilla', value: 'uprag' },
-//   { text: 'University of Puerto Rico, Bayamon', value: 'uprb' },
-//   { text: 'University of Puerto Rico, Carolina', value: 'uprc' },
-//   { text: 'University of Puerto Rico, Cayey', value: 'uprca' },
-//   { text: 'University of Puerto Rico, Ciencias Medicas', value: 'uprcm' },
-//   { text: 'University of Puerto Rico, Humacao', value: 'uprh' },
-//   { text: 'University of Puerto Rico, Mayaguez', value: 'uprm' },
-//   { text: 'University of Puerto Rico, Rio Piedras', value: 'uprrp' },
-//   { text: 'University of Puerto Rico, Ponce', value: 'uprp' },
-//   { text: 'University of Puerto Rico, Utuado', value: 'upru' },
-// ];
 
 ModalEditStudentProfile.propTypes = {
   dispatch: PropTypes.func.isRequired,

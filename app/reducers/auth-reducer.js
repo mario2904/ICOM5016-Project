@@ -21,7 +21,7 @@ export default function(state=initialState, action) {
       let { message } = action.payload;
       return { ...state, isFetching: false, isAuthenticated: false, errorMessage: message };
     case LOGOUT_SUCCESS:
-      return { ...state, isFetching: true, isAuthenticated: false };
+      return { ...state, isFetching: true, isAuthenticated: false, id: null, role: null, user_name: null };
     default:
       return state;
   }

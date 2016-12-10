@@ -20,7 +20,7 @@ class NavBar extends Component {
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
-    const { dispatch } = this.props;
+    const { dispatch, isAuthenticated } = this.props;
     const { activeItem } = this.state;
     return (
       <div style={this.props.style}>
@@ -53,6 +53,7 @@ class NavBar extends Component {
                   active={activeItem === 'events'}
                   icon='calendar outline'
                   onClick={this.handleItemClick} />
+                { !isAuthenticated ? null :
                 <Menu.Menu position='right' >
                   <Menu.Item
                     fitted
@@ -81,6 +82,7 @@ class NavBar extends Component {
 
                   </Menu.Item>
                 </Menu.Menu>
+                }
               </Menu>
             </Grid.Row>
             <Grid.Row only='tablet mobile'>
