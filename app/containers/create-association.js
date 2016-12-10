@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
 
-import { createAssociation } from '../actions';
+import { createAssociation, fetchOptionsLocation } from '../actions';
 
 class CreateAssociation extends Component {
 
@@ -18,6 +18,11 @@ class CreateAssociation extends Component {
       const { dispatch } = this.props;
       dispatch(createAssociation(serializedForm));
     }
+  }
+  componentWillMount() {
+    const { dispatch } = this.props;
+    // Fetch location options
+    dispatch(fetchOptionsLocation());
   }
 
   componentWillUpdate(nextProps) {
@@ -36,6 +41,9 @@ class CreateAssociation extends Component {
   }
 
   render() {
+    const { location_options } = this.props;
+    if(!location_options)
+      return null;
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
         <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50,
@@ -51,7 +59,7 @@ class CreateAssociation extends Component {
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' />
             <Form.Input label='Re-enter Password' name='re_password' placeholder='Re-enter Password' type='password' />
-            <Form.Select label='Main Office Location' name='location' options={locations} placeholder='Main Office Location' />
+            <Form.Select label='Main Office Location' name='location' options={location_options.map(l => {return {text: l.location, value: l.location}})} placeholder='Main Office Location' />
             <Form.Input label='Association Link' name='page_link' placeholder='Association Link' />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' />
             <Form.Field>
@@ -86,16 +94,19 @@ const locations = [
 CreateAssociation.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isSuccessful: PropTypes.bool,
-  isWaiting: PropTypes.bool
+  isWaiting: PropTypes.bool,
+  location_options: PropTypes.array
 }
 
 function mapStateToProps(state) {
-  const { form } = state;
+  const { form, options } = state;
   const { isSuccessful, isWaiting } = form;
+  const { location_options } = options;
 
   return {
     isSuccessful,
-    isWaiting
+    isWaiting,
+    location_options
   };
 }
 

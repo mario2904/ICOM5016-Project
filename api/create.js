@@ -10,6 +10,8 @@ const cloudinary = require('cloudinary');
 const stream = require('stream');
 const multer = require('multer');
 const imgUpload = multer({ storage: multer.memoryStorage(), fileFilter: filter.image});
+// defaults
+const default_image_id = 30;
 
 router.post('/student', (req, res, next) => {
   console.log(req.body);
@@ -33,7 +35,7 @@ router.post('/student', (req, res, next) => {
   //   console.log('Success: Create Student');
   //   return res.json({success: true});
   // });
-  const default_image_id = 30;
+
   db1.task(function *(t) {
     let exist = yield t.oneOrNone(`
       SELECT *
@@ -52,7 +54,12 @@ router.post('/student', (req, res, next) => {
   })
   .then(data => {
     console.log("Student Creation Successful");
-    (!data) ? res.sendStatus(200) : res.sendStatus(data);
+    if(!data){
+      res.sendStatus(200);
+    }
+    else {
+      res.sendStatus(data);
+    }
 
   })
   .catch(error => {
@@ -85,7 +92,6 @@ router.post('/association', (req, res, next) => {
   //   console.log('Success: Create Association');
   //   return res.json({success: true});
   // });
-  // const default_image_id = 30;
   db1.task(function *(t) {
     let exist = yield t.oneOrNone(`
       SELECT *
@@ -98,9 +104,9 @@ router.post('/association', (req, res, next) => {
         VALUES ($[email], $[password],'no',CURRENT_TIMESTAMP)
         RETURNING account_id
       )
-      INSERT INTO associations (association_name,page_link,initials,bio,account_id,location_id)
-      SELECT $[association_name],$[page_link],$[initials], $[bio], account_id,  (SELECT location_id FROM location WHERE room = $[location])
-      FROM acc1`,{association_name, page_link, initials, location, bio, email, password});
+      INSERT INTO associations (association_name, page_link, initials, bio, account_id, location_id, image_id)
+      SELECT $[association_name],$[page_link],$[initials], $[bio], account_id,  (SELECT location_id FROM location WHERE room = $[location]), $[default_image_id]
+      FROM acc1`,{association_name, page_link, initials, location, bio, email, password, default_image_id});
 
   })
   .then(data => {
@@ -135,6 +141,7 @@ router.post('/event', requireAuth, imgUpload.single('image_path'), (req, res, ne
     const { id } = req.user;
     const image_path = result.secure_url;
     const { event_name, is_live, location, registration_link, description, start_date, end_date, start_time, end_time, categories } = req.body;
+    console.log(req.body);
     console.log(id);
 
     db1.task(function *(t) {

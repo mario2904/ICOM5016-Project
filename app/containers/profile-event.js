@@ -226,7 +226,7 @@ class ProfileEvent extends Component {
   }
 
   render() {
-    const { reviews, event_name, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, isInterested, id, role, dispatch, params } = this.props;
+    const { reviews, event_name, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, updates, isInterested, id, role, dispatch, params } = this.props;
     const { eventID } = params;
     const editableInfo = { event_name, event_id: eventID, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
 
@@ -305,7 +305,7 @@ class ProfileEvent extends Component {
           </Grid.Row>
           <Grid.Row style={styles.row}>
             <Grid.Column  computer={11} tablet={11} mobile={16} stretched>
-              { reviews.length === 0 ? null:
+
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
                   <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
@@ -316,9 +316,12 @@ class ProfileEvent extends Component {
                     </span>
                   </Header>
                   <Segment attached>
-                    <Comment.Group>
-                      {this.renderUpdates()}
-                    </Comment.Group>
+                    { (updates.length === 0) ?
+                      <div><span>There are no updates.</span><br/><br/></div> :
+                      <Comment.Group>
+                        {this.renderUpdates()}
+                      </Comment.Group>
+                    }
                     { // If authenticated as an association and same id as this profile
                       // Then allow to make an update.
                       (role === 'association' && association_id === parseInt(id)) ?
@@ -331,7 +334,7 @@ class ProfileEvent extends Component {
                   </Segment>
                 </Grid.Column>
               </Grid.Row>
-              }
+
               <Grid.Row style={styles.row}>
                 <Grid.Column width={16} style={styles.column}>
                   <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}
