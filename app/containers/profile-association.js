@@ -94,6 +94,9 @@ class ProfileAssociation extends Component{
     const { associationID } = params;
     const editableInfo = {association_name, image_path, initials, room, page_link, bio};
 
+    console.log(id, typeof id);
+    console.log(role, typeof role);
+
     const FollowingButton = () => (
       <Button
         animated
@@ -160,7 +163,7 @@ class ProfileAssociation extends Component{
             </h1>
             { // If authenticated as an association and same id as this profile
               // Then allow to edit this profile.
-              (role === 'association' && associationID === id) ?
+              (role === 'association' && id === parseInt(associationID)) ?
               <ModalEditAssociationProfile {...editableInfo} /> : null
             }
             </Segment>
@@ -214,7 +217,7 @@ ProfileAssociation.propTypes = {
   sponsors: PropTypes.array,
   followers: PropTypes.object,
   isFollowing: PropTypes.bool,
-  id: PropTypes.string,
+  id: PropTypes.number,
   role: PropTypes.string
 }
 
