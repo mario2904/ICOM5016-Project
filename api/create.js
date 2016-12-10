@@ -9,6 +9,7 @@ const filter = require('../utils/filter');
 const cloudinary = require('cloudinary');
 const stream = require('stream');
 const multer = require('multer');
+const welcome_student = require('../mail/welcome_student');
 const imgUpload = multer({ storage: multer.memoryStorage(), fileFilter: filter.image});
 // defaults
 const default_image_id = 30;
@@ -55,6 +56,7 @@ router.post('/student', (req, res, next) => {
   .then(data => {
     console.log("Student Creation Successful");
     if(!data){
+      welcome_student(first_name, last_name, college, email);
       res.sendStatus(200);
     }
     else {
