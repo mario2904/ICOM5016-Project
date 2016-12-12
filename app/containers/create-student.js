@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { Form, Checkbox, Button, Grid, Icon, Header, Segment, Label, Message } from 'semantic-ui-react';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment, Label, Message, Confirm } from 'semantic-ui-react';
 import _ from 'lodash';
 import validate, { create_student } from '../validate';
 
@@ -10,9 +10,16 @@ import { createStudent } from '../actions';
 
 class CreateStudent extends Component {
 
-  state = { error: {} };
+  state = { error: {}, open: false };
 
   handleGenderChange = (e, { value }) => this.setState({ genderControl: value });
+
+  handleConfirm = () => {
+    this.setState({open: false})
+    browserHistory.push('/');
+    // Small 'hack' to reload and reset reducers
+    window.location.reload();
+  }
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault();
@@ -21,8 +28,6 @@ class CreateStudent extends Component {
 
     if(!error) {
       this.setState({error: {}});
-      console.log(error);
-      console.log(serializedForm);
       // Send to server...
       const { dispatch } = this.props;
       dispatch(createStudent(serializedForm));
@@ -34,10 +39,12 @@ class CreateStudent extends Component {
   }
 
   componentWillUpdate(nextProps) {
+    const { open } = this.state;
     const { isWaiting, isSuccessful } = nextProps;
     // Redirect to their respective homes if already authenticated
-    if (!isWaiting && isSuccessful) {
-      browserHistory.push('/');
+    if (!isWaiting && isSuccessful && !open) {
+      this.setState({open: true});
+      console.log('Success');
     }
     if(!isWaiting && !isSuccessful) {
       console.log("Error: create student not successful.");
@@ -51,11 +58,17 @@ class CreateStudent extends Component {
   render() {
     const { isWaiting } = this.props;
     const { genderControl, error } = this.state;
-    const { first_name, last_name, email, password, re_password, birthdate, gender, hometown, college, major, bio, terms } = error;
+    const { first_name, last_name, email, password, confirm_password, birthdate, gender, hometown, college, major, bio, terms } = error;
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
-      <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50,
-      paddingBottom:75}}>
+        <Confirm
+          open={this.state.open}
+          header='Congratulations!'
+          content='An E-mail has been sent for confirmation. Please verify your e-mail before trying to log in to your account.'
+          onCancel={this.handleConfirm}
+          onConfirm={this.handleConfirm}
+        />
+      <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50, paddingBottom:75}}>
         <Grid.Row>
         <Message
           style={{width:"100%"}}
@@ -74,7 +87,7 @@ class CreateStudent extends Component {
             <Form.Input label='Last Name' name='last_name' placeholder='Last Name' error={last_name !== undefined} />
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' error={email !== undefined} />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' error={password !== undefined} />
-            <Form.Input label='Re-enter Password' name='re_password' placeholder='Re-enter Password' type='password' error={re_password !== undefined} />
+            <Form.Input label='Re-enter Password' name='confirm_password' placeholder='Re-enter Password' type='password' error={confirm_password !== undefined} />
             <Form.Input label='Birthday' name='birthdate' placeholder='Birthday' type='date' error={birthdate !== undefined} />
             <Form.Field error={gender !== undefined} >
               <label>Gender</label>

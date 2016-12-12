@@ -43,7 +43,7 @@ export const create_student = {
       minimum: 8
     }
   },
-  re_password: {
+  confirm_password: {
     presence: true,
     equality: "password"
   },
@@ -75,4 +75,34 @@ export const create_student = {
   }
 };
 
+export const create_association = {
+  association_name: {
+    presence: true
+  },
+  initials: {
+    presence: true
+  },
+  email: {
+    email: true
+  },
+  password: {
+    presence: true,
+    length: {
+      minimum: 8
+    }
+  },
+  confirm_password: {
+    presence: true,
+    equality: "password"
+  },
+  location: {
+    presence: true
+  },
+  page_link: {
+    presence: true
+  },
+  bio: {
+
+  }
+};
 export default validate;

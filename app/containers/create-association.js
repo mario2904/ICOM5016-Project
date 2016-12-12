@@ -1,22 +1,34 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { Form, Checkbox, Button, Grid, Icon, Header, Segment } from 'semantic-ui-react';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment, Message, Confirm } from 'semantic-ui-react';
+
+import _ from 'lodash';
+import validate, { create_association } from '../validate';
 
 import { createAssociation, fetchOptionsLocation } from '../actions';
 
 class CreateAssociation extends Component {
 
-  state = { serializedForm: {} };
+  state = { error: {}, open: false };
+
+  handleConfirm = () => {
+    this.setState({open: false})
+    browserHistory.push('/');
+    // Small 'hack' to reload and reset reducers
+    window.location.reload();
+  }
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault()
-    const { password, re_password, terms } = serializedForm;
-    if(password.length >= 8 && re_password.length >= 8 && password === re_password && terms) {
-      console.log(serializedForm);
-      // Send to server...
+    const error = validate(serializedForm, create_student);
+    if(!error) {
+      this.setState({error: {}});
       const { dispatch } = this.props;
       dispatch(createAssociation(serializedForm));
+    }
+    else {
+
     }
   }
   componentWillMount() {
