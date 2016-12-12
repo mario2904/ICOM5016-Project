@@ -21,14 +21,15 @@ class CreateAssociation extends Component {
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault()
-    const error = validate(serializedForm, create_student);
+    const error = validate(serializedForm, create_association);
     if(!error) {
       this.setState({error: {}});
       const { dispatch } = this.props;
       dispatch(createAssociation(serializedForm));
     }
     else {
-
+      console.log(error);
+      this.setState({error});
     }
   }
   componentWillMount() {
@@ -38,10 +39,12 @@ class CreateAssociation extends Component {
   }
 
   componentWillUpdate(nextProps) {
+    const { open } = this.state;
     const { isWaiting, isSuccessful } = nextProps;
     // Redirect to their respective homes if already authenticated
-    if (!isWaiting && isSuccessful) {
-      browserHistory.push('/');
+    if (!isWaiting && isSuccessful && !open) {
+      this.setState({open: true});
+      console.log('Success');
     }
     if(!isWaiting && !isSuccessful) {
       console.log("Error: create student not successful.");
@@ -53,28 +56,43 @@ class CreateAssociation extends Component {
   }
 
   render() {
-    const { location_options } = this.props;
+    const { error } = this.state;
+    const { location_options, isWaiting } = this.props;
+    const { association_name, initials, location, page_link, email, password, confirm_password, bio, terms } = error;
     if(!location_options)
       return null;
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
-        <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50,
-        paddingBottom:75}}>
+        <Confirm
+          open={this.state.open}
+          header='Congratulations!'
+          content='An E-mail has been sent for confirmation. Please verify your e-mail before trying to log in to your account.'
+          onCancel={this.handleConfirm}
+          onConfirm={this.handleConfirm}
+        />
+        <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50, paddingBottom:75}}>
+        <Message
+          style={{width:"100%"}}
+          header='Please fix the following errors: '
+          list={_.flatten(_.values(error))}
+          hidden={_.isEmpty(error)}
+          error
+          />
         <Header style={{width:"100%", textAlign:"center",
           backgroundColor:"rgb(35, 37, 40)", color:"white"}} as='h2' attached='top'>
           <Icon name="university" color="teal"></Icon>Association Sign-up
         </Header>
         <Segment attached>
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Input label='Association Name' name='association_name' placeholder='Association Name'/>
-            <Form.Input label='Association Initials' name='initials' placeholder='Association Initials' />
+          <Form onSubmit={this.handleSubmit} loading={isWaiting}>
+            <Form.Input label='Association Name' name='association_name' placeholder='Association Name' error={association_name !== undefined}/>
+            <Form.Input label='Association Initials' name='initials' placeholder='Association Initials' error={initials !== undefined}/>
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
-            <Form.Input label='Password' name='password' placeholder='Password' type='password' />
-            <Form.Input label='Re-enter Password' name='re_password' placeholder='Re-enter Password' type='password' />
-            <Form.Select label='Main Office Location' name='location' options={location_options.map(l => {return {text: l.location, value: l.location}})} placeholder='Main Office Location' />
-            <Form.Input label='Association Link' name='page_link' placeholder='Association Link' />
-            <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' />
-            <Form.Field>
+            <Form.Input label='Password' name='password' placeholder='Password' type='password' error={password !== undefined} />
+            <Form.Input label='Re-enter Password' name='confirm_password' placeholder='Re-enter Password' type='password' error={confirm_password !== undefined}/>
+            <Form.Select label='Main Office Location' name='location' options={location_options.map(l => {return {text: l.location, value: l.location}})} placeholder='Main Office Location' error={location !== undefined}/>
+            <Form.Input label='Association Link' name='page_link' placeholder='Association Link' error={page_link !== undefined}/>
+            <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' error={bio !== undefined}/>
+            <Form.Field error={terms !== undefined}>
               <Checkbox label='I agree to the Terms and Conditions' name='terms' />
             </Form.Field>
             <Button animated color="teal"type='submit'>

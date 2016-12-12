@@ -2,8 +2,6 @@
 
 # Props to this article: https://www.calebwoods.com/2015/05/05/vagrant-guest-commands/
 
-echo "Start pre-commit script"
-
 # Make sure vagrant vm is running
 vagrant up
 

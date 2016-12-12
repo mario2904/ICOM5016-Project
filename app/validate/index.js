@@ -99,7 +99,7 @@ export const create_association = {
     presence: true
   },
   page_link: {
-    presence: true
+    url: true
   },
   bio: {
 

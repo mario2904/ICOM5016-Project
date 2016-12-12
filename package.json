@@ -8,6 +8,7 @@
     "start": "node -r dotenv/config server.js",
     "build": "rimraf dist && cross-env NODE_ENV=production webpack --config ./webpack.production.config.js --progress --profile --colors",
     "dump": "sh create_dump_files.sh",
+    "restore": "sh restore_db.sh",
     "postinstall": "npm run build"
   },
   "repository": {
