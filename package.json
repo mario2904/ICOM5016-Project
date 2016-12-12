@@ -32,6 +32,7 @@
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
     "lodash": "^4.16.4",
+    "moment": "^2.17.1",
     "multer": "^1.2.0",
     "node-uuid": "^1.4.7",
     "passport": "^0.3.2",
@@ -48,7 +49,8 @@
     "redux-api-middleware": "^1.0.2",
     "redux-thunk": "^2.1.0",
     "semantic-ui-react": "^0.61.10",
-    "sendgrid": "^4.7.1"
+    "sendgrid": "^4.7.1",
+    "validate.js": "^0.11.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",

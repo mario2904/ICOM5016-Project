@@ -2,7 +2,7 @@ const router = require('express').Router();
 const cloudinary = require('cloudinary');
 const db1 = require('../db');
 
-router.delete('/student:user_id', (req, res, next) => {
+router.delete('/student/:user_id', (req, res, next) => {
 //   const { studentID } = req.params;
 //
 //   db1.task(function *(t) {

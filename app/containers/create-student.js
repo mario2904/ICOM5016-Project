@@ -1,25 +1,35 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { Form, Checkbox, Button, Grid, Icon, Header, Segment,Label } from 'semantic-ui-react';
+import { Form, Checkbox, Button, Grid, Icon, Header, Segment, Label, Message } from 'semantic-ui-react';
+import _ from 'lodash';
+import validate, { create_student } from '../validate';
 
 import { hometown_options, college_options, major_options } from '../options';
 import { createStudent } from '../actions';
 
 class CreateStudent extends Component {
 
-  state = { serializedForm: {} };
+  state = { error: {} };
 
-  handleGenderChange = (e, { value }) => this.setState({ gender: value });
+  handleGenderChange = (e, { value }) => this.setState({ genderControl: value });
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault();
-    const { password, re_password, terms } = serializedForm;
-    if(password.length >= 8 && re_password.length >= 8 && password === re_password && terms) {
+    // Validate
+    const error = validate(serializedForm, create_student);
+
+    if(!error) {
+      this.setState({error: {}});
+      console.log(error);
       console.log(serializedForm);
       // Send to server...
       const { dispatch } = this.props;
       dispatch(createStudent(serializedForm));
+    }
+    else {
+      console.log(error);
+      this.setState({error});
     }
   }
 
@@ -39,38 +49,46 @@ class CreateStudent extends Component {
   }
 
   render() {
-    const { serializedForm, gender } = this.state;
-
+    const { isWaiting } = this.props;
+    const { genderControl, error } = this.state;
+    const { first_name, last_name, email, password, re_password, birthdate, gender, hometown, college, major, bio, terms } = error;
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
       <Grid style={{width:"80%", height:"80%", margin:"auto", paddingTop:50,
       paddingBottom:75}}>
         <Grid.Row>
+        <Message
+          style={{width:"100%"}}
+          header='Please fix the following errors: '
+          list={_.flatten(_.values(error))}
+          hidden={_.isEmpty(error)}
+          error
+          />
         <Header style={{width:"100%", textAlign:"center",
           backgroundColor:"rgb(35, 37, 40)", color:"white"}} as='h2' attached='top'>
           <Icon name="student" color="blue"></Icon>Student Sign-up
         </Header>
         <Segment attached style={{width:"100%"}}>
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Input label='First Name' name='first_name' placeholder='First Name'/>
-            <Form.Input label='Last Name' name='last_name' placeholder='Last Name' />
-            <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
-            <Form.Input label='Password' name='password' placeholder='Password' type='password' />
-            <Form.Input label='Re-enter Password' name='re_password' placeholder='Re-enter Password' type='password' />
-            <Form.Input label='Birthday' name='birthdate' placeholder='Birthday' type='date' />
-            <Form.Field>
+          <Form onSubmit={this.handleSubmit} loading={isWaiting}>
+            <Form.Input label='First Name' name='first_name' placeholder='First Name' error={first_name !== undefined} />
+            <Form.Input label='Last Name' name='last_name' placeholder='Last Name' error={last_name !== undefined} />
+            <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' error={email !== undefined} />
+            <Form.Input label='Password' name='password' placeholder='Password' type='password' error={password !== undefined} />
+            <Form.Input label='Re-enter Password' name='re_password' placeholder='Re-enter Password' type='password' error={re_password !== undefined} />
+            <Form.Input label='Birthday' name='birthdate' placeholder='Birthday' type='date' error={birthdate !== undefined} />
+            <Form.Field error={gender !== undefined} >
               <label>Gender</label>
               <Form.Group inline>
-                <Form.Radio label='Male' name='gender' value='male' checked={gender === 'male'} onChange={this.handleGenderChange} />
-                <Form.Radio label='Female' name='gender' value='female' checked={gender === 'female'} onChange={this.handleGenderChange} />
-                <Form.Radio label='Other' name='gender' value='other' checked={gender === 'other'} onChange={this.handleGenderChange} />
+                <Form.Radio label='Male' name='gender' value='male' checked={genderControl === 'male'} onChange={this.handleGenderChange} />
+                <Form.Radio label='Female' name='gender' value='female' checked={genderControl === 'female'} onChange={this.handleGenderChange} />
+                <Form.Radio label='Other' name='gender' value='other' checked={genderControl === 'other'} onChange={this.handleGenderChange} />
               </Form.Group>
             </Form.Field>
-            <Form.Select label='Hometown' name='hometown' options={hometown_options.map(h => {return {text: h, value: h}})} placeholder='Hometown' />
-            <Form.Select label='College' name='college' options={college_options.map(c => {return {text: c, value: c}})} placeholder='College' />
-            <Form.Select label='Major' name='major' options={major_options.map(m => {return {text: m, value: m}})} placeholder='Major' />
+            <Form.Select label='Hometown' name='hometown' options={hometown_options.map(h => {return {text: h, value: h}})} placeholder='Hometown' error={hometown !== undefined} />
+            <Form.Select label='College' name='college' options={college_options.map(c => {return {text: c, value: c}})} placeholder='College' error={college !== undefined} />
+            <Form.Select label='Major' name='major' options={major_options.map(m => {return {text: m, value: m}})} placeholder='Major' error={major !== undefined} />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about you...' />
-            <Form.Field>
+            <Form.Field error={terms !== undefined}>
               <Checkbox name='terms' label='I agree to the Terms and Conditions' />
             </Form.Field>
             <Button animated color="blue"type='submit'>
