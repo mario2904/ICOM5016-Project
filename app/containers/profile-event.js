@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router'
 import { Image, Segment, Header, Grid, List, Label, Rating, Comment, Form, Icon, Button, Modal } from 'semantic-ui-react';
-
+import axios from 'axios';
 import ModalEditEvent from '../components/modal-edit-event';
 import { fetchProfileEventInfo, interestedInEvent, isInterestedEvent, postEventUpdate, postEventReview } from '../actions';
 
@@ -25,6 +25,33 @@ const styles = {
 
 class ProfileEvent extends Component {
   state = { rating: 1 }
+
+  handleSubmit = (e, serializedForm) => {
+    e.preventDefault();
+    // const { files } = this.state;
+    // const { dispatch } = this.props;
+    console.log(serializedForm);
+    let token = localStorage.getItem('id_token');
+    console.log(token);
+    const config = {
+      method: 'post',
+      url: '/api/payment',
+      data: serializedForm,
+      headers: { 'Authorization': `JWT ${token}`,
+      'Contentent-Type': 'application/json'}
+    };
+    axios.post('/api/payment', serializedForm, {
+      headers: { 'Authorization': `JWT ${token}`,
+      'Contentent-Type': 'application/x-www-form-urlencoded'}
+    })
+      .then(function (response) {
+        console.log(response);
+        console.log("successsssssssss");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   handleUpdateSubmit = (e, serializedForm) => {
     e.preventDefault();
@@ -108,7 +135,7 @@ class ProfileEvent extends Component {
         <Modal trigger={<Button color="teal">Entrance Fee</Button>}>
           <Modal.Header style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>Event Payment <Icon name="payment"></Icon></Modal.Header>
           <Modal.Content>
-            <Form>
+            <Form onSubmit={this.handleSubmit}>
 
               <Form.Group widths="equal">
                 <Form.Input label='Credit Card Number' name='creditCard' placeholder='Card Number' />
@@ -131,18 +158,18 @@ class ProfileEvent extends Component {
 
               <Form.Group widths="equal">
                 <Form.Input label="Post Code" name="postCode" placeholder="Post Code"/>
-                <Form.Select label="Country" name="country"/>
+                <Form.Input label="Country" name="country" placeholder="Country"/>
               </Form.Group>
-
+              <Button primary type='submit'>
+                Proceed <Icon name='right chevron' />
+              </Button>
             </Form>
             <Modal.Description>
               <Header>Proceed to Checkout</Header>
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}}>
-            <Button primary>
-              Proceed <Icon name='right chevron' />
-            </Button>
+
           </Modal.Actions>
         </Modal>
       </List>

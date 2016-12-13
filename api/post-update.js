@@ -5,7 +5,7 @@ const requireAuth = passport.authenticate('jwt', {session: false});
 
 
 router.post('/', requireAuth, (req, res, next) => {
-  
+
   // Destructure params
   const { id } = req.user;
   const { notification_name, event_id, notification_text } = req.body;
