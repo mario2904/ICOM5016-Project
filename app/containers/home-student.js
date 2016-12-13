@@ -85,22 +85,22 @@ class HomeStudent extends Component {
     return (
       <div>
         <div style={styles.banner}>
-          <h2 style={styles.title}>Welcome Back!<Icon size="large" name="smile"></Icon></h2>
+          <h2 style={styles.title}>Welcome!</h2>
         </div>
         <div>
           <Menu inverted widths={3} pointing style={styles.menubar}>
             <Menu.Item
-              name='news feed'
+              name='My News Feed'
               icon='feed'
               active={activeItem === 'news feed'}
               onClick={this.handleItemClick} />
             <Menu.Item
-              name='events'
+              name='My Events'
               icon='calendar'
               active={activeItem === 'events'}
               onClick={this.handleItemClick} />
             <Menu.Item
-              name='associations'
+              name='My Associations'
               icon='university'
               active={activeItem === 'associations'}
               onClick={this.handleItemClick} />

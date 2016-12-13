@@ -120,7 +120,13 @@ router.post('/association', (req, res, next) => {
   .then(data => {
     console.log("Association Creation Successful");
     console.log(data);
-    (data === 401) ? res.sendStatus(data): res.sendStatus(200);
+    if(data === 401) {
+      res.sendStatus(data);
+    }
+    else {
+      welcome_association(email, association_name);
+      res.sendStatus(200);
+    }
 
   })
   .catch(error => {

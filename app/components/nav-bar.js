@@ -67,10 +67,6 @@ class NavBar extends Component {
                           text='profile'
                           as={Link} to={'/' + this.props.role  + 's/' + this.props.id}
                           icon='user' />
-                        <Dropdown.Item
-                          text='Settings'
-                          as={Link} to='/settings'
-                          icon='setting'/>
                         <Dropdown.Divider></Dropdown.Divider>
                         <Dropdown.Item
                           text='Logout'
@@ -105,10 +101,7 @@ class NavBar extends Component {
                       text='profile'
                       as={Link} to={'/' + this.props.role  + 's/' + this.props.id}
                       icon='marker' />
-                    <Dropdown.Item
-                      text='Settings'
-                      as={Link} to='/settings'
-                      icon='setting'/>
+
                     <Dropdown.Item
                       text='Logout'
                       as={Link} to ='/'
