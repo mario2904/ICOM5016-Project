@@ -40,7 +40,7 @@ class HomeStudent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        activeItem: 'news feed'
+        activeItem: 'My News Feed'
       };
     this.handleItemClick = this.handleItemClick.bind(this);
     this.renderMyAssociations = this.renderMyAssociations.bind(this);
@@ -92,23 +92,23 @@ class HomeStudent extends Component {
             <Menu.Item
               name='My News Feed'
               icon='feed'
-              active={activeItem === 'news feed'}
+              active={activeItem === 'My News Feed'}
               onClick={this.handleItemClick} />
             <Menu.Item
               name='My Events'
               icon='calendar'
-              active={activeItem === 'events'}
+              active={activeItem === 'My Events'}
               onClick={this.handleItemClick} />
             <Menu.Item
               name='My Associations'
               icon='university'
-              active={activeItem === 'associations'}
+              active={activeItem === 'My Associations'}
               onClick={this.handleItemClick} />
           </Menu>
           <Segment style={{backgroundColor:"rgb(247, 247, 247)"}} padded>
-            {(this.state.activeItem === 'events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
-            {(this.state.activeItem === 'associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
-            {(this.state.activeItem === 'news feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
+            {(this.state.activeItem === 'My Events') ? <Group divided>{this.renderMyEvents()}</Group>: null}
+            {(this.state.activeItem === 'My Associations') ? <Grid padded>{this.renderMyAssociations()}</Grid>: null}
+            {(this.state.activeItem === 'My News Feed') ? <Grid padded>{this.renderMyFeeds()}</Grid>: null}
           </Segment>
         </div>
       </div>

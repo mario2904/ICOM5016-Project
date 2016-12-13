@@ -92,9 +92,9 @@ class CreateStudent extends Component {
             <Form.Field error={gender !== undefined} >
               <label>Gender</label>
               <Form.Group inline>
-                <Form.Radio label='Male' name='gender' value='male' checked={genderControl === 'male'} onChange={this.handleGenderChange} />
-                <Form.Radio label='Female' name='gender' value='female' checked={genderControl === 'female'} onChange={this.handleGenderChange} />
-                <Form.Radio label='Other' name='gender' value='other' checked={genderControl === 'other'} onChange={this.handleGenderChange} />
+                <Form.Radio label='Male' name='gender' value='Male' checked={genderControl === 'Male'} onChange={this.handleGenderChange} />
+                <Form.Radio label='Female' name='gender' value='Female' checked={genderControl === 'Female'} onChange={this.handleGenderChange} />
+                <Form.Radio label='Other' name='gender' value='Other' checked={genderControl === 'Other'} onChange={this.handleGenderChange} />
               </Form.Group>
             </Form.Field>
             <Form.Select label='Hometown' name='hometown' options={hometown_options.map(h => {return {text: h, value: h}})} placeholder='Hometown' error={hometown !== undefined} />

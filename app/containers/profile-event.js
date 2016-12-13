@@ -318,7 +318,7 @@ class ProfileEvent extends Component {
                   }
                   { // If authenticated as an association and same id as this profile
                     // Then allow to edit this profile.
-                    (role === 'association' && association_id === parseInt(id)) ?
+                    (role === 'association' && parseInt(association_id) === parseInt(id)) ?
                     <ModalEditEvent {...editableInfo} /> : null
                   }
                 </span>
@@ -351,7 +351,7 @@ class ProfileEvent extends Component {
                     }
                     { // If authenticated as an association and same id as this profile
                       // Then allow to make an update.
-                      (role === 'association' && association_id === id) ?
+                      (role === 'association' && parseInt(association_id) === parseInt(id)) ?
                       <Form reply onSubmit={this.handleUpdateSubmit}>
                         <Form.Input name='notification_name' placeholder='Title' />
                         <Form.TextArea name='notification_text' placeholder='Write the update information here...'/>

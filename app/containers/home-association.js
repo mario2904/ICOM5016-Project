@@ -75,7 +75,7 @@ class HomeAssociation extends Component {
       return (
       <Grid.Column key={event_id} mobile={16} tablet={8} computer={8}>
         <Segment>
-          <Label color='black' ribbon><Icon name="user"></Icon>100 followers</Label>
+
           <Item.Group>
         <Item>
           <Image size='small' src={image_path} />
@@ -86,7 +86,6 @@ class HomeAssociation extends Component {
             </Meta>
             <a href={"/events/" + event_id}><Button color="blue"><Icon name="linkify"></Icon>See more</Button></a>
             <Button as={Link} to={'event-stats/' + event_id} color="teal"><Icon name="line chart"></Icon>Stats</Button>
-            <Rating style={{paddingTop: 10}}icon='star' defaultRating={4} maxRating={5} />
           </Content>
         </Item>
         </Item.Group>

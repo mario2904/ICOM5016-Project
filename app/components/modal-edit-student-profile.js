@@ -93,7 +93,7 @@ class ModalEditStudentProfile extends Component {
                 <Form.Radio label='Other' name='gender' value='Other' checked={gender === 'Other'} onChange={this.handleGenderChange} />
               </Form.Group>
             </Form.Field>
-            <Form.Select label='Hometown' name='hometown' options={hometown_options.map(h => {return {text: h, value: h}})} placeholder='Hometown' />
+            <Form.Select label='Hometown' name='hometown' options={hometown_options.map(h => {return {text: h, value: h}})} placeholder='Hometown' defaultValue={hometown} />
             <Form.Select label='College' name='college' options={college_options.map(c => {return {text: c, value: c}})} placeholder='College' defaultValue={college} />
             <Form.Select label='Major' name='major' options={major_options.map(m => {return {text: m, value: m}})} placeholder='Major' defaultValue={major} />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about you...' defaultValue={bio}/>

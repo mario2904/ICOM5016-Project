@@ -102,7 +102,7 @@ class ProfileStudent extends Component{
             <div style={{display:"inline",verticalAlign: 'middle'}}>
               { // If authenticated as student and same id as this profile
                 // Then allow to edit this profile. // Quick fix. modal-edit
-                (role === 'student' && id === userID) && gender ?
+                (role === 'student' && parseInt(id) === parseInt(userID)) && gender ?
                 <ModalEditStudentProfile {...editableInfo} /> : null
               }
             </div>

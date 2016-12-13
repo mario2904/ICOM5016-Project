@@ -163,7 +163,7 @@ class ProfileAssociation extends Component{
             </h1>
             { // If authenticated as an association and same id as this profile
               // Then allow to edit this profile.
-              (role === 'association' && id === associationID) ?
+              (role === 'association' && parseInt(id) === parseInt(associationID)) ?
               <ModalEditAssociationProfile {...editableInfo} /> : null
             }
             </Segment>
