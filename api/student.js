@@ -24,8 +24,8 @@ router.get('/:id', (req, res, next) => {
           FROM students natural join account natural join images
           WHERE user_id = $[id]`, {id}),
         t.any(`
-          SELECT event_id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path
-          FROM interested natural join events natural join images natural join location, associations
+          SELECT event_id, event_name, association_name, start_date, end_date, start_time, end_time, event_location, image_path
+          FROM interested natural join events natural join images, associations
           WHERE user_id = $[id] and events.association_id = associations.association_id`, {id}),
         t.any(`
           SELECT association_id, association_name, initials, image_path
@@ -36,6 +36,11 @@ router.get('/:id', (req, res, next) => {
     .then(data => {
       console.log('Success: Get Student Information');
       const { first_name, last_name, gender, hometown, college, major, image_path, bio, email } = data[0];
+      data[1].forEach(a => {
+        a.start_date = moment(a.start_date).format("YYYY-MM-DD");
+        a.end_date = moment(a.end_date).format("YYYY-MM-DD");
+
+       });
       const response = {
         first_name,
         last_name,

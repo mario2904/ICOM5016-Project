@@ -4,7 +4,7 @@ import {Grid, Card, Image, Icon} from 'semantic-ui-react';
 
 export default class EventsListItem extends Component {
   render () {
-    const { event_id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path } = this.props.item;
+    const { event_id, event_name, association_name, start_date, end_date, start_time, end_time, event_location, image_path } = this.props.item;
     return (
       <Grid.Column mobile={14} tablet={8} computer={4}>
       <Card
@@ -21,7 +21,7 @@ export default class EventsListItem extends Component {
           <Card.Description style={nameStyle}>{start_time + ' - ' + end_time}</Card.Description>
         </Card.Content>
         <Card.Content extra style={{backgroundColor:"rgb(35, 37, 40)"}}>
-          <Card.Description style={descriptionStyle}><Icon name="marker"></Icon>{room}</Card.Description>
+          <Card.Description style={descriptionStyle}><Icon name="marker"></Icon>{event_location}</Card.Description>
         </Card.Content>
 
         </Card>

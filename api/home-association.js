@@ -1,6 +1,7 @@
 const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', {session: false});
 
+const moment = require('moment');
 const router = require('express').Router();
 const db1 = require('../db');
 
@@ -19,7 +20,7 @@ router.get('/reviews', requireAuth, (req, res, next) => {
         return {
           image: image_path,
           summary: `${first_name} ${last_name} has reviewed your event: ${event_name}`,
-          date: date_created,
+          date: moment(date_created).format("YYYY-MM-DD"),
           extraText: review
         }
       });
@@ -38,11 +39,20 @@ router.get('/events', requireAuth, (req, res, next) => {
   const { id } = req.user;
 
   db1.any(`
-    SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link
-    FROM events as E, associations as A, images as I, location as L
-    WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id= $[id]`, {id})
+    WITH partial_association AS (
+      SELECT association_id, association_name
+      FROM associations
+    )
+    SELECT event_id, event_name, association_name, association_id, start_date, end_date, start_time, end_time, event_location, image_path, description, registration_link
+    FROM partial_association natural join events natural join images
+    WHERE association_id = $[id]`, {id})
     .then(data => {
       console.log('Success: Events Info Home-Association')
+      data.forEach(a => {
+        a.start_date = moment(a.start_date).format("YYYY-MM-DD");
+        a.end_date = moment(a.end_date).format("YYYY-MM-DD");
+
+       });
       res.json(data);
     })
     .catch(error => {

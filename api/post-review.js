@@ -11,7 +11,7 @@ router.post('/', requireAuth, (req, res, next) => {
   console.log(id);
 
     db1.none(`
-      INSERT INTO review (event_id, user_id,review,rating,date_created)
+      INSERT INTO review (event_id, user_id, review, rating, date_created)
       SELECT $[event_id], $[id], $[review], $[rating], CURRENT_TIMESTAMP`,{event_id, id, review, rating})
       .then(() => {
       console.log("Review Added");

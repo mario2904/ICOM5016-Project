@@ -70,7 +70,7 @@ class HomeAssociation extends Component {
 
   renderMyEvents = () => {
     return this.props.events.map((event) => {
-      const { event_id, event_name, association_name, start_date, end_date, start_time, end_time, room, image_path, description } = event;
+      const { event_id, event_name, association_name, start_date, end_date, start_time, end_time, event_location, image_path, description } = event;
 
       return (
       <Grid.Column key={event_id} mobile={16} tablet={8} computer={8}>

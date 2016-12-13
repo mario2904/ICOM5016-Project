@@ -191,15 +191,6 @@ export default class EventStats extends Component {
       console.log(error);
     });
 
-    // Get Associations Data to render
-    axios.get('/api/association/all')
-    .then(function (response) {
-      console.log(response);
-      tick.setState({associations: response.data.associations})
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
   }
 
   render() {
@@ -215,25 +206,6 @@ export default class EventStats extends Component {
           <Image shape='rounded' size='medium' src={this.state.stats.general.image_path}/>
           {' '}{this.state.stats.general.event_name}
         </Header>
-        <Grid.Row style={styles.row}>
-          <Grid.Column  width={16} style={styles.column}>
-            <Header as='h2' attached='top' inverted>
-              Interested Students
-            </Header>
-            <Segment attached>
-              <ResponsiveContainer aspect={2}>
-                <LineChart data={this.state.stats.interested} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
-                 <XAxis dataKey="date"/>
-                 <YAxis/>
-                 <CartesianGrid strokeDasharray="3 3"/>
-                 <Tooltip/>
-                 <Legend />
-                 <Line type="monotone" dataKey="count" stroke="#8884d8" activeDot={{r: 8}}/>
-                </LineChart>
-              </ResponsiveContainer>
-            </Segment>
-          </Grid.Column>
-        </Grid.Row>
         <Grid.Row style={styles.row} centered>
           <Grid.Column computer={5} tablet={5} mobile={16} style={styles.column}>
             <Header as='h2' attached='top' inverted>

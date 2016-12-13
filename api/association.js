@@ -1,5 +1,68 @@
 const router = require('express').Router();
 const db1 = require('../db');
+const moment = require('moment');
+
+// GET - All Associations Information
+// response:
+//    [] association
+//        id: uuid
+//        name: string
+//        initials: string
+//        location: string
+//        link: string
+//        email: string
+//        profileImage: string
+//        bio: string
+//        sponsors: [] uuid
+//        activeEvents: [] uuid
+//        pastEvents: [] uuid
+//        followers: [] uuid
+// TODO: MAKE it better
+router.get('/all', (req, res, next) => {
+  const response = [];
+  db1.any(`
+    SELECT association_id, association_name, initials, association_location, page_link, email, image_path, bio
+    FROM associations natural join account natural join images`, [true])
+      .then(function (data) {
+          // success;
+
+          for (let i = 0; i < data.length; i++) {
+
+              // Destructure association information
+              const { association_id, association_name, initials, association_location, page_link, email, image_path, bio } = data[i];
+              // TODO: Get extra information from the db
+              //
+              // Get extra information from the Testing db (other tables)
+
+
+              const singleAssociation = {
+
+                association_id,
+                association_name,
+                initials,
+                association_location,
+                page_link,
+                email,
+                image_path,
+                bio
+
+              }
+              response.push(singleAssociation);
+
+          }
+
+          // Send All Associations Information
+          console.log('Success: Get All Associations Information');
+          res.json({associations: response})
+          //console.log(data[0])
+          console.log('worked')
+      })
+      .catch(function (error) {
+          // error;
+          console.log('no function')
+      });
+
+});
 
 
 // GET - Association Information
@@ -26,17 +89,25 @@ router.get('/:id', (req, res, next) => {
   db1.task(t => {
       return t.batch([
         t.one(`
-          SELECT association_name, initials, room, page_link, email, image_path, bio
-          FROM associations natural join account natural join images natural join location
+          SELECT association_name, initials, association_location, page_link, email, image_path, bio
+          FROM associations natural join account natural join images
           WHERE association_id = $[id]`, {id}),
         t.any(`
-          SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link
-          FROM events as E, associations as A, images as I, location as L
-          WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id = $[id] and is_live = 'yes'`, {id}),
+          WITH partial_association AS (
+          	SELECT association_id, association_name
+          	FROM associations
+          )
+          SELECT event_id, event_name, association_id, association_name, description, registration_link, start_date, end_date, start_time, end_time, event_location, image_path
+          FROM partial_association natural join events natural join images
+          WHERE association_id = $[id] and is_live = true`, {id}),
         t.any(`
-          SELECT event_id, E.event_name, A.association_name, A.association_id, start_date, end_date, start_time, end_time, room, image_path, description, registration_link
-          FROM events as E, associations as A, images as I, location as L
-          WHERE E.association_id = A.association_id and E.image_id = I.image_id and E.location_id = L.location_id and A.association_id = $[id] and is_live = 'no'`, {id}),
+          WITH partial_association AS (
+          	SELECT association_id, association_name
+          	FROM associations
+          )
+          SELECT event_id, event_name, association_id, association_name, description, registration_link, start_date, end_date, start_time, end_time, event_location, image_path
+          FROM partial_association natural join events natural join images
+          WHERE association_id = $[id] and is_live = false`, {id}),
         t.any(`
           SELECT sponsor_name, image_path
           FROM association_sponsors natural join sponsors natural join images
@@ -50,11 +121,21 @@ router.get('/:id', (req, res, next) => {
     })
     .then(data => {
       console.log('Success: Get All Associations Information');
-      const { association_name, initials, room, page_link, email, image_path, bio } = data[0];
+      const { association_name, initials, association_location, page_link, email, image_path, bio } = data[0];
+      data[1].forEach(a => {
+        a.start_date = moment(a.start_date).format("YYYY-MM-DD");
+        a.end_date = moment(a.end_date).format("YYYY-MM-DD");
+
+       });
+       data[2].forEach(a => {
+         a.start_date = moment(a.start_date).format("YYYY-MM-DD");
+         a.end_date = moment(a.end_date).format("YYYY-MM-DD");
+
+        });
       const response = {
         association_name,
         initials,
-        room,
+        association_location,
         page_link,
         email,
         image_path,
