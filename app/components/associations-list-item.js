@@ -30,19 +30,6 @@ export default class AssociationsListItem extends Component {
         <a href={"/associations/" + association_id}><h5 style={nameStyle}>{initials}</h5></a>
         <a href={"/associations/" + association_id}><Item.Meta style={nameStyle}>{association_name}</Item.Meta>
         </a>
-        <Item.Description>
-          <div>
-          <Button
-            compact
-            style={{verticalAlign: 'middle'}}
-            color={this.state.color}
-            content={this.state.content}
-            icon='user'
-            size="tiny"
-            onClick={this.handleOnClick}
-            />
-          </div>
-    </Item.Description>
        </Item.Content>
         </Item>
         </Item.Group>

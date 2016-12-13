@@ -105,12 +105,6 @@ renderMyFeeds = () => <Feed events={this.props.newsFeed} />;
       <div>
         <div style={styles.banner}>
           <h2 style={styles.title}>Welcome Back Fellow Association!<Icon size="large" name="smile"></Icon></h2>
-          <div style={styles.followers}>
-            <Statistic size='huge' inverted>
-              <Statistic.Label>Followers</Statistic.Label>
-              <Statistic.Value><Icon name="user"></Icon> 1,509</Statistic.Value>
-            </Statistic>
-          </div>
           <Button as={Link} to={'create-event/'} style={{marginTop: "100px", marginLeft: "20px"}}>
             <Icon name="write"></Icon>
             Create an Event!

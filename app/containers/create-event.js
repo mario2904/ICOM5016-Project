@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-
+import { browserHistory } from 'react-router';
 import { Form, Grid, Icon, Input, Image, Segment, Item, Menu, Divider, Header, Button } from 'semantic-ui-react'
 import Dropzone from 'react-dropzone';
 
@@ -26,13 +26,18 @@ class CreateEventForm extends Component {
     // Send to server...
     const { dispatch } = this.props;
     dispatch(createEvent({...serializedForm, image_path: files[0]}));
+    browserHistory.push('/');
+    window.location.reload();
   }
 
   componentWillUpdate(nextProps) {
     const { isWaiting, isSuccessful } = nextProps;
     // Redirect to their respective homes if already authenticated
+    console.log(isWaiting, isSuccessful);
     if (!isWaiting && isSuccessful) {
+      console.log('success');
       browserHistory.push('/');
+      window.location.reload();
     }
     if(!isWaiting && !isSuccessful) {
       console.log("Error: create student not successful.");
@@ -59,6 +64,19 @@ class CreateEventForm extends Component {
         <Icon name="write square" size="large" circular></Icon>Create Event</Header>
 
         <Segment attached>
+          <Segment >
+            <Dropzone
+              multiple={false}
+              accept='image/*'
+              onDrop={this.onDrop}>
+              <div>Try dropping some files here, or click to select files to upload.</div>
+            </Dropzone>
+            {
+              (files.length === 0) ? null :
+              <Image size='medium' src={files[0].preview} />
+            }
+          </Segment>
+
           <Form onSubmit={this.handleSubmit}>
 
             <Icon name="idea"></Icon>
@@ -67,20 +85,6 @@ class CreateEventForm extends Component {
             <Icon name="linkify"></Icon>
             <Form.Input label='Registration Link'
               name='registration_link' placeholder='RegistrationLink' />
-
-              <Form.Field label="Event Pic/Flyer"/>
-              <Segment >
-                <Dropzone
-                  multiple={false}
-                  accept='image/*'
-                  onDrop={this.onDrop}>
-                  <div>Try dropping some files here, or click to select files to upload.</div>
-                </Dropzone>
-                {
-                  (files.length === 0) ? null :
-                  <Image size='medium' src={files[0].preview} />
-                }
-              </Segment>
 
             <Form.Field>
               <Icon name="tag"></Icon>

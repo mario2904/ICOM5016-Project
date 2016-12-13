@@ -8,6 +8,7 @@ export default function(state={isSuccessful: false, isWaiting: false}, action) {
       return {...state, isWaiting: true};
       break;
     case FORM_SUCCESS:
+      console.log('Form success');
       return {...state, isSuccessful: true, isWaiting: false};
       break;
     case FORM_FAILURE:
