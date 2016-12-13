@@ -13,7 +13,7 @@ const post_review = require('./post-review');
 const post_update = require('./post-update');
 const edit = require('./edit');
 const options = require('./options');
-
+const payment = require('./payment');
 const router = require('express').Router();
 
 router.use('/login', login);
@@ -30,6 +30,7 @@ router.use('/post-review', post_review);
 router.use('/post-update', post_update);
 router.use('/edit', edit);
 router.use('/options', options);
+router.use('/payment', payment);
 
 
 module.exports = router;
