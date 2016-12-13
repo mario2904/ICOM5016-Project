@@ -2,13 +2,13 @@ var sg = require('./index');
 var helper = require('sendgrid').mail;
 
 module.exports = function(first_name, last_name, student_email, event_name, association_name, association_email, amount, transaction_id) {
-
+  console.log(first_name, last_name, student_email, event_name, association_name, association_email, amount, transaction_id);
   var from_email = new helper.Email('espotter.0@gmail.com');
   // var to_email = new helper.Email('gracianylebron@gmail.com');
   var to_email = new helper.Email(student_email);
 
   // const first_name ="Graciany";
-  var subject = `Payment Comfirmation 11!!!!! ${first_name}!`; //This replales the subject tag
+  var subject = `Payment Comfirmation !!!!! ${first_name}!`; //This replales the subject tag
 
   var content = new helper.Content('text/html', ' ');
 
@@ -34,7 +34,7 @@ module.exports = function(first_name, last_name, student_email, event_name, asso
   mail.personalizations[0].addSubstitution(
     new helper.Substitution('-transaction_id-', transaction_id));
 
-  mail.setTemplateId('6f9ca928-d991-4527-82c0-f88d5ba7875e'); // need to create new template because of Api key change
+  mail.setTemplateId('6f9ca928-d991-4527-82c0-f88d5ba7875e');
 
   var request = sg.emptyRequest({
     method: 'POST',

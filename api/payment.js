@@ -42,7 +42,8 @@ router.post('/', requireAuth, (req, res, next) => {
       const { transaction_id, student_email, association_email } = data;
 
       console.log(data);
-      // payment_confirmation(first_name, last_name, student_email, event_name, association_name, association_email, ammount, transaction_id);
+      // console.log(first_name, last_name, student_email, event_name, association_name, association_email, ammount, transaction_id);
+      payment_confirmation(first_name, last_name, student_email, event_name, association_name, association_email, ammount, transaction_id);
       console.log('Success insert transactions');
       res.sendStatus(200);
     })

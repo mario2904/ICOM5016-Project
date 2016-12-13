@@ -2,7 +2,7 @@ var sg = require('./index');
 var helper = require('sendgrid').mail;
 module.exports = function(email, association_name ){
 
-  var from_email = new helper.Email('espotter40@gmail.com');
+  var from_email = new helper.Email('espotter.0@gmail.com');
   var to_email = new helper.Email(email);
   var subject = `Welcome to E-Spotter! ${association_name}!`; //This replales the subject tag
   var content = new helper.Content('text/html',' ');
@@ -14,7 +14,7 @@ module.exports = function(email, association_name ){
   var mail = new helper.Mail(from_email, subject, to_email, content);
   mail.personalizations[0].addSubstitution(
     new helper.Substitution('-association_name-', association_name));
-  mail.setTemplateId('4873dd62-080e-410c-ab72-43e6725e2e6f');
+  mail.setTemplateId('f9423e0b-f236-4a1e-b770-6b52f39c1a8e');
 
   var request = sg.emptyRequest({
     method: 'POST',

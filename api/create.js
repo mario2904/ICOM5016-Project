@@ -57,7 +57,7 @@ router.post('/student', (req, res, next) => {
   .then(data => {
     console.log("Student Creation Successful");
     if(!data){
-      // welcome_student(first_name, last_name, college, email);
+      welcome_student(first_name, last_name, college, email);
       res.sendStatus(200);
     }
     else {
@@ -125,7 +125,7 @@ router.post('/association', (req, res, next) => {
       res.sendStatus(data);
     }
     else {
-      // welcome_association(email, association_name);
+      welcome_association(email, association_name);
       res.sendStatus(200);
     }
 
