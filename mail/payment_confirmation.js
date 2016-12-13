@@ -1,4 +1,5 @@
-ar helper = require('sendgrid').mail;
+var sg = require('./index');
+var helper = require('sendgrid').mail;
 var from_email = new helper.Email('espotter.0@gmail.com');
 var to_email = new helper.Email('gracianylebron@gmail.com');
 const first_name ="Graciany";
@@ -28,7 +29,7 @@ mail.personalizations[0].addSubstitution(
 mail.personalizations[0].addSubstitution(
   new helper.Substitution('-transaction_id-', transaction_id));
 
-mail.setTemplateId('6f9ca928-d991-4527-82c0-f88d5ba7875e');
+mail.setTemplateId('6f9ca928-d991-4527-82c0-f88d5ba7875e'); // need to create new template because of Api key change
 
 var request = sg.emptyRequest({
   method: 'POST',

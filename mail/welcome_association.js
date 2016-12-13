@@ -2,7 +2,7 @@ var sg = require('./index');
 var helper = require('sendgrid').mail;
 module.exports = function(email, association_name ){
 
-  var from_email = new helper.Email('espotter.0@gmail.com');
+  var from_email = new helper.Email('espotter40@gmail.com');
   var to_email = new helper.Email(email);
   var subject = `Welcome to E-Spotter! ${association_name}!`; //This replales the subject tag
   var content = new helper.Content('text/html',' ');

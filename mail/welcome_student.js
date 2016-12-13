@@ -3,7 +3,7 @@ var helper = require('sendgrid').mail;
 
 module.exports = function(first_name, last_name, college, email) {
 
-  var from_email = new helper.Email('espotter.0@gmail.com');
+  var from_email = new helper.Email('espotter40@gmail.com');
   var to_email = new helper.Email(email);
   var subject = `Welcome to E-Spotter! ${first_name}!`; //This replales the subject tag
   var content = new helper.Content('text/html',' ');//this replaces the body tag
