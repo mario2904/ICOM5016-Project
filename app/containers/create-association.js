@@ -50,6 +50,14 @@ class CreateAssociation extends Component {
 
   }
 
+  renderSponsorsCheckboxes() {
+    return sponsors.map((sponsor) => {
+      return (
+        <Form.Checkbox label={sponsor} name='sponsors' value={sponsor} key={sponsor}/>
+      );
+    });
+  }
+
   render() {
     const { error } = this.state;
     const { isWaiting } = this.props;
@@ -86,6 +94,13 @@ class CreateAssociation extends Component {
             <Form.Input label='Main Office Location' name='location' placeholder='Main Office Location' error={location !== undefined}/>
             <Form.Input label='Association Link' name='page_link' placeholder='Association Link' error={page_link !== undefined}/>
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' error={bio !== undefined}/>
+            <Form.Field>
+              <label><strong>Sponsors</strong></label>
+              <Form.Group>
+                {this.renderSponsorsCheckboxes()}
+              </Form.Group>
+            </Form.Field>
+            <br/>
             <Form.Field error={terms !== undefined}>
               <Checkbox label='I agree to the Terms and Conditions' name='terms' />
             </Form.Field>
@@ -104,6 +119,19 @@ class CreateAssociation extends Component {
     );
   }
 }
+
+const sponsors = [
+  'Verizon',
+  'Spotify',
+  'Chevron',
+  'Exxon Mobile',
+  'Boeing',
+  'Harris',
+  'Lockheed Martin',
+  'UPRM',
+  'General Electric',
+  'General Motors'
+]
 
 // Type cheking
 CreateAssociation.propTypes = {

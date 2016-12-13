@@ -76,7 +76,7 @@ router.post('/association', (req, res, next) => {
   if (!req.body || !validate.association(req.body))
     return res.status(400).send('Error: Missing fields for association.');
   // Destructure body params
-  const { association_name, initials, location, page_link, email, password, bio } = req.body;
+  const { association_name, initials, location, page_link, email, password, bio, sponsors } = req.body;
   // TODO: check the db and see if it it can create new association account
   // ... (Check if e-mail is already registered)
 
@@ -100,7 +100,7 @@ router.post('/association', (req, res, next) => {
       FROM account
       WHERE email = $[email]`, {email});
     if (exist) { return 401 }
-    return yield t.none(`
+    let { association_id } = yield t.one(`
       WITH acc1 AS (
         INSERT INTO account (email, password, receive_notifications, active, date_created)
         VALUES ($[email], $[password], false, true, CURRENT_TIMESTAMP)
@@ -108,18 +108,24 @@ router.post('/association', (req, res, next) => {
       )
       INSERT INTO associations (association_name, page_link, initials, bio, account_id, association_location, image_id)
       SELECT $[association_name],$[page_link],$[initials], $[bio], account_id, $[location] , $[default_image_id]
-      FROM acc1`,{association_name, page_link, initials, location, bio, email, password, default_image_id});
+      FROM acc1
+      RETURNING association_id`,{association_name, page_link, initials, location, bio, email, password, default_image_id});
+      console.log(association_id);
+    return yield t.batch(sponsors.map(sponsor_name => t.none(`
+        INSERT INTO association_sponsors (association_id, sponsor_id)
+        VALUES ($[association_id], (SELECT sponsor_id FROM sponsors WHERE sponsor_name = $[sponsor_name]) )`, {association_id, sponsor_name})
+    ));
 
   })
   .then(data => {
     console.log("Association Creation Successful");
-    (!data) ? res.sendStatus(200) : res.sendStatus(data);
-    if(!data){
-      welcome_association(email, association_name);
-      res.sendStatus(200);
+    console.log(data);
+    if(data === 401) {
+      res.sendStatus(data);
     }
     else {
-      res.sendStatus(data);
+      welcome_association(email, association_name);
+      res.sendStatus(200);
     }
 
   })

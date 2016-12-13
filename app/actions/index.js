@@ -477,10 +477,10 @@ export function editStudent(info) {
 }
 
 // Fetch Options ---------------------------------------------------------------
-export function fetchOptionsLocation() {
+export function fetchOptionsSponsor() {
   return {
     [CALL_API]: {
-      endpoint: `${API_BASE_URL}/options/location`,
+      endpoint: `${API_BASE_URL}/options/sponsor`,
       method: 'GET',
       types: [OPTIONS_REQUEST, OPTIONS_SUCCESS, OPTIONS_FAILURE]
     }
