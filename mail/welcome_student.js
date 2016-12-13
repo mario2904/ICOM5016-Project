@@ -15,7 +15,7 @@ module.exports = function(first_name, last_name, college, email) {
     new helper.Substitution('-last_name-', last_name));
   mail.personalizations[0].addSubstitution(
     new helper.Substitution('-college-', college));
-  mail.setTemplateId('8f221281-1746-4e70-abee-ac5353bf941a');
+  mail.setTemplateId('d68a0c0b-0dec-45bf-9e24-c50fc2c17e20');
 
 
   var request = sg.emptyRequest({

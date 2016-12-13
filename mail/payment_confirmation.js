@@ -5,7 +5,7 @@ const first_name ="Graciany";
 var subject = `Payment Comfirmation 11!!!!! ${first_name}!`; //This replales the subject tag
 const university ="University of Puerto Rico Mayagüez";
  var content = new helper.Content('text/html', ' ');
- 
+
 const last_name ="Lebron";
 const event_name ="All Nighter Study Session";
 const association_name="SHPE";
@@ -30,7 +30,6 @@ mail.personalizations[0].addSubstitution(
 
 mail.setTemplateId('6f9ca928-d991-4527-82c0-f88d5ba7875e');
 
-var sg = require('sendgrid')('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');
 var request = sg.emptyRequest({
   method: 'POST',
   path: '/v3/mail/send',
