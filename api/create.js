@@ -12,7 +12,7 @@ const multer = require('multer');
 const welcome_student = require('../mail/welcome_student');
 const imgUpload = multer({ storage: multer.memoryStorage(), fileFilter: filter.image});
 // defaults
-const default_image_id = 30;
+const default_image_id = 1;
 
 router.post('/student', (req, res, next) => {
   console.log(req.body);
@@ -45,8 +45,8 @@ router.post('/student', (req, res, next) => {
     if (exist) { return 401 }
     return yield t.none(`
       WITH acc1 AS (
-        INSERT INTO account (email, password,receive_notifications,date_created)
-        VALUES ($[email], $[password],'no',CURRENT_TIMESTAMP)
+        INSERT INTO account (email, password, receive_notifications, active, date_created)
+        VALUES ($[email], $[password],false, true, CURRENT_TIMESTAMP)
         RETURNING account_id
       )
       INSERT INTO students (first_name,last_name,hometown,college,major,gender,bio,birthdate,account_id,image_id)
@@ -102,12 +102,12 @@ router.post('/association', (req, res, next) => {
     if (exist) { return 401 }
     return yield t.none(`
       WITH acc1 AS (
-        INSERT INTO account (email, password,receive_notifications,date_created)
-        VALUES ($[email], $[password],'no',CURRENT_TIMESTAMP)
+        INSERT INTO account (email, password, receive_notifications, active, date_created)
+        VALUES ($[email], $[password], false, true, CURRENT_TIMESTAMP)
         RETURNING account_id
       )
-      INSERT INTO associations (association_name, page_link, initials, bio, account_id, location_id, image_id)
-      SELECT $[association_name],$[page_link],$[initials], $[bio], account_id,  (SELECT location_id FROM location WHERE room = $[location]), $[default_image_id]
+      INSERT INTO associations (association_name, page_link, initials, bio, account_id, association_location, image_id)
+      SELECT $[association_name],$[page_link],$[initials], $[bio], account_id, $[location] , $[default_image_id]
       FROM acc1`,{association_name, page_link, initials, location, bio, email, password, default_image_id});
 
   })
@@ -153,8 +153,8 @@ router.post('/event', requireAuth, imgUpload.single('image_path'), (req, res, ne
           VALUES($[image_path])
           RETURNING image_id`,{image_path});
         let { event_id } = yield t.one(`
-          INSERT INTO events (association_id, event_name, is_live, location_id, registration_link, description, start_date, end_date, start_time, end_time, time_stamp, image_id)
-          VALUES ($[id], $[event_name], 'yes', (SELECT location_id FROM location WHERE room = $[location]), $[registration_link], $[description], $[start_date], $[end_date], $[start_time], $[end_time], CURRENT_TIMESTAMP, $[image_id])
+          INSERT INTO events (association_id, event_name, is_live, event_location, registration_link, description, start_date, end_date, start_time, end_time, time_stamp, image_id)
+          VALUES ($[id], $[event_name], true, $[location], $[registration_link], $[description], $[start_date], $[end_date], $[start_time], $[end_time], CURRENT_TIMESTAMP, $[image_id])
           RETURNING event_id`, {id, event_name, is_live, location, registration_link, description, start_date, end_date,start_time, end_time, image_path, image_id});
         return yield t.batch(categories.map(category_name => t.none(`
             INSERT INTO events_categories (event_id,category_id)

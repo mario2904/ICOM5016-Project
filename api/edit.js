@@ -82,7 +82,7 @@ router.post('/association', requireAuth, imgUpload.single('image_path'), (req, r
     console.log('No Image File passed.');
     db1.none(`
       UPDATE associations
-      SET association_name = $[association_name], initials = $[initials], page_link = $[page_link], bio = $[bio], location_id = (SELECT location_id FROM location WHERE room = $[location])
+      SET association_name = $[association_name], initials = $[initials], page_link = $[page_link], bio = $[bio], association_location = $[location]
       WHERE association_id = $[id]`, {association_name, initials, location, page_link, bio, id})
       .then(data => {
         console.log("Edit Association Successful");
@@ -115,7 +115,7 @@ router.post('/association', requireAuth, imgUpload.single('image_path'), (req, r
           // not affect is_live, timestamp
           return yield t.none(`
             UPDATE associations
-            SET association_name = $[association_name], initials = $[initials], page_link = $[page_link], bio = $[bio], location_id = (SELECT location_id FROM location WHERE room = $[location]), image_id = $[image_id]
+            SET association_name = $[association_name], initials = $[initials], page_link = $[page_link], bio = $[bio], association_location = $[location], image_id = $[image_id]
             WHERE association_id = $[id]`, {association_name, initials, location, page_link, bio, image_id, id});
         })
         .then(data => {
@@ -145,7 +145,7 @@ router.post('/event', requireAuth, imgUpload.single('image_path'), (req, res, ne
       // not affect is_live, timestamp
       yield t.none(`
         UPDATE events
-        SET event_name = $[event_name], location_id = (SELECT location_id FROM location WHERE room = $[location]), registration_link = $[registration_link], description = $[description], start_date = $[start_date], end_date = $[end_date], start_time = $[start_time], end_time = $[end_time]
+        SET event_name = $[event_name], event_location = $[location], registration_link = $[registration_link], description = $[description], start_date = $[start_date], end_date = $[end_date], start_time = $[start_time], end_time = $[end_time]
         WHERE event_id = $[event_id]`, {event_name, location, registration_link, description, start_date, end_date, start_time, end_time, event_id});
       // delete previous categories
       yield t.none(`
@@ -189,7 +189,7 @@ router.post('/event', requireAuth, imgUpload.single('image_path'), (req, res, ne
           // not affect is_live, timestamp
           yield t.none(`
             UPDATE events
-            SET event_name = $[event_name], location_id = (SELECT location_id FROM location WHERE room = $[location]), registration_link = $[registration_link], description = $[description], start_date = $[start_date], end_date = $[end_date], start_time = $[start_time], end_time = $[end_time], image_id = $[image_id]
+            SET event_name = $[event_name], event_location = $[location], registration_link = $[registration_link], description = $[description], start_date = $[start_date], end_date = $[end_date], start_time = $[start_time], end_time = $[end_time], image_id = $[image_id]
             WHERE event_id = $[event_id]`, {event_name, location, registration_link, description, start_date, end_date, start_time, end_time, image_id, event_id});
           // delete previous categories
           yield t.none(`

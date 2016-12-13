@@ -6,7 +6,7 @@ import { Form, Checkbox, Button, Grid, Icon, Header, Segment, Message, Confirm }
 import _ from 'lodash';
 import validate, { create_association } from '../validate';
 
-import { createAssociation, fetchOptionsLocation } from '../actions';
+import { createAssociation } from '../actions';
 
 class CreateAssociation extends Component {
 
@@ -32,11 +32,6 @@ class CreateAssociation extends Component {
       this.setState({error});
     }
   }
-  componentWillMount() {
-    const { dispatch } = this.props;
-    // Fetch location options
-    dispatch(fetchOptionsLocation());
-  }
 
   componentWillUpdate(nextProps) {
     const { open } = this.state;
@@ -57,10 +52,9 @@ class CreateAssociation extends Component {
 
   render() {
     const { error } = this.state;
-    const { location_options, isWaiting } = this.props;
+    const { isWaiting } = this.props;
     const { association_name, initials, location, page_link, email, password, confirm_password, bio, terms } = error;
-    if(!location_options)
-      return null;
+
     return (
       <div style={{backgroundColor:"rgb(247, 247, 247)"}}>
         <Confirm
@@ -89,7 +83,7 @@ class CreateAssociation extends Component {
             <Form.Input label='E-mail' name='email' placeholder='E-mail' type='email' />
             <Form.Input label='Password' name='password' placeholder='Password' type='password' error={password !== undefined} />
             <Form.Input label='Re-enter Password' name='confirm_password' placeholder='Re-enter Password' type='password' error={confirm_password !== undefined}/>
-            <Form.Select label='Main Office Location' name='location' options={location_options.map(l => {return {text: l.location, value: l.location}})} placeholder='Main Office Location' error={location !== undefined}/>
+            <Form.Input label='Main Office Location' name='location' placeholder='Main Office Location' error={location !== undefined}/>
             <Form.Input label='Association Link' name='page_link' placeholder='Association Link' error={page_link !== undefined}/>
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' error={bio !== undefined}/>
             <Form.Field error={terms !== undefined}>
@@ -111,32 +105,20 @@ class CreateAssociation extends Component {
   }
 }
 
-const locations = [
-  { text: 'Stefani', value: 'stefani' },
-  { text: 'Ingenieria Quimica', value: 'ingenieria_quimica' },
-  { text: 'Edificio de Civil', value: 'edificio_de_civil' },
-  { text: 'Luchetti', value: 'luchetti' },
-  { text: 'Ingenieria Industrial', value: 'ingenieria_industrial' },
-  { text: 'Other', value: 'other' },
-];
-
 // Type cheking
 CreateAssociation.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isSuccessful: PropTypes.bool,
-  isWaiting: PropTypes.bool,
-  location_options: PropTypes.array
+  isWaiting: PropTypes.bool
 }
 
 function mapStateToProps(state) {
-  const { form, options } = state;
+  const { form } = state;
   const { isSuccessful, isWaiting } = form;
-  const { location_options } = options;
 
   return {
     isSuccessful,
-    isWaiting,
-    location_options
+    isWaiting
   };
 }
 

@@ -52,7 +52,7 @@ class ModalEditEvent extends Component {
     if(!this.props.categories)
       return null;
     const { files } = this.state;
-    const { event_name, image_path, start_date, end_date, start_time, end_time, room, description, registration_link } = this.props;
+    const { event_name, image_path, start_date, end_date, start_time, end_time, event_location, description, registration_link } = this.props;
     const trigger = (
       <Button
         style={{textAlign: 'middle'}}
@@ -103,7 +103,7 @@ class ModalEditEvent extends Component {
             <Icon name="info circle"></Icon>
             <Form.TextArea label="Event Info" name='description' placeholder="Tell us more about your event" rows="4" defaultValue={description}/>
             <Icon name="map pin"></Icon>
-            <Form.Input label="Location" name='location' placeholder="Where is your event going to be at?" defaultValue={room}/>
+            <Form.Input label="Location" name='location' placeholder="Where is your event going to be at?" defaultValue={event_location}/>
             <Icon name="checked calendar"></Icon>
             <Form.Input label="Start Date" name='start_date' placeholder="mm/dd/yyyy" type="date" defaultValue={start_date}/> {/* yyyy/mm/dd */}
             <Icon name="wait" flipped="horizontally"></Icon>
@@ -145,7 +145,7 @@ ModalEditEvent.propTypes = {
   end_date: PropTypes.string,
   start_time: PropTypes.string,
   end_time: PropTypes.string,
-  room: PropTypes.string,
+  event_location: PropTypes.string,
   description: PropTypes.string,
   registration_link: PropTypes.string,
   categories: PropTypes.array

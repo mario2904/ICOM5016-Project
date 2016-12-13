@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import Dropzone from 'react-dropzone';
 import { Segment, Header, Label, Form, Icon, Button, Modal, Image, Grid } from 'semantic-ui-react';
 
-import { editAssociation, fetchOptionsLocation } from '../actions';
+import { editAssociation } from '../actions';
 
 class ModalEditAssociationProfile extends Component {
   state = { files: []};
@@ -23,11 +23,7 @@ class ModalEditAssociationProfile extends Component {
     dispatch(editAssociation({...serializedForm, image_path: files[0]}));
 
   }
-  componentWillMount() {
-    const { dispatch } = this.props;
-    // Fetch location options
-    dispatch(fetchOptionsLocation());
-  }
+
   componentWillUpdate(nextProps) {
     const { isWaiting, isSuccessful, event_id } = nextProps;
     // Redirect to their respective homes if already authenticated
@@ -45,8 +41,7 @@ class ModalEditAssociationProfile extends Component {
 
   render() {
 
-    const { association_name, image_path, initials, room, page_link, bio } = this.props;
-    const { location_options } = this.props;
+    const { association_name, image_path, initials, association_location, page_link, bio } = this.props;
     const { files } = this.state;
     const trigger = (
       <Button
@@ -56,8 +51,7 @@ class ModalEditAssociationProfile extends Component {
         color='blue'
         content='Edit' />
     );
-    if(!location_options)
-      return null;
+
     return (
       <Modal trigger={trigger}>
         <Header inverted style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}} icon='edit' content='Edit Association Profile' />
@@ -89,7 +83,7 @@ class ModalEditAssociationProfile extends Component {
 
             <Form.Input label='Association Name' name='association_name' placeholder='Association Name' defaultValue={association_name} />
             <Form.Input label='Association Initials' name='initials' placeholder='Association Initials' defaultValue={initials} />
-            <Form.Select label='Main Office Location' name='location' options={location_options.map(l => {return {text: l.location, value: l.location}})} placeholder='Main Office Location' defaultValue={room}  />
+            <Form.Input label='Main Office Location' name='location' placeholder='Main Office Location' defaultValue={association_location}  />
             <Form.Input label='Association Link' name='page_link' placeholder='Association Link' defaultValue={page_link} />
             <Form.TextArea label='Bio' name='bio' placeholder='Tell us more about your association...' defaultValue={bio} />
             <Button type='submit'>Submit</Button>
@@ -105,24 +99,21 @@ ModalEditAssociationProfile.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isSuccessful: PropTypes.bool,
   isWaiting: PropTypes.bool,
-  location_options: PropTypes.array,
   association_name: PropTypes.string,
   image_path: PropTypes.string,
   initials: PropTypes.string,
-  room: PropTypes.string,
+  association_location: PropTypes.string,
   page_link: PropTypes.string,
   bio: PropTypes.string
 }
 
 function mapStateToProps(state) {
-  const { form, options } = state;
+  const { form } = state;
   const { isSuccessful, isWaiting } = form;
-  const { location_options } = options;
 
   return {
     isSuccessful,
     isWaiting,
-    location_options
   };
 }
 

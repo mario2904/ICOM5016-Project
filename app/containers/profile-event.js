@@ -85,7 +85,7 @@ class ProfileEvent extends Component {
 
   renderDetails() {
 
-    const { association_name, start_date, end_date, start_time, end_time, room, registration_link } = this.props;
+    const { association_name, start_date, end_date, start_time, end_time, event_location, registration_link } = this.props;
     return (
       <List>
         <List.Item
@@ -99,7 +99,7 @@ class ProfileEvent extends Component {
           content={start_date + ((start_date === end_date) ? '': ' - ' + end_date)} />
         <List.Item
           icon='marker'
-          content={room} />
+          content={event_location} />
         {(registration_link === '')? null:
           <List.Item
             icon='linkify'
@@ -226,9 +226,9 @@ class ProfileEvent extends Component {
   }
 
   render() {
-    const { reviews, event_name, association_name, association_id, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories, updates, isInterested, id, role, dispatch, params } = this.props;
+    const { reviews, event_name, association_name, association_id, image_path, start_date, end_date, start_time, end_time, event_location, description, registration_link, categories, updates, isInterested, id, role, dispatch, params } = this.props;
     const { eventID } = params;
-    const editableInfo = { event_name, event_id: eventID, image_path, start_date, end_date, start_time, end_time, room, description, registration_link, categories };
+    const editableInfo = { event_name, event_id: eventID, image_path, start_date, end_date, start_time, end_time, event_location, description, registration_link, categories };
 
     const InterestedButton = () => (
       <Button
@@ -291,7 +291,7 @@ class ProfileEvent extends Component {
                   }
                   { // If authenticated as an association and same id as this profile
                     // Then allow to edit this profile.
-                    (role === 'association' && association_id === id) ?
+                    (role === 'association' && association_id === parseInt(id)) ?
                     <ModalEditEvent {...editableInfo} /> : null
                   }
                 </span>
@@ -457,7 +457,7 @@ ProfileEvent.propTypes = {
   end_date: PropTypes.string,
   start_time: PropTypes.string,
   end_time: PropTypes.string,
-  room: PropTypes.string,
+  event_location: PropTypes.string,
   image_path: PropTypes.string,
   description: PropTypes.string,
   registration_link: PropTypes.string,
@@ -466,13 +466,13 @@ ProfileEvent.propTypes = {
   reviews: PropTypes.array,
   categories: PropTypes.array,
   isInterested: PropTypes.bool,
-  id: PropTypes.number,
+  id: PropTypes.string,
   role: PropTypes.string
 }
 
 function mapStateToProps(state) {
   const { profile, auth } = state;
-  const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, room, image_path, description, registration_link, interested, updates, reviews, categories, isInterested } = profile;
+  const { event_name, association_id, association_name, start_date, end_date, start_time, end_time, event_location, image_path, description, registration_link, interested, updates, reviews, categories, isInterested } = profile;
   const { id, role } = auth;
 
   return {
@@ -483,7 +483,7 @@ function mapStateToProps(state) {
     end_date,
     start_time,
     end_time,
-    room,
+    event_location,
     image_path,
     description,
     registration_link,

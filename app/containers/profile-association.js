@@ -36,7 +36,7 @@ class ProfileAssociation extends Component{
     content:(this.state.content === "unfollow" ? "follow": "unfollow" )});
 
   renderAbout = () => {
-    const { email, room, page_link, bio } = this.props;
+    const { email, association_location, page_link, bio } = this.props;
 
     return(
     <Grid.Row style={{paddingTop:"10px", paddingBottom:"100px"}}>
@@ -44,7 +44,7 @@ class ProfileAssociation extends Component{
         <h2><strong><Icon name="info circle" size="large"></Icon>About</strong></h2>
         <Divider></Divider>
         <p><strong>Email</strong>: {email}</p>
-        <p><strong>Location</strong>: {room}</p>
+        <p><strong>Location</strong>: {association_location}</p>
         <p><strong>Page Link</strong>: {page_link} </p>
         <p><strong>Description</strong>: {bio}</p>
       </Segment>
@@ -90,9 +90,9 @@ class ProfileAssociation extends Component{
 
   render(){
     const { activeItem } = this.state;
-    const { followers, image_path, association_name, initials, room, page_link, bio, isFollowing, id, role, params, dispatch } = this.props;
+    const { followers, image_path, association_name, initials, association_location, page_link, bio, isFollowing, id, role, params, dispatch } = this.props;
     const { associationID } = params;
-    const editableInfo = {association_name, image_path, initials, room, page_link, bio};
+    const editableInfo = {association_name, image_path, initials, association_location, page_link, bio};
 
     console.log(id, typeof id);
     console.log(role, typeof role);
@@ -163,7 +163,7 @@ class ProfileAssociation extends Component{
             </h1>
             { // If authenticated as an association and same id as this profile
               // Then allow to edit this profile.
-              (role === 'association' && id === parseInt(associationID)) ?
+              (role === 'association' && id === associationID) ?
               <ModalEditAssociationProfile {...editableInfo} /> : null
             }
             </Segment>
@@ -207,7 +207,7 @@ ProfileAssociation.propTypes = {
   dispatch: PropTypes.func.isRequired,
   association_name: PropTypes.string,
   initials: PropTypes.string,
-  room: PropTypes.string,
+  association_location: PropTypes.string,
   page_link: PropTypes.string,
   email: PropTypes.string,
   image_path: PropTypes.string,
@@ -217,19 +217,19 @@ ProfileAssociation.propTypes = {
   sponsors: PropTypes.array,
   followers: PropTypes.object,
   isFollowing: PropTypes.bool,
-  id: PropTypes.number,
+  id: PropTypes.string,
   role: PropTypes.string
 }
 
 function mapStateToProps(state) {
   const { profile, auth } = state;
-  const { association_name, initials, room, page_link, email, image_path, bio, activeEvents, pastEvents, sponsors, followers, isFollowing } = profile;
+  const { association_name, initials, association_location, page_link, email, image_path, bio, activeEvents, pastEvents, sponsors, followers, isFollowing } = profile;
   const { id, role } = auth;
 
   return {
     association_name,
     initials,
-    room,
+    association_location,
     page_link,
     email,
     image_path,

@@ -1,6 +1,6 @@
 const passport = require('passport');
 const requireAuth = passport.authenticate('jwt', {session: false});
-
+const moment = require('moment');
 const router = require('express').Router();
 const db1 = require('../db');
 
@@ -39,7 +39,7 @@ router.get('/', requireAuth, (req, res, next) => {
         return {
           image: image_path,
           summary: `${event_name} has a new update: `,
-          date: date_sent,
+          date: moment(date_sent).format("YYYY-MM-DD"),
           extraText: notification_text
         }
       });
@@ -60,11 +60,16 @@ router.get('/events', requireAuth, (req, res) => {
   const { id } = req.user;
 
   db1.any(`
-    SELECT event_id, event_name,events.association_id, association_name, start_date, end_date, start_time, end_time, room, image_path
-    FROM interested natural join events natural join images natural join location, associations
+    SELECT event_id, event_name, events.association_id, association_name, start_date, end_date, start_time, end_time, event_location, image_path
+    FROM interested natural join events natural join images, associations
     WHERE user_id = $[id] and events.association_id = associations.association_id`, {id})
     .then(data => {
       console.log('Success: Events Info Home');
+      data.forEach(a => {
+        a.start_date = moment(a.start_date).format("YYYY-MM-DD");
+        a.end_date = moment(a.end_date).format("YYYY-MM-DD");
+
+       });
       res.json(data);
     })
     .catch(error => {
