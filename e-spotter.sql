@@ -912,9 +912,20 @@ ALTER SEQUENCE students_user_id_seq OWNED BY students.user_id;
 
 CREATE TABLE transactions (
     transaction_id integer NOT NULL,
-    transaction_text character varying(400),
-    ammount_charged numeric(5,2) NOT NULL,
-    time_stamp timestamp without time zone NOT NULL,
+    transaction_text character varying(200),
+    ammount character varying(10),
+    credit_card_num character varying(250),
+    expiration_date character varying(10),
+    security_code character varying(5),
+    first_name character varying(40),
+    last_name character varying(40),
+    address_line_1 character varying(150),
+    address_line_2 character varying(150),
+    city character varying(50),
+    state character varying(30),
+    post_code character varying(20),
+    country character varying(50),
+    time_stamp timestamp without time zone,
     user_id integer NOT NULL,
     association_id integer NOT NULL,
     event_id integer NOT NULL
@@ -1785,7 +1796,7 @@ SELECT pg_catalog.setval('students_user_id_seq', 5, true);
 -- Data for Name: transactions; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY transactions (transaction_id, transaction_text, ammount_charged, time_stamp, user_id, association_id, event_id) FROM stdin;
+COPY transactions (transaction_id, transaction_text, ammount, credit_card_num, expiration_date, security_code, first_name, last_name, address_line_1, address_line_2, city, state, post_code, country, time_stamp, user_id, association_id, event_id) FROM stdin;
 \.
 
 

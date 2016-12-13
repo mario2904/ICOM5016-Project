@@ -28,25 +28,22 @@ class ProfileEvent extends Component {
 
   handleSubmit = (e, serializedForm) => {
     e.preventDefault();
-    // const { files } = this.state;
-    // const { dispatch } = this.props;
+    const { params, association_id, association_name, event_name } = this.props;
+    const { eventID } = params;
+
     console.log(serializedForm);
     let token = localStorage.getItem('id_token');
     console.log(token);
-    const config = {
-      method: 'post',
-      url: '/api/payment',
-      data: serializedForm,
-      headers: { 'Authorization': `JWT ${token}`,
-      'Contentent-Type': 'application/json'}
-    };
-    axios.post('/api/payment', serializedForm, {
+
+    axios.post('/api/payment', {...serializedForm, association_id, association_name, event_name, event_id: eventID}, {
       headers: { 'Authorization': `JWT ${token}`,
       'Contentent-Type': 'application/x-www-form-urlencoded'}
     })
       .then(function (response) {
         console.log(response);
         console.log("successsssssssss");
+        // reload page
+        window.location.reload();
       })
       .catch(function (error) {
         console.log(error);
@@ -138,18 +135,18 @@ class ProfileEvent extends Component {
             <Form onSubmit={this.handleSubmit}>
 
               <Form.Group widths="equal">
-                <Form.Input label='Credit Card Number' name='creditCard' placeholder='Card Number' />
-                <Form.Input label="Expiration Date" name='expirationDate' placeholder='MM/YYYY'/>
-                <Form.Input label="Security Code (CCV)" name='securityCode' placeholder="123"></Form.Input>
+                <Form.Input label='Credit Card Number' name='credit_card_num' placeholder='Card Number' />
+                <Form.Input label="Expiration Date" name='expiration_date' placeholder='MM/YYYY'/>
+                <Form.Input label="Security Code (CCV)" name='security_code' placeholder="123"></Form.Input>
               </Form.Group>
 
               <Form.Group widths="equal">
-                <Form.Input label="First Name" name="firstName" placeholder="First Name"/>
-                <Form.Input label="Last Name" name="lastName" placeholder="Last Name"/>
+                <Form.Input label="First Name" name="first_name" placeholder="First Name"/>
+                <Form.Input label="Last Name" name="last_name" placeholder="Last Name"/>
               </Form.Group>
 
-              <Form.Input label="Billing Address" name="addressLine1" placeholder="Address Line 1"/>
-              <Form.Input name="addressLine2" placeholder="Address Line 2"/>
+              <Form.Input label="Billing Address" name="address_line_1" placeholder="Address Line 1"/>
+              <Form.Input name="address_line_2" placeholder="Address Line 2"/>
 
               <Form.Group widths="equal">
                 <Form.Input label="City" name="city" placeholder="City"/>
@@ -157,7 +154,7 @@ class ProfileEvent extends Component {
               </Form.Group>
 
               <Form.Group widths="equal">
-                <Form.Input label="Post Code" name="postCode" placeholder="Post Code"/>
+                <Form.Input label="Post Code" name="post_code" placeholder="Post Code"/>
                 <Form.Input label="Country" name="country" placeholder="Country"/>
               </Form.Group>
               <Button primary type='submit'>
