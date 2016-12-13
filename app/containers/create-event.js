@@ -55,8 +55,8 @@ class CreateEventForm extends Component {
     return (
       <div style={{padding:100}}>
 
-        <Header as='h2' attached='top' >
-        <Icon name="write square" size="large" circular></Icon>Create Event</Header>
+        <Header style={{backgroundColor:"rgb(35, 37, 40)", color:"white"}} inverted as='h2' attached='top' >
+        <Icon color="blue" name="write square" size="large"></Icon>Create Event</Header>
 
         <Segment attached>
           <Form onSubmit={this.handleSubmit}>

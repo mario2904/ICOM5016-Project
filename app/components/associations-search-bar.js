@@ -9,7 +9,7 @@ export default class AssociationsSearchBar extends Component {
         <Form>
           <Form.Group>
             <Form.Field inline control={Select} label='Order by'
-              options={order} placeholder='i.e. Most Popular' />
+              options={order} placeholder='i.e. A - Z' />
           </Form.Group>
         </Form>
       </Grid>
@@ -18,8 +18,6 @@ export default class AssociationsSearchBar extends Component {
 }
 
 const order = [
-  { text: 'Most Popular', value: 'Most Popular' },
-  { text: 'Starting Soon', value: 'Starting Soon' },
   { text: 'A - Z', value: 'A - Z' },
   { text: 'Z - A', value: 'Z - A' }
 ];

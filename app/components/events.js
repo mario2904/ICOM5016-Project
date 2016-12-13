@@ -83,11 +83,11 @@ export default class Events extends Component {
           <Icon color="teal" size="huge" name="paw"></Icon><strong>Search any Event on Campus</strong></h1>
         </Grid.Row>
         <Grid padded style={{padding: 40}}>
-          <Input placeholder='Search by name...' value={this.state.value} onChange={this.handleSearchChange} />
+          <Input action={{ icon: 'search'}} placeholder='Search by name...' value={this.state.value} onChange={this.handleSearchChange} />
           <Form>
             <Form.Group>
-              <Form.Field onChange={this.handleOrderChange} inline control={Select} label='Order by' options={order} placeholder='i.e. Most Popular' />
-              <Form.Field inline control={Select} label='Categories' options={options} placeholder='i.e. Food' />
+              <Form.Field onChange={this.handleOrderChange} inline control={Select} label='Order by' options={order} placeholder='i.e. A - Z' />
+
             </Form.Group>
           </Form>
         </Grid>
@@ -110,7 +110,6 @@ const options = [
   { text: 'Other', value: 'Other' }];
 
 const order = [
-  { text: 'Most Popular', value: 'Most Popular' },
   { text: 'Starting Soon', value: 'Starting Soon' },
   { text: 'A - Z', value: 'A - Z' },
   { text: 'Z - A', value: 'Z - A' }];
